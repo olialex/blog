@@ -2,30 +2,38 @@
 //  sitio.js  —  AQUÍ SE EDITA TODO EL SITIO
 //  Nombre, textos, menú, colores, fuentes, categorías, widgets, newsletter...
 //  Los artículos se escriben aparte, en src/content/posts/*.md
+//
+//  Este archivo lo puede regenerar el panel de control (pnpm panel).
+//  Si lo editas a mano, los comentarios dentro de cada sección se pierden
+//  la próxima vez que guardes desde el panel.
 // ============================================================================
 
 export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://olialex.github.io/blog', // La dirección final completa de tu blog (sin / al final)
-  base: '/blog', // Solo la carpeta del final de la dirección (igual al nombre del repositorio). En un dominio propio déjalo ''
-  idioma: 'es', // es, en, pt...
+  url: 'https://olialex.github.io/blog',
+
+  base: '/blog',
+
+  idioma: 'es',
+
   nombre: 'Mi Cuaderno Digital',
-  eslogan: 'mi cuaderno digital', // texto pequeño manuscrito sobre el título
-  descripcion:
-    'Un rincón tranquilo de internet donde escribo sobre ideas, aprendizaje, proyectos y vida diaria.',
-  imagenCompartir: '', // imagen por defecto al compartir (URL completa). Opcional.
+
+  eslogan: 'Bienvenido',
+
+  descripcion: 'Un rincón tranquilo de internet donde escribo sobre ideas, aprendizaje, proyectos y vida diaria.',
+
+  imagenCompartir: '',
 
   // --------------------------------------------------------------------------
-  // 2. AUTOR (aparece en el hero, el widget "sobre mí" y al final de cada artículo)
+  // 2. AUTOR
   // --------------------------------------------------------------------------
   autor: {
-    nombre: 'Tu Nombre',
-    rol: 'Escritor y curioso de tiempo completo',
-    ubicacion: 'Tu ciudad',
-    avatar:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
+    nombre: 'Oliver',
+    rol: 'Me gustaría crear mis propias webtoons',
+    ubicacion: '',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
     bio: 'Escribo sobre lo que aprendo, lo que construyo y lo que me hace pensar. Este blog es mi cuaderno abierto.',
     redes: [
       { nombre: '', icono: 'instagram', url: 'https://instagram.com/' },
@@ -38,44 +46,43 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 3. MENÚ
   // --------------------------------------------------------------------------
-  // Cada enlace puede llevar un ícono SVG (icono: '...'). Nombres disponibles en src/lib/iconos.js:
-  // inicio, lapiz, libro, pelicula, usuario, correo, buscar, enlace, lista, rss,
-  // instagram, youtube, x, facebook, whatsapp, github, flecha-abajo, flecha-izquierda, flecha-derecha
   navegacion: [
     { texto: 'Inicio', icono: 'inicio', url: '/' },
     { texto: 'Artículos', icono: 'lapiz', url: '/articulos/' },
     { texto: 'Temas', icono: 'libro', url: '/categorias/' },
-    { texto: 'Webcomics', icono: 'pelicula', url: '/webcomics/' }, // quítalo si no harás webcomics
+    { texto: 'Webcomics', icono: 'pelicula', url: '/webcomics/' },
     { texto: 'Sobre mí', icono: 'usuario', url: '/sobre-mi/' },
   ],
+
   botonMenu: { texto: 'Suscribirme', icono: 'correo', url: '/#newsletter' },
 
   // --------------------------------------------------------------------------
   // 4. PORTADA (página de inicio)
   // --------------------------------------------------------------------------
   hero: {
-    // Insignias flotantes alrededor del título. color = amarillo|verde|rosa|azul|naranja|morado
     insignias: [
       { texto: 'LEE Y APRENDE', color: 'verde', posicion: 'tl' },
       { texto: 'ENSAYOS SEMANALES', color: 'amarillo', posicion: 'tr' },
       { texto: 'IDEAS Y PROYECTOS', color: 'naranja', posicion: 'bl' },
       { texto: 'TU CIUDAD', color: 'verde', posicion: 'br' },
     ],
-    // La frase se arma así: fraseInicio + [resaltado] + fraseFin
     fraseInicio: 'Escribo sobre ideas, aprendizaje y proyectos que',
     resaltado: 'VALEN',
     fraseFin: 'la pena.',
     boton: { texto: 'EXPLORAR ARTÍCULOS', url: '/articulos/', icono: 'flecha-abajo' },
-    mostrarAutor: false, // tarjetita "Escrito por..." bajo el botón
-    mostrarEstadisticas: true, // artículos / temas / desde año
+    mostrarAutor: false,
+    mostrarEstadisticas: true,
   },
 
+  // --------------------------------------------------------------------------
+  // 4b. SECCIONES DE LA PORTADA
+  // --------------------------------------------------------------------------
   home: {
-    mostrarDestacado: true, // gran tarjeta con el artículo destacado
-    cantidadUltimos: 6, // cuántos artículos recientes se muestran en la portada
-    mostrarWebcomics: true, // sección de webcomics (solo aparece si hay alguno publicado)
-    mostrarTemas: true, // sección "Explora por tema"
-    mostrarAutor: true, // sección corta "Quién escribe"
+    mostrarDestacado: true,
+    cantidadUltimos: 6,
+    mostrarWebcomics: true,
+    mostrarTemas: true,
+    mostrarAutor: true,
     mostrarNewsletter: true,
   },
 
@@ -91,8 +98,6 @@ export const sitio = {
 
   // --------------------------------------------------------------------------
   // 5b. WEBCOMICS (/webcomics/)
-  //     Para publicar uno: en el .md/.mdx del artículo pon  tipo: webcomic
-  //     y el bloque comic: (mira el README o los ejemplos en src/content/posts/)
   // --------------------------------------------------------------------------
   webcomics: {
     etiqueta: 'historias en viñetas',
@@ -105,27 +110,16 @@ export const sitio = {
   // 6. ARTÍCULO INDIVIDUAL
   // --------------------------------------------------------------------------
   articulo: {
-    barraProgreso: true, // barra de lectura arriba
-    mostrarIndice: true, // columna IZQUIERDA: índice fijo (sticky). En webcomics muestra los capítulos
+    barraProgreso: true,
+    mostrarIndice: true,
     mostrarRelacionados: true,
     mostrarAnteriorSiguiente: true,
-    // Columna DERECHA (información extra, discreta). Cambia el orden o quita nombres.
-    // Opciones: meta | autor | etiquetas | compartir | recientes | categorias | buscar | newsletter
     barraDerecha: ['meta', 'autor', 'etiquetas', 'compartir'],
-    // Comentarios con Giscus (gratis, usa GitHub Discussions). Pasos en el README.
-    comentarios: {
-      activo: false,
-      repo: '', // ej: 'usuario/mi-blog'
-      repoId: '',
-      categoria: '',
-      categoriaId: '',
-    },
+    comentarios: { activo: false, repo: '', repoId: '', categoria: '', categoriaId: '' },
   },
 
   // --------------------------------------------------------------------------
   // 7. WIDGETS DE LA BARRA LATERAL
-  //    Cambia el ORDEN o quita nombres de la lista para ocultarlos.
-  //    Disponibles: buscar | sobreMi | categorias | recientes | etiquetas | newsletter
   // --------------------------------------------------------------------------
   widgets: {
     barraLateral: ['sobreMi', 'categorias', 'recientes', 'etiquetas', 'newsletter'],
@@ -134,7 +128,7 @@ export const sitio = {
   },
 
   // --------------------------------------------------------------------------
-  // 8. CATEGORÍAS (la "clave" es lo que escribes en cada artículo: categoria: 'ideas')
+  // 8. CATEGORÍAS (la "clave" es lo que escribes en cada artículo)
   // --------------------------------------------------------------------------
   categorias: {
     ideas: {
@@ -171,8 +165,6 @@ export const sitio = {
 
   // --------------------------------------------------------------------------
   // 9. NEWSLETTER
-  //    "accion" es la URL de tu servicio de formularios (Formspree, Getform,
-  //    Basin...). Si la dejas vacía el formulario funciona en modo demostración.
   // --------------------------------------------------------------------------
   newsletter: {
     activo: true,
@@ -181,15 +173,15 @@ export const sitio = {
     textoWidget: 'Recibe lo nuevo del cuaderno cada semana.',
     placeholder: 'tu.correo@dominio.com',
     boton: 'SUSCRIBIRME',
-    accion: '', // ej: 'https://formspree.io/f/xxxxxxx'
-    campo: 'email', // nombre del campo que espera tu servicio
+    accion: '',
+    campo: 'email',
     mensajeOk: '¡Listo! Revisa tu correo para confirmar.',
     mensajeError: 'Algo falló. Inténtalo de nuevo en un momento.',
     mensajeDemo: 'Modo demostración: configura newsletter.accion en sitio.js para recibir correos reales.',
   },
 
   // --------------------------------------------------------------------------
-  // 10. PÁGINA "SOBRE MÍ" (/sobre-mi/)
+  // 10. PÁGINA "SOBRE MÍ"
   // --------------------------------------------------------------------------
   sobreMi: {
     etiqueta: 'quién escribe esto',
@@ -224,7 +216,7 @@ export const sitio = {
   },
 
   // --------------------------------------------------------------------------
-  // 12. TEXTOS DE LA INTERFAZ (cámbialos si quieres otro idioma o tono)
+  // 12. TEXTOS DE LA INTERFAZ
   // --------------------------------------------------------------------------
   textos: {
     leer: 'Leer >',
@@ -270,7 +262,6 @@ export const sitio = {
     menu: 'Menú',
     cambiarTema: 'Cambiar entre modo claro y oscuro',
     suscribirseRss: 'RSS',
-    // --- webcomics ---
     comic: 'COMIC',
     capitulo: 'Capítulo',
     capitulos: 'capítulos',
@@ -286,15 +277,12 @@ export const sitio = {
     empezarLeer: 'EMPEZAR A LEER',
     ultimoCap: 'Último capítulo',
     lecturaRtl: 'Lectura de derecha a izquierda',
-    // --- columna derecha del artículo ---
     info: 'Info',
     tema: 'Tema',
     publicado: 'Publicado',
     actualizadoEn: 'Actualizado',
     lectura: 'Lectura',
     infoExtra: 'Información extra',
-
-    // --- explorador de artículos ---
     explorarTitulo: 'Explorar artículos',
     explorarPlaceholder: 'Buscar por título, tema o etiqueta…',
     explorarTodo: 'Todo',
@@ -305,12 +293,11 @@ export const sitio = {
   },
 
   // --------------------------------------------------------------------------
-  // 13. APARIENCIA
-  //    Colores en formato #rrggbb. Puedes cambiar toda la paleta aquí.
+  // 13. APARIENCIA (colores)
   // --------------------------------------------------------------------------
   tema: {
-    modoOscuro: true, // muestra el botón claro/oscuro
-    inicial: 'sistema', // 'sistema' | 'claro' | 'oscuro'
+    modoOscuro: true,
+    inicial: 'sistema',
     acentos: {
       amarillo: '#ffcf25',
       verde: '#34d399',
@@ -343,12 +330,14 @@ export const sitio = {
     },
   },
 
+  // --------------------------------------------------------------------------
+  // 14. FUENTES
+  // --------------------------------------------------------------------------
   fuentes: {
-    // Enlace de Google Fonts (si cambias fuentes, actualiza también los nombres de abajo)
-    url: 'https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=VT323&family=Plus+Jakarta+Sans:wght@500;700;800&family=Press+Start+2P&display=swap',
-    principal: "'Plus Jakarta Sans', system-ui, sans-serif", // texto general
-    manuscrita: "'Caveat', cursive", // etiquetas a mano
-    pixel: "'Press Start 2P', monospace", // título del hero
-    mono: "'VT323', monospace", // pestañas y detalles
+    url: '',
+    principal: "'Plus Jakarta Sans', system-ui, sans-serif",
+    manuscrita: "'Caveat', cursive",
+    pixel: "'Press Start 2P', monospace",
+    mono: "'VT323', monospace",
   },
 };
