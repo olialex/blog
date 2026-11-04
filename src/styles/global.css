@@ -43,6 +43,12 @@ button { font-family: inherit; color: inherit; }
   box-decoration-break: clone; -webkit-box-decoration-break: clone;
 }
 
+@media (max-width: 450px){
+  .resaltado{
+    line-height: 1.5;
+  }
+}
+
 /* ===== 2. CINTA (tape) — se aplica con la clase .cinta ===== */
 .cinta { position: relative; }
 .cinta::before {

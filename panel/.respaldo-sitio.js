@@ -167,7 +167,7 @@ export const sitio = {
   // 9. NEWSLETTER
   // --------------------------------------------------------------------------
   newsletter: {
-    activo: true,
+    activo: false,
     titulo: 'Únete al Diario del Domingo 📬',
     texto: 'Un resumen semanal con lo nuevo del cuaderno y algunas notas que no publico en otro lado. Sin spam.',
     textoWidget: 'Recibe lo nuevo del cuaderno cada semana.',
@@ -277,6 +277,12 @@ export const sitio = {
     empezarLeer: 'EMPEZAR A LEER',
     ultimoCap: 'Último capítulo',
     lecturaRtl: 'Lectura de derecha a izquierda',
+    novela: 'NOVELA',
+    novelaEtiqueta: 'novela gráfica animada',
+    desliza: 'Desliza',
+    qteBien: '¡Bien!',
+    qteMal: '¡Fallaste!',
+    toca: 'TOCA',
     info: 'Info',
     tema: 'Tema',
     publicado: 'Publicado',
