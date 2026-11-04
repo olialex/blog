@@ -1,0 +1,27 @@
+---
+// Uso:  <Icono nombre="correo" tamano={16} />
+// Los nombres disponibles están en src/lib/iconos.js
+import { iconos } from '../lib/iconos.js';
+
+const { nombre, tamano = 18, clase = '' } = Astro.props;
+const cuerpo = iconos[nombre] ?? '';
+---
+
+{
+  cuerpo && (
+    <svg
+      class:list={['icono', clase]}
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      set:html={cuerpo}
+    />
+  )
+}

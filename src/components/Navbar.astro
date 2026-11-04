@@ -1,0 +1,115 @@
+---
+import { ruta } from '../lib/utils.js';
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+import Explorador from './Explorador.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const actual = Astro.url.pathname.slice(base.length) || '/'; // dirección sin la base
+const activo = (url) => {
+  if (url === '/') return actual === '/';
+  if (url === '/articulos/') return actual.startsWith('/articulo');
+  return actual.startsWith(url.split('#')[0]);
+};
+const t = sitio.textos;
+---
+
+<header class="navbar-container">
+  <!-- hover-opacidad: clase de hover.css. Bórrala de aquí si no te gusta -->
+  <nav class="navbar hover-opacidad" aria-label="Principal">
+    <a class="brand" href={ruta('/')}>{sitio.nombre}</a>
+
+    <button class="nav-toggle" type="button" aria-label={t.menu} aria-expanded="false" data-nav-toggle>
+      <Icono nombre="menu" tamano={16} />
+    </button>
+
+    <ul class="nav-links" data-nav-links>
+      {
+        sitio.navegacion.map((item) => (
+          <li>
+            <a class:list={['nav-link', { active: activo(item.url) }]} href={ruta(item.url)} aria-current={activo(item.url) ? 'page' : undefined}>
+              {item.icono && <Icono nombre={item.icono} tamano={14} />}
+              <span>{item.texto}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" type="button" aria-label={t.explorarTitulo} title={`${t.explorarTitulo} ( / )`} data-abrir-explorador>
+        <Icono nombre="buscar" tamano={16} />
+      </button>
+      {
+        sitio.tema.modoOscuro && (
+          <button class="theme-toggle" type="button" aria-label={t.cambiarTema} data-theme-toggle>
+            <Icono nombre="contraste" tamano={16} />
+          </button>
+        )
+      }
+      {
+        sitio.botonMenu && (
+          <a class="btn-subscribe" href={ruta(sitio.botonMenu.url)}>
+            {sitio.botonMenu.icono && <Icono nombre={sitio.botonMenu.icono} tamano={14} />}
+            <span>{sitio.botonMenu.texto}</span>
+          </a>
+        )
+      }
+    </div>
+  </nav>
+</header>
+
+<!-- Popup del explorador de artículos (se abre con el botón de la lupa o con la tecla "/") -->
+<dialog class="explorador-dialogo" data-explorador-dialogo aria-label={t.explorarTitulo}>
+  <div class="explorador-dialogo-cuerpo">
+    <div class="explorador-dialogo-cabecera">
+      <span class="explorador-dialogo-titulo">{t.explorarTitulo}</span>
+      <button class="theme-toggle" type="button" aria-label={t.cerrar} data-cerrar-explorador>
+        <Icono nombre="x" tamano={16} />
+      </button>
+    </div>
+    <Explorador variante="popup" />
+  </div>
+</dialog>
+
+<script>
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const links = document.querySelector('[data-nav-links]');
+  toggle?.addEventListener('click', () => {
+    const abierto = links?.classList.toggle('abierto');
+    toggle.setAttribute('aria-expanded', String(Boolean(abierto)));
+  });
+
+  const botonTema = document.querySelector('[data-theme-toggle]');
+  botonTema?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const siguiente = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', siguiente);
+    try {
+      localStorage.setItem('tema', siguiente);
+    } catch {}
+  });
+
+  // ----- Explorador de artículos (popup) -----
+  const dialogo = document.querySelector<HTMLDialogElement>('[data-explorador-dialogo]');
+  const abrirExplorador = () => {
+    if (!dialogo || dialogo.open) return;
+    dialogo.showModal();
+    dialogo.querySelector('[data-explorador]')?.dispatchEvent(new CustomEvent('abrir'));
+  };
+  document.querySelectorAll('[data-abrir-explorador]').forEach((b) => b.addEventListener('click', abrirExplorador));
+  dialogo?.querySelector('[data-cerrar-explorador]')?.addEventListener('click', () => dialogo.close());
+  // Clic en el fondo oscuro = cerrar
+  dialogo?.addEventListener('click', (e) => {
+    if (e.target === dialogo) dialogo.close();
+  });
+  // Atajo: la tecla "/" abre el explorador
+  document.addEventListener('keydown', (e) => {
+    const el = e.target as HTMLElement;
+    const escribiendo = ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName) || el.isContentEditable;
+    if (e.key === '/' && !escribiendo) {
+      e.preventDefault();
+      abrirExplorador();
+    }
+  });
+</script>

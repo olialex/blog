@@ -1,0 +1,66 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+
+// variante: 'seccion' (grande) o 'widget' (barra lateral)
+const { variante = 'seccion' } = Astro.props;
+const n = sitio.newsletter;
+const esWidget = variante === 'widget';
+---
+
+{
+  n.activo && (
+    <section class={esWidget ? 'widget' : 'newsletter-box cinta cinta-doble'} id={esWidget ? undefined : 'newsletter'}>
+      {esWidget ? (
+        <h3 class="widget-titulo"><Icono nombre="correo" tamano={13} /> {n.titulo.replace(/\s*📬/, '')}</h3>
+      ) : (
+        <h3 class="newsletter-title">{n.titulo}</h3>
+      )}
+      <p class={esWidget ? 'widget-texto' : 'newsletter-desc'}>{esWidget ? n.textoWidget : n.texto}</p>
+      <form
+        class="newsletter-form"
+        data-newsletter
+        data-accion={n.accion}
+        data-ok={n.mensajeOk}
+        data-error={n.mensajeError}
+        data-demo={n.mensajeDemo}
+      >
+        <input class="newsletter-input" type="email" name={n.campo} placeholder={n.placeholder} required aria-label={n.placeholder} />
+        <button class="newsletter-btn" type="submit">{n.boton}</button>
+      </form>
+      <p class="newsletter-msg" data-msg role="status" aria-live="polite"></p>
+    </section>
+  )
+}
+
+<script>
+  document.querySelectorAll('form[data-newsletter]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = form as HTMLFormElement;
+      const msg = f.parentElement?.querySelector('[data-msg]');
+      if (!msg) return;
+      const accion = f.dataset.accion;
+      if (!accion) {
+        msg.textContent = f.dataset.demo ?? '';
+        return;
+      }
+      const boton = f.querySelector('button');
+      if (boton) boton.disabled = true;
+      try {
+        const res = await fetch(accion, {
+          method: 'POST',
+          body: new FormData(f),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error('fallo');
+        msg.textContent = f.dataset.ok ?? '';
+        f.reset();
+      } catch {
+        msg.textContent = f.dataset.error ?? '';
+      } finally {
+        if (boton) boton.disabled = false;
+      }
+    });
+  });
+</script>

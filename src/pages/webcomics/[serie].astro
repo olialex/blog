@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icono from '../../components/Icono.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, seriesDe, urlPost } from '../../lib/utils.js';
+
+export async function getStaticPaths() {
+  const series = seriesDe(await getPosts());
+  return series.map((s) => ({ params: { serie: s.slug }, props: { datos: s } }));
+}
+
+const { datos } = Astro.props;
+const t = sitio.textos;
+const primero = datos.capitulos[0];
+const ultimo = datos.ultimo;
+const n = datos.capitulos.length;
+---
+
+<Base titulo={datos.nombre} descripcion={primero.data.descripcion} imagen={datos.portada}>
+  <div class="contenedor">
+    <Cabecera
+      etiqueta={`${n} ${n === 1 ? t.capitulo.toLowerCase() : t.capitulos}`}
+      titulo={datos.nombre}
+      descripcion={primero.data.descripcion}
+      color="morado"
+      emoji="🎞️"
+    />
+
+    <p class="acciones-serie">
+      <a class="btn-cta" href={urlPost(primero)}>
+        <span>{t.empezarLeer}</span>
+        <Icono nombre="flecha-derecha" tamano={16} />
+      </a>
+      {
+        n > 1 && (
+          <a class="chip" href={urlPost(ultimo)}>
+            {t.ultimoCap}: {ultimo.data.comic.capitulo ? `${t.capAbrev} ${ultimo.data.comic.capitulo}` : ultimo.data.titulo}
+          </a>
+        )
+      }
+    </p>
+
+    <div class="posts-grid posts-grid-lista">
+      {datos.capitulos.map((c) => <PostCard post={c} />)}
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import PostCard from '../../components/PostCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, categoriaInfo } from '../../lib/utils.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const claves = [...new Set(posts.map((p) => p.data.categoria))];
+  return claves.map((clave) => ({
+    params: { categoria: clave },
+    props: { posts: posts.filter((p) => p.data.categoria === clave) },
+  }));
+}
+
+const { categoria } = Astro.params;
+const { posts } = Astro.props;
+const cat = categoriaInfo(categoria);
+---
+
+<Base titulo={`${sitio.textos.articulosEn} ${cat.nombre}`} descripcion={cat.descripcion || sitio.descripcion}>
+  <div class="contenedor">
+    <Cabecera etiqueta={sitio.textos.articulosEn} titulo={cat.nombre} emoji={cat.emoji} descripcion={cat.descripcion} color={cat.color} />
+    <div class="layout">
+      <section>
+        <div class="posts-grid posts-grid-lista">
+          {posts.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+      <Sidebar />
+    </div>
+  </div>
+</Base>

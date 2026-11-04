@@ -1,0 +1,89 @@
+/* ==========================================================================
+   TARJETAS TIPO PORTADA  (PostCard, SerieCard y artículo destacado)
+   ========================================================================== */
+
+.post-meta {
+  font-size: .78rem; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+  opacity: .85; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+
+.read-article-link {
+  display: inline-flex; align-items: center; gap: 6px; font-weight: 800; text-decoration: none;
+  border-bottom: 2px solid currentColor; width: fit-content; padding-bottom: 2px; transition: all .2s ease;
+}
+.read-article-link:hover { gap: 12px; color: var(--acento, var(--c-amarillo));}
+
+.tag {
+  display: inline-block; background: var(--acento, var(--c-amarillo)); color: #121212;
+  border: 1.5px solid var(--line); border-radius: 999px; padding: 2px 10px; line-height: 1.5;
+  font-size: .68rem; font-weight: 800; text-transform: uppercase; text-decoration: none;
+}
+a.tag:hover { filter: brightness(1.08); }
+.tag-comic { background: #121212; color: #fff; border-color: rgba(255,255,255,.7); }
+
+/* ----- Cuadrícula ----- */
+.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.posts-grid-lista { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+
+/* ----- Tarjeta vertical tipo portada (proporción 2:3) ----- */
+.card-portada {
+  position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 6px;
+  border: 2px solid var(--line); background: var(--panel); box-shadow: 4px 4px 0 var(--line);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card-portada:hover { transform: translateY(-4px); box-shadow: 7px 7px 0 var(--line); }
+
+.card-portada-link {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end;
+  color: #fff; text-decoration: none;
+}
+.card-portada-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.card-portada:hover .card-portada-img, .destacado-portada:hover .card-portada-img { transform: scale(1.05); }
+
+/* Si el artículo no tiene portada: fondo de color + emoji de la categoría */
+.card-portada-fondo {
+  position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 25%;
+  font-size: 3.4rem; background: var(--acento, var(--c-amarillo));
+}
+.card-portada-velo {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,0) 68%);
+}
+.card-portada-top { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2; display: flex; justify-content: space-between; gap: 6px; }
+.card-portada-info { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 4px; padding: 14px; }
+.card-portada-titulo { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
+.card-portada-meta { font-size: .66rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; opacity: .8; }
+.card-portada-desc {
+  font-size: .8rem; line-height: 1.35; opacity: 0; max-height: 0; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  transition: opacity .3s ease, max-height .3s ease;
+}
+/* La descripción aparece al pasar el mouse (en pantallas táctiles no se muestra) */
+.card-portada:hover .card-portada-desc, .card-portada:focus-within .card-portada-desc { opacity: .95; max-height: 5em; }
+@media (hover: none) { .card-portada-desc { display: none; } }
+
+/* ----- Artículo destacado: portada ancha ----- */
+.destacado-portada {
+  position: relative; aspect-ratio: 21 / 9; min-height: 320px; overflow: hidden; border-radius: 8px;
+  border: 3px solid var(--line); background: var(--panel); box-shadow: 6px 6px 0 var(--line);
+}
+.destacado-portada .card-portada-fondo { font-size: 5rem; padding-bottom: 0; }
+.velo-ancho {
+  background:
+    linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,0) 100%),
+    linear-gradient(to right, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 70%);
+}
+.destacado-info { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; max-width: 680px; padding: 34px; }
+.destacado-info .post-meta { margin-bottom: 0; }
+.destacado-titulo { font-size: clamp(1.6rem, 3.4vw, 2.6rem); font-weight: 800; line-height: 1.12; }
+.destacado-desc { opacity: .92; }
+.destacado-cta { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font-weight: 800; border-bottom: 2px solid currentColor; padding-bottom: 2px; }
+
+.vacio { text-align: center; color: var(--muted); font-weight: 700; margin: 40px 0; }
+.acciones-serie { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin: -10px 0 40px; }
+
+@media (max-width: 560px) {
+  .posts-grid, .posts-grid-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .destacado-portada { aspect-ratio: auto; min-height: 360px; }
+  .destacado-info { padding: 22px; }
+}

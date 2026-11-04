@@ -1,0 +1,12 @@
+---
+// Cabecera de página reutilizable: etiqueta manuscrita + título + descripción
+const { etiqueta, titulo, descripcion, color = 'amarillo', emoji } = Astro.props;
+---
+
+<header class="cabecera">
+  {etiqueta && <div class="handwritten-label">{etiqueta}</div>}
+  <h1 class="cabecera-titulo" style={`--acento:var(--c-${color})`}>
+    {emoji && <span>{emoji} </span>}<span class="resaltado">{titulo}</span>
+  </h1>
+  {descripcion && <p class="cabecera-desc">{descripcion}</p>}
+</header>

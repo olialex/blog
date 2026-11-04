@@ -1,0 +1,81 @@
+/* ==========================================================================
+   HEADER DISCRETO: barra delgada, sin caja ni sombra, solo una línea punteada
+   ========================================================================== */
+.navbar-container {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 20px; background: var(--bg); border-bottom: 1px dashed var(--muted);
+}
+.navbar {
+  max-width: 1100px; margin: 0 auto; position: relative;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0;
+}
+
+/* --- Escritorio: oculto hasta que pasas el mouse por arriba --- */
+@media (hover: hover) and (min-width: 761px) {
+  .navbar-container { transform: translateY(-100%); transition: transform .3s ease; }
+  /* Franja invisible de 16px pegada al borde superior de la pantalla: activa el header */
+  .navbar-container::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 32px; }
+  /* Pestañita visible que indica que ahí hay un menú (borra este bloque si no la quieres) */
+  .navbar-container::before {
+    content: ''; position: absolute; left: 50%; top: 100%; width: 60px; height: 3px;
+    transform: translateX(-50%); background: var(--muted); opacity: .5; border-radius: 0 0 3px 3px;
+  }
+  .navbar-container:hover, .navbar-container:focus-within { transform: translateY(0); }
+  .navbar-container:hover::before, .navbar-container:focus-within::before { opacity: 0; }
+}
+
+main { padding-top: 28px; }
+
+.brand {
+  font-family: var(--font-hand); font-size: 1.4rem; font-weight: 700;
+  text-decoration: none; line-height: 1; white-space: nowrap;
+}
+
+.nav-links { display: flex; list-style: none; gap: 2px; align-items: center; }
+.nav-link {
+  display: flex; align-items: center; gap: 6px; text-decoration: none; white-space: nowrap;
+  font-weight: 600; font-size: .78rem; color: var(--muted); padding: 5px 10px; border-radius: 6px;
+  transition: color .15s ease, background-color .15s ease;
+}
+.nav-link:hover { color: var(--ink); background: var(--grid); }
+.nav-link.active { color: var(--ink); box-shadow: inset 0 -2px 0 var(--c-amarillo); border-radius: 0; }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.theme-toggle, .nav-toggle {
+  display: inline-grid; place-items: center; width: 30px; height: 30px; cursor: pointer;
+  background: transparent; color: var(--muted); border: 1px solid var(--muted); border-radius: 50%;
+  transition: all .15s ease;
+}
+.theme-toggle:hover, .nav-toggle:hover { color: #121212; background: var(--c-amarillo); border-color: var(--line); }
+.nav-toggle { display: none; }
+
+.btn-subscribe {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; text-decoration: none;
+  font-size: .75rem; font-weight: 700; color: var(--muted); border: 1px solid var(--muted);
+  border-radius: 999px; padding: 4px 12px; transition: all .15s ease;
+}
+.btn-subscribe:hover { color: #121212; background: var(--c-amarillo); border-color: var(--line); }
+
+/* --- Móvil: logo a la izquierda, botones a la derecha, fondo translúcido --- */
+@media (max-width: 760px) {
+  .navbar-container {
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border-bottom: none;
+  }
+  /* Con el menú abierto el fondo se vuelve sólido para poder leer los enlaces */
+  .navbar-container:has(.nav-links.abierto) { background: var(--bg); }
+
+  main { padding-top: 64px; }
+
+  .navbar { flex-wrap: wrap; padding: 6px 0; }
+  .brand { order: 1; }
+  .nav-actions { order: 2; margin-left: auto; }
+  .nav-actions .btn-subscribe { display: none; }
+  .nav-toggle { display: inline-grid; order: 3; }
+  .theme-toggle, .nav-toggle { border-color: transparent; }
+
+  .nav-links { display: none; order: 4; width: 100%; flex-direction: column; align-items: stretch; padding: 6px 0 10px; }
+  .nav-links.abierto { display: flex; }
+  .nav-link.active { box-shadow: none; background: var(--grid); border-radius: 6px; }
+}

@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, contarCategorias, ruta } from '../../lib/utils.js';
+
+const categorias = contarCategorias(await getPosts());
+const t = sitio.textos;
+---
+
+<Base titulo={t.todosLosTemas} descripcion={sitio.descripcion}>
+  <div class="contenedor">
+    <Cabecera etiqueta={t.temasSub} titulo={t.todosLosTemas} />
+    <div class="temas-grid">
+      {
+        categorias.map((c) => (
+          <a class="tema-card cinta" href={ruta(`/categorias/${c.clave}/`)} style={`--acento:var(--c-${c.color})`}>
+            <span class="tema-emoji">{c.emoji}</span>
+            <strong>{c.nombre}</strong>
+            <small>{c.descripcion}</small>
+            <span class="contador">{c.total} {t.temaDe}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Base>

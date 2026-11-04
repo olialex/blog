@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import PostCard from '../../components/PostCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import Icono from '../../components/Icono.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, contarCategorias, categoriaInfo } from '../../lib/utils.js';
+
+const posts = await getPosts();
+const categorias = contarCategorias(posts);
+const l = sitio.listado;
+const t = sitio.textos;
+
+// Texto "buscable" de cada artículo (sin tildes ni mayúsculas)
+const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const textoDe = (p) =>
+  norm([p.data.titulo, p.data.descripcion, categoriaInfo(p.data.categoria).nombre, p.data.etiquetas.join(' ')].join(' '));
+---
+
+<Base titulo={l.titulo} descripcion={l.descripcion}>
+  <div class="contenedor">
+    <Cabecera etiqueta={l.etiqueta} titulo={l.titulo} descripcion={l.descripcion} />
+
+    <div class="layout">
+      <section data-filtro data-lote={l.porPagina} data-texto-resultados={t.explorarResultados}>
+        <div class="filtro-articulos">
+          <label class="explorador-barra">
+            <Icono nombre="buscar" tamano={18} />
+            <input class="explorador-input" type="search" placeholder={t.explorarPlaceholder} aria-label={t.explorarPlaceholder} autocomplete="off" />
+          </label>
+          <div class="filtro-chips">
+            <button class="chip activo" type="button" data-cat="">✨ {t.todosLosTemas}</button>
+            {
+              categorias.map((c) => (
+                <button class="chip" type="button" data-cat={c.clave} style={`--acento:var(--c-${c.color})`}>
+                  {c.emoji} {c.nombre}
+                </button>
+              ))
+            }
+          </div>
+          <p class="explorador-estado" data-estado role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="posts-grid posts-grid-lista">
+          {
+            posts.map((p) => (
+              <div data-item data-cat={p.data.categoria} data-texto={textoDe(p)}>
+                <PostCard post={p} />
+              </div>
+            ))
+          }
+        </div>
+
+        <p class="vacio" data-vacio hidden>{t.explorarVacio}</p>
+        <p class="filtro-mas" data-mas-caja hidden>
+          <button class="btn-cta" type="button" data-mas-btn>{t.mostrarMas}</button>
+        </p>
+      </section>
+
+      <Sidebar />
+    </div>
+  </div>
+
+  <script>
+    const raiz = document.querySelector<HTMLElement>('[data-filtro]');
+    const input = raiz?.querySelector<HTMLInputElement>('.explorador-input');
+    const estado = raiz?.querySelector<HTMLElement>('[data-estado]');
+    const vacio = raiz?.querySelector<HTMLElement>('[data-vacio]');
+    const masCaja = raiz?.querySelector<HTMLElement>('[data-mas-caja]');
+    const masBtn = raiz?.querySelector<HTMLButtonElement>('[data-mas-btn]');
+
+    if (raiz && input && estado && vacio && masCaja && masBtn) {
+      const chips = Array.from(raiz.querySelectorAll<HTMLButtonElement>('[data-cat]'));
+      const items = Array.from(raiz.querySelectorAll<HTMLElement>('[data-item]'));
+      const LOTE = Number(raiz.dataset.lote) || 12;
+      const normalizar = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      // Lee la búsqueda de la dirección: /articulos/?q=texto&tema=ideas
+      const params = new URLSearchParams(location.search);
+      input.value = params.get('q') ?? '';
+      let categoria = params.get('tema') ?? '';
+      if (!chips.some((c) => (c.dataset.cat ?? '') === categoria)) categoria = '';
+      let visibles = LOTE;
+
+      const aplicar = () => {
+        const terminos = normalizar(input.value.trim()).split(/\s+/).filter(Boolean);
+        const coinciden = items.filter(
+          (el) => (!categoria || el.dataset.cat === categoria) && terminos.every((t) => (el.dataset.texto ?? '').includes(t)),
+        );
+
+        items.forEach((el) => (el.hidden = true));
+        coinciden.slice(0, visibles).forEach((el) => (el.hidden = false));
+        chips.forEach((c) => c.classList.toggle('activo', (c.dataset.cat ?? '') === categoria));
+
+        estado.textContent = `${coinciden.length} ${raiz.dataset.textoResultados ?? ''}`;
+        vacio.hidden = coinciden.length > 0;
+        masCaja.hidden = coinciden.length <= visibles;
+
+        const p = new URLSearchParams();
+        if (input.value.trim()) p.set('q', input.value.trim());
+        if (categoria) p.set('tema', categoria);
+        const texto = p.toString();
+        history.replaceState(null, '', texto ? `?${texto}` : location.pathname);
+      };
+
+      input.addEventListener('input', () => { visibles = LOTE; aplicar(); });
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => { categoria = chip.dataset.cat ?? ''; visibles = LOTE; aplicar(); });
+      });
+      masBtn.addEventListener('click', () => { visibles += LOTE; aplicar(); });
+
+      aplicar();
+    }
+  </script>
+</Base>

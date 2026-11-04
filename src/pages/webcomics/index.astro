@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import SerieCard from '../../components/SerieCard.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, seriesDe } from '../../lib/utils.js';
+
+const series = seriesDe(await getPosts());
+const w = sitio.webcomics;
+---
+
+<Base titulo={w.titulo} descripcion={w.descripcion}>
+  <div class="contenedor">
+    <Cabecera etiqueta={w.etiqueta} titulo={w.titulo} descripcion={w.descripcion} color="morado" emoji="🎞️" />
+    {
+      series.length > 0 ? (
+        <div class="posts-grid">
+          {series.map((s) => <SerieCard serie={s} />)}
+        </div>
+      ) : (
+        <p class="vacio">{w.vacio}</p>
+      )
+    }
+  </div>
+</Base>

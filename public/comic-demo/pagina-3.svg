@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+  <rect width="800" height="1200" fill="#fffdf7"/>
+  <rect x="30" y="30" width="740" height="360" fill="#fbcfe8" stroke="#1e1e1e" stroke-width="6"/>
+  <rect x="30" y="420" width="360" height="360" fill="#bbf7d0" stroke="#1e1e1e" stroke-width="6"/>
+  <rect x="410" y="420" width="360" height="360" fill="#ddd6fe" stroke="#1e1e1e" stroke-width="6"/>
+  <rect x="30" y="810" width="740" height="360" fill="#fed7aa" stroke="#1e1e1e" stroke-width="6"/>
+  <text x="400" y="230" font-size="72" font-weight="800" fill="#1e1e1e">PÁGINA 3</text>
+  <text x="400" y="290" font-size="26" fill="#3f3f46">Reemplaza esta imagen por tu página</text>
+  <text x="210" y="610" font-size="30" fill="#3f3f46">Viñeta 2</text>
+  <text x="590" y="610" font-size="30" fill="#3f3f46">Viñeta 3</text>
+  <ellipse cx="560" cy="540" rx="130" ry="60" fill="#fff" stroke="#1e1e1e" stroke-width="4"/>
+  <text x="560" y="550" font-size="28" font-weight="700" fill="#1e1e1e">¡Hola!</text>
+  <text x="400" y="1000" font-size="30" fill="#3f3f46">Viñeta 4</text>
+</svg>

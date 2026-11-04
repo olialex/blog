@@ -1,0 +1,36 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, portadaDe, serieNombre } from '../lib/utils.js';
+
+const { post } = Astro.props;
+const d = post.data;
+const cat = categoriaInfo(d.categoria);
+const url = urlPost(post);
+const t = sitio.textos;
+const comic = esComic(post);
+const portada = portadaDe(post);
+const dato = comic ? serieNombre(post) : `${tiempoLectura(post.body)} ${t.minLectura}`;
+---
+
+<article class="destacado-portada" style={`--acento:var(--c-${cat.color})`}>
+  <a class="card-portada-link" href={url}>
+    {
+      portada ? (
+        <img class="card-portada-img" src={portada} alt="" />
+      ) : (
+        <span class="card-portada-fondo" aria-hidden="true">{cat.emoji}</span>
+      )
+    }
+    <span class="card-portada-velo velo-ancho"></span>
+    <span class="destacado-info">
+      <span class="post-meta">
+        <span class="badge-icon">{t.destacado}</span>
+        <span>{formatoFecha(d.fecha)}</span> • <span>{dato}</span>
+      </span>
+      <strong class="destacado-titulo">{d.titulo}</strong>
+      <span class="destacado-desc">{d.descripcion}</span>
+      <span class="destacado-cta">{t.leerArticulo.replace('→', '').trim()} <Icono nombre="flecha-derecha" tamano={16} /></span>
+    </span>
+  </a>
+</article>

@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import FeaturedPost from '../components/FeaturedPost.astro';
+import Newsletter from '../components/Newsletter.astro';
+import SerieCard from '../components/SerieCard.astro';
+import Icono from '../components/Icono.astro';
+import { sitio } from '../../sitio.js';
+import { getPosts, contarCategorias, esComic, seriesDe, ruta } from '../lib/utils.js';
+
+const posts = await getPosts();
+const destacado = posts.find((p) => p.data.destacado) ?? posts[0];
+// Los webcomics tienen su propia sección, así que no se repiten en "Últimos artículos"
+const ultimos = posts.filter((p) => p !== destacado && !esComic(p)).slice(0, sitio.home.cantidadUltimos);
+const series = seriesDe(posts);
+const categorias = contarCategorias(posts);
+const primerAnio = posts.length ? posts[posts.length - 1].data.fecha.getUTCFullYear() : new Date().getFullYear();
+const h = sitio.hero;
+const t = sitio.textos;
+---
+
+<Base>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="handwritten-label">{sitio.eslogan}</div>
+
+    <div>
+      <div class="pixel-title-box">
+        {h.insignias.map((i) => <span class={`floating-badge badge-${i.posicion}`} style={`--acento:var(--c-${i.color})`}>{i.texto}</span>)}
+        <h1>{sitio.nombre}</h1>
+      </div>
+    </div>
+
+    <h2 class="hero-tagline">
+      {h.fraseInicio}
+      <span class="resaltado">{h.resaltado}</span>
+      {h.fraseFin}
+    </h2>
+
+    <a class="btn-cta" href={ruta(h.boton.url)}>
+      <span>{h.boton.texto}</span>
+      {h.boton.icono && <Icono nombre={h.boton.icono} tamano={16} />}
+    </a>
+
+    {
+      h.mostrarAutor && (
+        <div class="hero-autor">
+          <img src={sitio.autor.avatar} alt={sitio.autor.nombre} />
+          <span>
+            {t.escritoPor} <strong>{sitio.autor.nombre}</strong> · {sitio.autor.ubicacion}
+          </span>
+        </div>
+      )
+    }
+
+    {
+      h.mostrarEstadisticas && (
+        <ul class="estadisticas">
+          <li>
+            <strong>{posts.length}</strong> {t.articulos}
+          </li>
+          <li>
+            <strong>{categorias.length}</strong> {t.temasPlural}
+          </li>
+          <li>
+            {t.desde} <strong>{primerAnio}</strong>
+          </li>
+        </ul>
+      )
+    }
+  </section>
+
+  <!-- ============ DESTACADO ============ -->
+  {
+    sitio.home.mostrarDestacado && destacado && (
+      <section class="seccion" id="destacado">
+        <FeaturedPost post={destacado} />
+      </section>
+    )
+  }
+
+  <!-- ============ WEBCOMICS ============ -->
+  {
+    sitio.home.mostrarWebcomics && series.length > 0 && (
+      <section class="seccion" id="webcomics">
+        <div class="section-title-wrap">
+          <div>
+            <span class="badge-icon">{t.comic}</span>
+            <h2 class="section-title">{t.webcomicsTitulo}</h2>
+          </div>
+          <p class="ver-todos"><a class="read-article-link" href={ruta('/webcomics/')}>{t.verTodosComics}</a></p>
+        </div>
+        <div class="posts-grid">
+          {series.slice(0, 6).map((s) => <SerieCard serie={s} />)}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ============ ÚLTIMOS ARTÍCULOS ============ -->
+  <section class="seccion" id="articulos">
+    <div class="section-title-wrap">
+      <div>
+        <span class="badge-icon">{t.nuevo}</span>
+        <h2 class="section-title">{t.ultimos}</h2>
+      </div>
+      <p class="ver-todos"><a class="read-article-link" href={ruta('/articulos/')}>{t.verTodos}</a></p>
+    </div>
+
+    <div class="posts-grid">
+      {ultimos.map((p) => <PostCard post={p} />)}
+    </div>
+
+  </section>
+
+
+  <!-- ============ TEMAS ============ -->
+  {
+    sitio.home.mostrarTemas && (
+      <section class="seccion" id="temas">
+        <div class="section-title-wrap">
+          <h2 class="section-title">{t.temas}</h2>
+        </div>
+        <p class="seccion-sub">{t.temasSub}</p>
+        <div class="temas-grid">
+          {categorias.map((c) => (
+            <a class="tema-card cinta" href={ruta(`/categorias/${c.clave}/`)} style={`--acento:var(--c-${c.color})`}>
+              <span class="tema-emoji">{c.emoji}</span>
+              <strong>{c.nombre}</strong>
+              <small>{c.descripcion}</small>
+              <span class="contador">{c.total} {t.temaDe}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ============ QUIÉN ESCRIBE ============ -->
+  {
+    sitio.home.mostrarAutor && (
+      <section class="seccion" id="autor">
+        <div class="autor-franja cinta">
+          <img class="autor-foto" src={sitio.autor.avatar} alt={sitio.autor.nombre} loading="lazy" />
+          <div>
+            <div class="handwritten-label">{t.autorSeccion}</div>
+            <h2 class="autor-nombre">{sitio.autor.nombre}</h2>
+            <p>{sitio.autor.bio}</p>
+            <a class="read-article-link" href={ruta('/sobre-mi/')}>{t.verMas}</a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {sitio.home.mostrarNewsletter && <Newsletter />}
+</Base>

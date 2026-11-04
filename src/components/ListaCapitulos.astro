@@ -1,0 +1,23 @@
+---
+import { sitio } from '../../sitio.js';
+import { urlPost } from '../lib/utils.js';
+
+// Columna izquierda de un webcomic: lista de capítulos de la serie
+const { serie, actual } = Astro.props;
+const t = sitio.textos;
+---
+
+<nav class="toc lista-capitulos" aria-label={t.capitulos}>
+  <p class="rail-titulo">{serie.nombre}</p>
+  <ol>
+    {
+      serie.capitulos.map((c) => (
+        <li>
+          <a class:list={[{ activo: c.slug === actual }]} href={urlPost(c)} aria-current={c.slug === actual ? 'page' : undefined}>
+            {c.data.comic.capitulo ? `${t.capAbrev} ${c.data.comic.capitulo}. ` : ''}{c.data.titulo}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>

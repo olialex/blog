@@ -1,0 +1,31 @@
+---
+import { sitio } from '../../sitio.js';
+
+const c = sitio.articulo.comentarios;
+const listo = c.activo && c.repo && c.repoId && c.categoria && c.categoriaId;
+---
+
+{
+  listo && (
+    <section class="comentarios">
+      <h3 class="widget-titulo">💬 {sitio.textos.comentarios}</h3>
+      <script
+        is:inline
+        src="https://giscus.app/client.js"
+        data-repo={c.repo}
+        data-repo-id={c.repoId}
+        data-category={c.categoria}
+        data-category-id={c.categoriaId}
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang={sitio.idioma}
+        crossorigin="anonymous"
+        async
+      ></script>
+    </section>
+  )
+}

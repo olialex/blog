@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Cabecera from '../components/Cabecera.astro';
+import PostCard from '../components/PostCard.astro';
+import { sitio } from '../../sitio.js';
+import { getPosts, ruta } from '../lib/utils.js';
+
+const recientes = (await getPosts()).slice(0, 3);
+const t = sitio.textos;
+---
+
+<Base titulo="404" descripcion={t.noEncontrada}>
+  <div class="contenedor">
+    <Cabecera etiqueta="404" titulo={t.noEncontrada} descripcion={t.noEncontradaTexto} color="rosa" emoji="🧭" />
+    <div class="posts-grid">
+      {recientes.map((p) => <PostCard post={p} />)}
+    </div>
+    <p class="ver-todos"><a class="read-article-link" href={ruta('/')}>{t.volverInicio}</a></p>
+  </div>
+</Base>

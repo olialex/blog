@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import PostCard from '../../components/PostCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { sitio } from '../../../sitio.js';
+import { getPosts, contarEtiquetas, slugify } from '../../lib/utils.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return contarEtiquetas(posts).map((e) => ({
+    params: { etiqueta: e.slug },
+    props: {
+      nombre: e.nombre,
+      posts: posts.filter((p) => p.data.etiquetas.some((x) => slugify(x) === e.slug)),
+    },
+  }));
+}
+
+const { nombre, posts } = Astro.props;
+---
+
+<Base titulo={`#${nombre}`} descripcion={`${sitio.textos.articulosCon} #${nombre}`}>
+  <div class="contenedor">
+    <Cabecera etiqueta={sitio.textos.articulosCon} titulo={`#${nombre}`} color="morado" />
+    <div class="layout">
+      <section>
+        <div class="posts-grid posts-grid-lista">
+          {posts.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+      <Sidebar />
+    </div>
+  </div>
+</Base>

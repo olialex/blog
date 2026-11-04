@@ -1,0 +1,29 @@
+---
+import { ruta } from '../lib/utils.js';
+import { sitio } from '../../sitio.js';
+
+// Tarjeta tipo portada para una SERIE de webcomic
+const { serie } = Astro.props;
+const t = sitio.textos;
+const n = serie.capitulos.length;
+---
+
+<article class="card-portada" style="--acento:var(--c-morado)">
+  <a class="card-portada-link" href={ruta(`/webcomics/${serie.slug}/`)}>
+    {
+      serie.portada ? (
+        <img class="card-portada-img" src={serie.portada} alt="" loading="lazy" />
+      ) : (
+        <span class="card-portada-fondo" aria-hidden="true">🎞️</span>
+      )
+    }
+    <span class="card-portada-velo"></span>
+    <span class="card-portada-top">
+      <span class="tag tag-comic">{t.comic}</span>
+    </span>
+    <span class="card-portada-info">
+      <strong class="card-portada-titulo">{serie.nombre}</strong>
+      <span class="card-portada-meta">{n} {n === 1 ? t.capitulo.toLowerCase() : t.capitulos}</span>
+    </span>
+  </a>
+</article>

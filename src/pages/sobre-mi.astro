@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Cabecera from '../components/Cabecera.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Icono from '../components/Icono.astro';
+import { sitio } from '../../sitio.js';
+
+const s = sitio.sobreMi;
+const a = sitio.autor;
+---
+
+<Base titulo={s.titulo} descripcion={a.bio}>
+  <div class="contenedor">
+    <Cabecera etiqueta={s.etiqueta} titulo={s.titulo} descripcion={`${a.rol} · ${a.ubicacion}`} />
+
+    <section class="sobre-grid">
+      <div class="polaroid-card cinta">
+        <img src={a.avatar} alt={a.nombre} />
+        <div class="caption">{s.leyendaFoto}</div>
+      </div>
+
+      <div class="sobre-texto">
+        {s.parrafos.map((p) => <p>{p}</p>)}
+
+        <dl class="datos">
+          {
+            s.datos.map((d) => (
+              <div>
+                <dt>{d.etiqueta}</dt>
+                <dd>{d.valor}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <h2 class="subtitulo">{s.tituloIntereses}</h2>
+        <div class="nube">
+          {s.intereses.map((i) => <span class="chip">{i}</span>)}
+        </div>
+
+        <div class="redes redes-grandes">
+          {
+          a.redes.map((r) => (
+            <a class="chip" href={r.url} target="_blank" rel="noopener noreferrer">
+              {r.icono && <Icono nombre={r.icono} tamano={14} />} {r.nombre}
+            </a>
+          ))
+        }
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <Newsletter />
+</Base>

@@ -1,0 +1,18 @@
+---
+import { sitio } from '../../../sitio.js';
+import { contarEtiquetas, ruta } from '../../lib/utils.js';
+
+const { posts } = Astro.props;
+const etiquetas = contarEtiquetas(posts).slice(0, sitio.widgets.etiquetasMaximo);
+---
+
+{
+  etiquetas.length > 0 && (
+    <section class="widget">
+      <h3 class="widget-titulo">{sitio.textos.widgetEtiquetas}</h3>
+      <div class="nube">
+        {etiquetas.map((e) => <a class="chip" href={ruta(`/etiquetas/${e.slug}/`)}>#{e.nombre} <small>{e.total}</small></a>)}
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+import '../styles/iconos.css';
+import '../styles/header.css';
+import '../styles/explorador.css';
+import '../styles/cards.css';
+import '../styles/sidebar.css';
+import '../styles/single.css';
+import '../styles/comic.css';
+import '../styles/hover.css'; // ← la clase .hover-opacidad vive solo aquí. Quita esta línea para desactivarla
+import { sitio } from '../../sitio.js';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { cssTema, ruta } from '../lib/utils.js';
+
+const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website' } = Astro.props;
+
+const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : sitio.nombre;
+const canonica = new URL(Astro.url.pathname, Astro.site).href;
+const imgFinal = imagen || sitio.imagenCompartir;
+const imgAbsoluta = imgFinal
+  ? imgFinal.startsWith('http')
+    ? imgFinal
+    : new URL(imgFinal, Astro.site).href
+  : null;
+---
+
+<!doctype html>
+<html lang={sitio.idioma} data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+    <link rel="icon" type="image/svg+xml" href={ruta('/favicon.svg')} />
+    <link rel="sitemap" href={ruta('/sitemap-index.xml')} />
+    <link rel="alternate" type="application/rss+xml" title={sitio.nombre} href={ruta('/rss.xml')} />
+
+    <meta property="og:type" content={tipo} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:site_name" content={sitio.nombre} />
+    {imgAbsoluta && <meta property="og:image" content={imgAbsoluta} />}
+    <meta name="twitter:card" content={imgAbsoluta ? 'summary_large_image' : 'summary'} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={sitio.fuentes.url} />
+
+    <style is:inline set:html={cssTema()}></style>
+
+    <script is:inline define:vars={{ inicial: sitio.tema.inicial, permitir: sitio.tema.modoOscuro }}>
+      try {
+        var guardado = permitir ? localStorage.getItem('tema') : null;
+        var sistemaOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var tema = guardado || (inicial === 'sistema' ? (sistemaOscuro ? 'dark' : 'light') : inicial === 'oscuro' ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', tema);
+      } catch (e) {}
+    </script>
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <Navbar />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

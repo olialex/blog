@@ -1,0 +1,31 @@
+---
+import { ruta } from '../lib/utils.js';
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-caja">
+    <div class="footer-marca">
+      <strong>{sitio.nombre}</strong>
+      <p>{sitio.descripcion}</p>
+    </div>
+    <ul class="footer-enlaces">
+      {sitio.pie.enlaces.map((e) => <li><a href={ruta(e.url)}>{e.texto}</a></li>)}
+    </ul>
+    <ul class="footer-redes">
+      {
+        sitio.autor.redes.map((r) => (
+          <li>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={r.nombre} title={r.nombre}>
+              {r.icono ? <Icono nombre={r.icono} tamano={20} /> : r.nombre}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <p class="footer-copy">© {anio} {sitio.nombre} • {sitio.pie.texto}</p>
+</footer>

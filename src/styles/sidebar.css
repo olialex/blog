@@ -1,0 +1,72 @@
+/* ==========================================================================
+   LISTADOS CON BARRA LATERAL + WIDGETS DISCRETOS
+   Sin cajas, sin sombras: solo una línea punteada arriba de cada widget.
+   (Estos estilos sirven para la barra lateral de los listados y para la
+   columna derecha del artículo.)
+   ========================================================================== */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 44px; align-items: start; margin-bottom: 70px; }
+.sidebar { display: flex; flex-direction: column; gap: 22px; font-size: .85rem; }
+
+.widget { padding-top: 2rem; border-top: 1px dashed var(--muted); }
+.widget-titulo {
+  width: 100%;
+  font-family: var(--font-main); font-size: .68rem; font-weight: 800; line-height: 1.2;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px;
+}
+.widget-titulo .icono { vertical-align: -0.12em; margin-right: 2px; }
+.widget-texto { font-size: .82rem; color: var(--muted); margin-bottom: 10px; }
+
+.widget-autor{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.widget-autor .autor-foto { width: 52px; height: 52px; margin: 0 0 8px; box-shadow: none; border-width: 2px; }
+.widget-autor .autor-nombre { font-size: 1rem; margin: 0 0 4px; }
+.widget-autor .redes { justify-content: flex-start; margin: 8px 0; }
+
+.widget .chip { font-size: .72rem; padding: 3px 10px; border-width: 1px; box-shadow: none; }
+.widget .chip:hover { transform: none; box-shadow: none; }
+.widget .chip-icono { padding: 5px 8px; }
+
+.lista-simple { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.lista-simple a { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; padding: 4px 6px; border-radius: 6px; }
+.lista-simple a:hover { background: var(--grid); }
+.punto { width: 10px; height: 10px; border-radius: 50%; background: var(--acento); border: 1.5px solid var(--line); flex-shrink: 0; }
+.widget .contador { box-shadow: none; font-size: .66rem; }
+
+.recientes { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.recientes li { display: flex; gap: 10px; align-items: center; }
+.recientes img { width: 42px; height: 56px; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); flex-shrink: 0; }
+.recientes a { font-weight: 700; font-size: .85rem; line-height: 1.25; text-decoration: none; display: block; }
+.recientes a:hover { text-decoration: underline; }
+.recientes small { color: var(--muted); font-weight: 600; font-size: .72rem; }
+
+.resultados { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.resultados li { border-left: 3px solid var(--c-amarillo); padding-left: 10px; }
+.resultados a { font-weight: 700; text-decoration: none; display: block; font-size: .85rem; }
+.resultados a:hover { text-decoration: underline; }
+.resultados small { display: block; color: var(--muted); font-size: .74rem; line-height: 1.3; }
+.resultados .sin-resultados { border-left-color: var(--c-rosa); color: var(--muted); font-weight: 700; }
+
+.widget .newsletter-input { padding: 8px 10px; font-size: .82rem; box-shadow: none; border-width: 1px; }
+.widget .newsletter-btn { padding: 8px 12px; font-size: .78rem; box-shadow: none; border-width: 1px; }
+
+.meta-lista { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.meta-lista li { display: flex; justify-content: space-between; gap: 10px; font-size: .8rem; }
+.meta-lista span { color: var(--muted); }
+.meta-lista b, .meta-lista a { font-weight: 700; text-align: right; text-decoration: none; }
+.meta-lista a:hover { text-decoration: underline; }
+
+/* ----- Paginación ----- */
+.paginacion { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+.paginas { list-style: none; display: flex; gap: 8px; }
+.pagina {
+  display: grid; place-items: center; width: 36px; height: 36px; text-decoration: none; font-weight: 800;
+  background: var(--card); border: 2px solid var(--line); border-radius: 8px; box-shadow: 2px 2px 0 var(--line);
+}
+.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: #121212; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+}

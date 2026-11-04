@@ -1,0 +1,29 @@
+---
+import { sitio } from '../../sitio.js';
+import { getPosts } from '../lib/utils.js';
+import SobreMi from './widgets/SobreMi.astro';
+import Categorias from './widgets/Categorias.astro';
+import Recientes from './widgets/Recientes.astro';
+import Etiquetas from './widgets/Etiquetas.astro';
+import NewsletterWidget from './widgets/NewsletterWidget.astro';
+
+const posts = await getPosts();
+const mapa = {
+  sobreMi: SobreMi,
+  categorias: Categorias,
+  recientes: Recientes,
+  etiquetas: Etiquetas,
+  newsletter: NewsletterWidget,
+};
+const lista = sitio.widgets.barraLateral.filter((nombre) => mapa[nombre]);
+---
+
+<!-- hover-opacidad: clase de hover.css. Bórrala de aquí si no te gusta -->
+<aside class="sidebar hover-opacidad" aria-label="Barra lateral">
+  {
+    lista.map((nombre) => {
+      const Widget = mapa[nombre];
+      return <Widget posts={posts} />;
+    })
+  }
+</aside>

@@ -1,0 +1,237 @@
+---
+import Base from '../../layouts/Base.astro';
+import TOC from '../../components/TOC.astro';
+import ListaCapitulos from '../../components/ListaCapitulos.astro';
+import ComicReader from '../../components/ComicReader.astro';
+import ComicNav from '../../components/ComicNav.astro';
+import PostCard from '../../components/PostCard.astro';
+import Comentarios from '../../components/Comentarios.astro';
+import Icono from '../../components/Icono.astro';
+import MetaPost from '../../components/widgets/MetaPost.astro';
+import SobreMi from '../../components/widgets/SobreMi.astro';
+import EtiquetasPost from '../../components/widgets/EtiquetasPost.astro';
+import CompartirWidget from '../../components/widgets/CompartirWidget.astro';
+import Recientes from '../../components/widgets/Recientes.astro';
+import Categorias from '../../components/widgets/Categorias.astro';
+import NewsletterWidget from '../../components/widgets/NewsletterWidget.astro';
+import { sitio } from '../../../sitio.js';
+import {
+  getPosts,
+  categoriaInfo,
+  formatoFecha,
+  tiempoLectura,
+  urlPost,
+  esComic,
+  seriesDe,
+  serieNombre,
+  portadaDe,
+  slugify,
+  ruta,
+} from '../../lib/utils.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => {
+    // Relacionados: misma categoría o etiquetas en común
+    const puntaje = (otro) =>
+      (otro.data.categoria === post.data.categoria ? 2 : 0) +
+      otro.data.etiquetas.filter((e) => post.data.etiquetas.includes(e)).length;
+    const relacionados = posts
+      .filter((otro) => otro !== post && puntaje(otro) > 0)
+      .sort((a, b) => puntaje(b) - puntaje(a))
+      .slice(0, 4);
+    return {
+      params: { slug: post.slug },
+      props: {
+        post,
+        anterior: posts[i + 1] ?? null, // el siguiente más viejo
+        siguiente: posts[i - 1] ?? null, // el siguiente más nuevo
+        relacionados,
+      },
+    };
+  });
+}
+
+const { post, anterior, siguiente, relacionados } = Astro.props;
+const { Content, headings } = await post.render();
+const posts = await getPosts();
+const d = post.data;
+const cat = categoriaInfo(d.categoria);
+const t = sitio.textos;
+const a = sitio.articulo;
+const comic = esComic(post);
+const portada = portadaDe(post);
+const urlCompleta = new URL(urlPost(post), Astro.site).href;
+const tieneTexto = post.body.trim().length > 0;
+
+// --- Webcomic: serie y capítulos vecinos ---
+const serie = comic ? seriesDe(posts).find((s) => s.slug === slugify(serieNombre(post))) : null;
+const idx = serie ? serie.capitulos.findIndex((c) => c.slug === post.slug) : -1;
+const capAnterior = serie && idx > 0 ? serie.capitulos[idx - 1] : null;
+const capSiguiente = serie && idx >= 0 && idx < serie.capitulos.length - 1 ? serie.capitulos[idx + 1] : null;
+
+// --- Columna izquierda (índice o capítulos) ---
+const tocItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const tieneIzquierda = comic ? Boolean(serie) : a.mostrarIndice && tocItems.length >= 2;
+
+// --- Columna derecha (info extra): se configura en sitio.js → articulo.barraDerecha ---
+const mapaDerecha = {
+  meta: MetaPost,
+  autor: SobreMi,
+  etiquetas: EtiquetasPost,
+  compartir: CompartirWidget,
+  recientes: Recientes,
+  categorias: Categorias,
+  newsletter: NewsletterWidget,
+};
+const derecha = a.barraDerecha.filter((nombre) => mapaDerecha[nombre]);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.titulo,
+  description: d.descripcion,
+  datePublished: d.fecha.toISOString(),
+  dateModified: (d.actualizado ?? d.fecha).toISOString(),
+  author: { '@type': 'Person', name: sitio.autor.nombre },
+  image: portada,
+  mainEntityOfPage: urlCompleta,
+};
+---
+
+<Base titulo={d.titulo} descripcion={d.descripcion} imagen={portada} tipo="article">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
+
+  {a.barraProgreso && <div class="progreso" id="progreso" aria-hidden="true"></div>}
+
+  <div class:list={['single-layout', { 'es-comic': comic }]}>
+    <!-- ============ COLUMNA IZQUIERDA: índice sticky ============ -->
+    {
+      tieneIzquierda ? (
+        <aside class="rail rail-izq hover-opacidad" aria-label={comic ? t.capitulos : t.indice}>
+          {comic ? <ListaCapitulos serie={serie} actual={post.slug} /> : <TOC headings={headings} />}
+        </aside>
+      ) : (
+        <div class="rail-vacio" aria-hidden="true" />
+      )
+    }
+
+    <!-- ============ CENTRO: el artículo ============ -->
+    <article class="articulo">
+      <nav class="migas" aria-label="Migas de pan">
+        <a href={ruta('/')}>{t.inicio}</a> /
+        <a href={ruta(`/categorias/${cat.clave}/`)}>{cat.nombre}</a>
+      </nav>
+
+      <header class="articulo-cabecera cinta cinta-doble">
+        <a class="tag" href={ruta(`/categorias/${cat.clave}/`)} style={`--acento:var(--c-${cat.color})`}>{cat.emoji} {cat.nombre}</a>
+        {
+          comic && (
+            <p class="comic-serie">
+              <Icono nombre="pelicula" tamano={15} />
+              <a href={ruta(`/webcomics/${serie.slug}/`)}>{serieNombre(post)}</a>
+              {d.comic.capitulo ? ` · ${t.capitulo} ${d.comic.capitulo}` : ''}
+            </p>
+          )
+        }
+        <h1>{d.titulo}</h1>
+        <p class="articulo-desc">{d.descripcion}</p>
+        <div class="post-meta">
+          <img class="mini-avatar" src={sitio.autor.avatar} alt="" />
+          <span>{sitio.autor.nombre}</span> •
+          <span>{formatoFecha(d.fecha)}</span> •
+          <span>{comic ? `${d.comic.paginas.length} ${t.paginas}` : `${tiempoLectura(post.body)} ${t.minLectura}`}</span>
+        </div>
+      </header>
+
+      {
+        comic ? (
+          <>
+            <ComicReader post={post} />
+            <ComicNav serie={serie} anterior={capAnterior} siguiente={capSiguiente} />
+          </>
+        ) : (
+          portada && (
+            <figure class="portada">
+              <img src={portada} alt={d.portadaAlt ?? ''} />
+            </figure>
+          )
+        )
+      }
+
+      {
+        tieneTexto && (
+          <div class:list={['prose', { 'notas-comic': comic }]}>
+            <Content />
+          </div>
+        )
+      }
+
+      {
+        a.mostrarAnteriorSiguiente && !comic && (anterior || siguiente) && (
+          <nav class="nav-post" aria-label="Más artículos">
+            {anterior ? (
+              <a class="nav-post-item" href={urlPost(anterior)}>
+                <small>{t.anterior}</small>
+                <strong>{anterior.data.titulo}</strong>
+              </a>
+            ) : (
+              <span />
+            )}
+            {siguiente ? (
+              <a class="nav-post-item der" href={urlPost(siguiente)}>
+                <small>{t.siguiente}</small>
+                <strong>{siguiente.data.titulo}</strong>
+              </a>
+            ) : (
+              <span />
+            )}
+          </nav>
+        )
+      }
+
+      <Comentarios />
+    </article>
+
+    <!-- ============ COLUMNA DERECHA: información extra (discreta) ============ -->
+    {
+      derecha.length > 0 ? (
+        <aside class="rail rail-der hover-opacidad" aria-label={t.infoExtra}>
+          {derecha.map((nombre) => {
+            const Widget = mapaDerecha[nombre];
+            return <Widget posts={posts} post={post} titulo={d.titulo} url={urlCompleta} />;
+          })}
+        </aside>
+      ) : (
+        <div class="rail-vacio" aria-hidden="true" />
+      )
+    }
+  </div>
+
+  {
+    a.mostrarRelacionados && !comic && relacionados.length > 0 && (
+      <section class="seccion">
+        <div class="section-title-wrap">
+          <h2 class="section-title">{t.relacionados}</h2>
+        </div>
+        <div class="posts-grid">
+          {relacionados.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+    )
+  }
+
+  <script>
+    // Barra de progreso de lectura (solo hace algo si existe #progreso)
+    const barra = document.getElementById('progreso');
+    if (barra) {
+      const actualizar = () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        const avance = total > 0 ? (window.scrollY / total) * 100 : 0;
+        barra.style.width = Math.min(100, Math.max(0, avance)) + '%';
+      };
+      window.addEventListener('scroll', actualizar, { passive: true });
+      actualizar();
+    }
+  </script>
+</Base>

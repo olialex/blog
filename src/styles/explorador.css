@@ -1,0 +1,60 @@
+/* ==========================================================================
+   EXPLORADOR DE ARTÍCULOS  (popup del header + bloque fijo en /articulos/)
+   ========================================================================== */
+.explorador { display: flex; flex-direction: column; gap: 12px; }
+
+.explorador-barra {
+  display: flex; align-items: center; gap: 10px; cursor: text;
+  background: var(--card); border: 2px solid var(--line); border-radius: 999px;
+  padding: 9px 18px; box-shadow: 3px 3px 0 var(--line);
+}
+.explorador-barra:focus-within { outline: 3px solid var(--c-azul); outline-offset: 2px; }
+.explorador-input {
+  flex: 1; min-width: 0; border: none; outline: none; background: transparent;
+  color: var(--ink); font: inherit; font-weight: 600;
+
+  outline: none;
+}
+
+.explorador-filtros { display: flex; flex-wrap: wrap; gap: 6px; }
+.explorador-filtros .chip { font-size: .72rem; padding: 3px 10px; border-width: 1px; box-shadow: none; }
+.explorador-filtros .chip:hover { transform: none; box-shadow: none; }
+
+.explorador-scroll { max-height: 320px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
+.explorador-lista { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.explorador-mas { height: 1px; }
+
+.explorador-item {
+  display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 6px;
+  border-radius: 8px; border: 1.5px solid transparent;
+}
+.explorador-item:hover, .explorador-item:focus-visible { background: var(--grid); border-color: var(--line); }
+.explorador-item img, .explorador-sinfoto {
+  width: 44px; height: 58px; flex-shrink: 0; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--line);
+}
+.explorador-sinfoto { display: grid; place-items: center; background: var(--c-amarillo); font-size: 1.3rem; }
+.explorador-texto { display: flex; flex-direction: column; min-width: 0; }
+.explorador-texto strong { font-size: .95rem; line-height: 1.25; }
+.explorador-texto small { color: var(--muted); font-weight: 600; font-size: .75rem; }
+.explorador-estado { font-size: .75rem; font-weight: 700; color: var(--muted); min-height: 1.2em; }
+
+/* Versión fija dentro de la página (/articulos/) */
+.explorador-inline { max-width: 760px; margin: -10px auto 34px; }
+
+/* Versión popup (se abre desde el botón del header) */
+.explorador-dialogo {
+  width: min(640px, calc(100vw - 32px)); margin: 8vh auto auto; padding: 0;
+  background: var(--bg); color: var(--ink); border: 3px solid var(--line);
+  border-radius: 12px; box-shadow: 8px 8px 0 var(--line);
+}
+.explorador-dialogo::backdrop { background: rgba(0, 0, 0, .55); backdrop-filter: blur(2px); }
+.explorador-dialogo-cuerpo { display: flex; flex-direction: column; gap: 12px; padding: 18px; }
+.explorador-dialogo-cabecera { display: flex; align-items: center; justify-content: space-between; }
+.explorador-dialogo-titulo { font-family: var(--font-hand); font-size: 1.7rem; line-height: 1; }
+.explorador-dialogo .explorador-scroll { max-height: 52vh; }
+html:has(dialog[open]) { overflow: hidden; } /* bloquea el scroll de la página mientras el popup está abierto */
+
+/* ===== Filtro de la página /articulos/ (buscador + chips que filtran las tarjetas) ===== */
+.filtro-articulos { margin-bottom: 26px; }
+.filtro-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+.filtro-mas { text-align: center; margin-top: 30px; }

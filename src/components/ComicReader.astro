@@ -1,0 +1,105 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+import { paginasComic } from '../lib/utils.js';
+
+// Lector de webcomic. Lee los datos del frontmatter:  comic.modo, comic.direccion, comic.paginas
+const { post } = Astro.props;
+const c = post.data.comic;
+const paginas = paginasComic(post);
+const modo = c.modo ?? 'vertical';
+const dir = c.direccion ?? 'ltr';
+const t = sitio.textos;
+const total = paginas.length;
+---
+
+<section class="comic" data-comic data-modo={modo} data-dir={dir}>
+  {
+    modo === 'paginado' && (
+      <div class="comic-barra" data-comic-barra>
+        <button type="button" data-accion="izq" aria-label="←"><Icono nombre="chevron-izquierda" tamano={18} /></button>
+        <span class="comic-contador">
+          {t.pagina} <span data-actual>1</span> / {total}
+          {dir === 'rtl' && <small class="comic-rtl">{t.lecturaRtl}</small>}
+        </span>
+        <button type="button" data-accion="der" aria-label="→"><Icono nombre="chevron-derecha" tamano={18} /></button>
+      </div>
+    )
+  }
+
+  <div class="comic-paginas">
+    {
+      paginas.map((p, i) => (
+        <figure class="comic-pagina">
+          <img src={p.imagen} alt={p.alt || `${t.pagina} ${i + 1}`} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+          {p.nota && <figcaption>{p.nota}</figcaption>}
+        </figure>
+      ))
+    }
+  </div>
+
+  {
+    modo === 'paginado' && (
+      <div class="comic-barra" data-comic-barra>
+        <button type="button" data-accion="izq" aria-label="←"><Icono nombre="chevron-izquierda" tamano={18} /></button>
+        <span class="comic-contador">
+          {t.pagina} <span data-actual>1</span> / {total}
+        </span>
+        <button type="button" data-accion="der" aria-label="→"><Icono nombre="chevron-derecha" tamano={18} /></button>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  // Modo "paginado": muestra una página a la vez. Sin JavaScript, se ven todas en columna.
+  document.querySelectorAll<HTMLElement>('[data-comic][data-modo="paginado"]').forEach((comic) => {
+    const paginas = Array.from(comic.querySelectorAll<HTMLElement>('.comic-pagina'));
+    if (paginas.length < 2) return;
+
+    const contadores = comic.querySelectorAll<HTMLElement>('[data-actual]');
+    const rtl = comic.dataset.dir === 'rtl';
+    let actual = 0;
+    let primera = true;
+
+    const mostrar = (n: number) => {
+      actual = Math.min(paginas.length - 1, Math.max(0, n));
+      paginas.forEach((p, i) => p.classList.toggle('activa', i === actual));
+      contadores.forEach((c) => {
+        c.textContent = String(actual + 1);
+      });
+      // Precarga la página siguiente
+      const siguiente = paginas[actual + 1]?.querySelector('img');
+      if (siguiente) new Image().src = siguiente.src;
+      if (!primera) comic.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      primera = false;
+    };
+
+    // "izq" y "der" son lados de la pantalla. En manga (rtl) el lado izquierdo avanza.
+    const mover = (lado: string) => {
+      const paso = lado === 'der' ? 1 : -1;
+      mostrar(actual + (rtl ? -paso : paso));
+    };
+
+    comic.classList.add('comic-js');
+    mostrar(0);
+
+    comic.querySelectorAll<HTMLElement>('[data-accion]').forEach((boton) => {
+      boton.addEventListener('click', () => mover(boton.dataset.accion ?? 'der'));
+    });
+
+    paginas.forEach((fig) => {
+      fig.addEventListener('click', (e) => {
+        const r = fig.getBoundingClientRect();
+        mover(e.clientX < r.left + r.width / 2 ? 'izq' : 'der');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const el = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName)) return;
+      if (e.key === 'ArrowLeft') mover('izq');
+      if (e.key === 'ArrowRight') mover('der');
+    });
+  });
+</script>

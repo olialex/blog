@@ -1,0 +1,10 @@
+/* ==========================================================================
+   ÍCONOS SVG  (componente <Icono />)
+   Heredan el color del texto (currentColor), así que cambian con el tema.
+   ========================================================================== */
+.icono { display: inline-block; vertical-align: -0.18em; flex-shrink: 0; }
+
+/* Botón "copiar enlace": muestra el ícono de check cuando se copia */
+.ico-ok { display: none; }
+.copiado .ico-normal { display: none; }
+.copiado .ico-ok { display: inline-block; }

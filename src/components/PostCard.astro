@@ -1,0 +1,38 @@
+---
+import { sitio } from '../../sitio.js';
+import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, portadaDe, serieNombre } from '../lib/utils.js';
+
+// Tarjeta tipo PORTADA: imagen vertical a todo el tamaño con el título encima
+const { post } = Astro.props;
+const d = post.data;
+const cat = categoriaInfo(d.categoria);
+const url = urlPost(post);
+const t = sitio.textos;
+const comic = esComic(post);
+const portada = portadaDe(post);
+const meta = comic
+  ? [serieNombre(post), d.comic.capitulo ? `${t.capAbrev} ${d.comic.capitulo}` : null].filter(Boolean).join(' · ')
+  : `${formatoFecha(d.fecha)} · ${tiempoLectura(post.body)} min`;
+---
+
+<article class="card-portada" style={`--acento:var(--c-${cat.color})`}>
+  <a class="card-portada-link" href={url}>
+    {
+      portada ? (
+        <img class="card-portada-img" src={portada} alt="" loading="lazy" />
+      ) : (
+        <span class="card-portada-fondo" aria-hidden="true">{cat.emoji}</span>
+      )
+    }
+    <span class="card-portada-velo"></span>
+    <span class="card-portada-top">
+      <span class="tag">{cat.emoji} {cat.nombre}</span>
+      {comic && <span class="tag tag-comic">{t.comic}</span>}
+    </span>
+    <span class="card-portada-info">
+      <strong class="card-portada-titulo">{d.titulo}</strong>
+      <span class="card-portada-desc">{d.descripcion}</span>
+      <span class="card-portada-meta">{meta}</span>
+    </span>
+  </a>
+</article>

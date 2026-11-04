@@ -1,0 +1,19 @@
+---
+import { sitio } from '../../../sitio.js';
+import { slugify, ruta } from '../../lib/utils.js';
+
+// Etiquetas del artículo actual (columna derecha)
+const { post } = Astro.props;
+const etiquetas = post?.data.etiquetas ?? [];
+---
+
+{
+  etiquetas.length > 0 && (
+    <section class="widget">
+      <h3 class="widget-titulo">{sitio.textos.widgetEtiquetas}</h3>
+      <div class="nube">
+        {etiquetas.map((e) => <a class="chip" href={ruta(`/etiquetas/${slugify(e)}/`)}>#{e}</a>)}
+      </div>
+    </section>
+  )
+}

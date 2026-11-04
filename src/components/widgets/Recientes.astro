@@ -1,0 +1,24 @@
+---
+import { sitio } from '../../../sitio.js';
+import { formatoFecha, urlPost, portadaDe } from '../../lib/utils.js';
+
+const { posts } = Astro.props;
+const recientes = posts.slice(0, sitio.widgets.recientesCantidad);
+---
+
+<section class="widget">
+  <h3 class="widget-titulo">{sitio.textos.widgetRecientes}</h3>
+  <ul class="recientes">
+    {
+      recientes.map((p) => (
+        <li>
+          {portadaDe(p) && <img src={portadaDe(p)} alt="" loading="lazy" />}
+          <div>
+            <a href={urlPost(p)}>{p.data.titulo}</a>
+            <small>{formatoFecha(p.data.fecha)}</small>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

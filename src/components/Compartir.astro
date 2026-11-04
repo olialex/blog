@@ -1,0 +1,45 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+
+const { titulo, url } = Astro.props;
+const t = sitio.textos;
+const u = encodeURIComponent(url);
+const tt = encodeURIComponent(titulo);
+---
+
+<div class="compartir">
+  <a class="chip" href={`https://twitter.com/intent/tweet?text=${tt}&url=${u}`} target="_blank" rel="noopener noreferrer">
+    <Icono nombre="x" tamano={14} /> X
+  </a>
+  <a class="chip" href={`https://wa.me/?text=${tt}%20${u}`} target="_blank" rel="noopener noreferrer">
+    <Icono nombre="whatsapp" tamano={14} /> WhatsApp
+  </a>
+  <a class="chip" href={`https://www.facebook.com/sharer/sharer.php?u=${u}`} target="_blank" rel="noopener noreferrer">
+    <Icono nombre="facebook" tamano={14} /> Facebook
+  </a>
+  <button class="chip" type="button" data-copiar={url} data-copiado={t.enlaceCopiado} data-original={t.copiarEnlace}>
+    <Icono nombre="enlace" tamano={14} clase="ico-normal" />
+    <Icono nombre="check" tamano={14} clase="ico-ok" />
+    <span data-texto>{t.copiarEnlace}</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copiar]').forEach((boton) => {
+    const texto = boton.querySelector<HTMLElement>('[data-texto]');
+    boton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(boton.dataset.copiar ?? location.href);
+        boton.classList.add('copiado');
+        if (texto) texto.textContent = boton.dataset.copiado ?? '';
+      } catch {
+        if (texto) texto.textContent = 'Error';
+      }
+      setTimeout(() => {
+        boton.classList.remove('copiado');
+        if (texto) texto.textContent = boton.dataset.original ?? '';
+      }, 2000);
+    });
+  });
+</script>
