@@ -61,7 +61,7 @@ export const sitio = {
   // --------------------------------------------------------------------------
   hero: {
     insignias: [
-      { texto: 'LEE Y APRENDE', color: 'verde', posicion: 'tl' },
+      { texto: 'LEE Y APRENDE', color: 'azul', posicion: 'tl' },
       { texto: 'ENSAYOS SEMANALES', color: 'amarillo', posicion: 'tr' },
       { texto: 'IDEAS Y PROYECTOS', color: 'naranja', posicion: 'bl' },
       { texto: 'TU CIUDAD', color: 'verde', posicion: 'br' },
