@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panel del blog</title>
+<style>
+  :root { --bg:#f6f6f3; --panel:#fff; --ink:#18181b; --muted:#6b6b73; --line:#d9d9d2; --acc:#2563eb; --acc-ink:#fff; --ok:#15803d; --warn:#b45309; --bad:#dc2626; --sel:#e9eefc; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#121214; --panel:#1c1c21; --ink:#f4f4f5; --muted:#a1a1aa; --line:#33333a; --acc:#60a5fa; --acc-ink:#0b1220; --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --sel:#23283a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.45 system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  [hidden] { display:none !important; }
+  button, input, select, textarea { font:inherit; color:inherit; }
+  .barra { position:sticky; top:0; z-index:10; display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:10px 18px; background:var(--panel); border-bottom:1px solid var(--line); }
+  .barra h1 { font-size:1.05rem; margin:0 auto 0 0; }
+  .estado { font-size:.85rem; font-weight:600; padding:4px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
+  .estado.sucio { color:var(--warn); border-color:var(--warn); }
+  .estado.ok { color:var(--ok); border-color:var(--ok); }
+  .btn { cursor:pointer; padding:7px 14px; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
+  .btn:hover { border-color:var(--acc); }
+  .btn.primario { background:var(--acc); color:var(--acc-ink); border-color:var(--acc); font-weight:700; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  .btn.mini { padding:2px 8px; font-size:.85rem; }
+  .btn.peligro:hover { border-color:var(--bad); color:var(--bad); }
+  .aviso { margin:14px 18px 0; padding:12px 14px; border:1px solid var(--warn); border-radius:10px; background:var(--panel); display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .aviso p { margin:0 auto 0 0; }
+  .cuerpo { display:grid; grid-template-columns:210px minmax(0,1fr); gap:18px; padding:18px; max-width:1200px; margin:0 auto; }
+  nav.secciones { position:sticky; top:62px; align-self:start; display:flex; flex-direction:column; gap:2px; }
+  nav.secciones button { text-align:left; cursor:pointer; padding:8px 12px; border:0; border-radius:8px; background:transparent; }
+  nav.secciones button:hover { background:var(--sel); }
+  nav.secciones button.activa { background:var(--sel); font-weight:700; box-shadow:inset 3px 0 0 var(--acc); }
+  main { min-width:0; }
+  .titulo-seccion { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 14px; }
+  .titulo-seccion h2 { margin:0 auto 0 0; font-size:1.3rem; }
+  .titulo-seccion input { width:220px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
+  .fila { display:grid; grid-template-columns:200px minmax(0,1fr); gap:6px 14px; align-items:start; padding:8px 0; border-bottom:1px dashed var(--line); }
+  .fila > label.nombre { font-weight:600; padding-top:7px; }
+  .fila .pista { grid-column:2; color:var(--muted); font-size:.82rem; margin-top:-2px; }
+  input[type=text], input[type=number], select, textarea { width:100%; padding:7px 10px; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
+  textarea { resize:vertical; }
+  input:focus, select:focus, textarea:focus, button:focus-visible { outline:2px solid var(--acc); outline-offset:1px; }
+  .colores { display:flex; gap:8px; }
+  .colores input[type=color] { width:46px; height:36px; padding:2px; border:1px solid var(--line); border-radius:8px; background:var(--panel); cursor:pointer; flex:none; }
+  .interruptor { display:inline-flex; align-items:center; gap:8px; padding-top:6px; cursor:pointer; }
+  .interruptor input { width:18px; height:18px; }
+  fieldset { margin:10px 0; padding:6px 14px 10px; border:1px solid var(--line); border-radius:10px; background:var(--panel); min-width:0; }
+  legend { font-weight:700; padding:0 6px; }
+  fieldset fieldset { background:transparent; }
+  .item { border:1px solid var(--line); border-radius:10px; background:var(--panel); margin:8px 0; }
+  .item > summary { cursor:pointer; padding:8px 12px; display:flex; gap:8px; align-items:center; list-style:none; }
+  .item > summary::-webkit-details-marker { display:none; }
+  .item > summary .t { margin-right:auto; font-weight:600; }
+  .item > .dentro { padding:0 14px 8px; }
+  .fila-lista { display:flex; gap:6px; margin:4px 0; }
+  .fila-lista > :first-child { flex:1; min-width:0; }
+  .acciones-fila { display:flex; gap:4px; flex:none; }
+  .vacio { color:var(--muted); margin:6px 0; }
+  dialog { border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--ink); width:min(520px, calc(100vw - 32px)); padding:20px; }
+  dialog::backdrop { background:rgba(0,0,0,.5); }
+  dialog h3 { margin:0 0 10px; }
+  dialog .botones { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+  .registro { margin:10px 0 0; padding:0; list-style:none; }
+  .registro li { padding:4px 0; }
+  .registro .mal { color:var(--bad); }
+  .registro .bien { color:var(--ok); }
+  .toast { position:fixed; right:18px; bottom:18px; padding:10px 16px; border-radius:10px; background:var(--ink); color:var(--bg); font-weight:600; opacity:0; transform:translateY(8px); transition:.2s; pointer-events:none; max-width:min(420px, 90vw); }
+  .toast.ver { opacity:1; transform:none; }
+  .toast.error { background:var(--bad); color:#fff; }
+  @media (max-width: 800px) {
+    .cuerpo { grid-template-columns:1fr; }
+    nav.secciones { position:static; flex-direction:row; flex-wrap:wrap; }
+    .fila { grid-template-columns:1fr; }
+    .fila .pista { grid-column:1; }
+    .fila > label.nombre { padding-top:0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <h1>Panel del blog</h1>
+  <span class="estado" id="estado">Cargando…</span>
+  <button class="btn" id="btn-descartar" disabled>Descartar cambios</button>
+  <button class="btn" id="btn-guardar" disabled>Guardar</button>
+  <button class="btn primario" id="btn-publicar">Guardar y publicar</button>
+</header>
+
+<div id="aviso-borrador" class="aviso" hidden>
+  <p><b>Encontré un borrador sin guardar</b> <span id="aviso-fecha"></span>. ¿Quieres recuperarlo?</p>
+  <button class="btn primario" id="btn-recuperar">Recuperar borrador</button>
+  <button class="btn" id="btn-olvidar">Descartar borrador</button>
+</div>
+
+<div class="cuerpo">
+  <nav class="secciones" id="secciones" aria-label="Secciones"></nav>
+  <main id="principal"></main>
+</div>
+
+<dialog id="dialogo">
+  <h3>Guardar y publicar</h3>
+  <p id="dialogo-git" style="color:var(--muted);margin:0 0 10px"></p>
+  <label for="mensaje"><b>Mensaje del commit</b></label>
+  <input type="text" id="mensaje" value="Actualizar sitio.js desde el panel" />
+  <ul class="registro" id="registro"></ul>
+  <div class="botones">
+    <button class="btn" id="dialogo-cerrar">Cancelar</button>
+    <button class="btn primario" id="dialogo-ok">Publicar</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+'use strict';
+// ---------------------------------------------------------------------------
+// Utilidades
+// ---------------------------------------------------------------------------
+const $ = (s) => document.querySelector(s);
+
+function h(tag, attrs = {}, ...hijos) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === false || v == null) continue;
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (['value', 'checked', 'selected', 'disabled'].includes(k)) el[k] = v;
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of hijos.flat()) {
+    if (c == null || c === false) continue;
+    el.append(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+
+async function api(ruta, metodo = 'GET', cuerpo) {
+  const r = await fetch('/api/' + ruta, {
+    method: metodo,
+    headers: { 'Content-Type': 'application/json', 'X-Panel': '1' },
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Error ' + r.status);
+  return j;
+}
+
+let toastTimer;
+function aviso(texto, error = false) {
+  const t = $('#toast');
+  t.textContent = texto;
+  t.className = 'toast ver' + (error ? ' error' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => (t.className = 'toast'), error ? 6000 : 2500);
+}
+
+// ---------------------------------------------------------------------------
+// Nombres en español y opciones
+// ---------------------------------------------------------------------------
+const SECCIONES = {
+  general: 'General', autor: 'Autor', navegacion: 'Menú', botonMenu: 'Botón del menú',
+  hero: 'Portada (hero)', home: 'Secciones del inicio', listado: 'Listado de artículos',
+  webcomics: 'Webcomics', articulo: 'Artículo', widgets: 'Barra lateral', categorias: 'Categorías',
+  newsletter: 'Newsletter', sobreMi: 'Sobre mí', pie: 'Pie de página', textos: 'Textos de la interfaz',
+  tema: 'Colores', fuentes: 'Fuentes',
+};
+const GENERAL = ['url', 'base', 'idioma', 'nombre', 'eslogan', 'descripcion', 'imagenCompartir'];
+
+const ETIQUETAS = {
+  url: 'Dirección del sitio', navegacion: 'Elementos del menú', categorias: 'Categorías', base: 'Carpeta base', idioma: 'Idioma', nombre: 'Nombre del blog',
+  eslogan: 'Eslogan', descripcion: 'Descripción', imagenCompartir: 'Imagen al compartir',
+  rol: 'Rol', ubicacion: 'Ubicación', avatar: 'Foto (URL)', bio: 'Biografía', redes: 'Redes',
+  texto: 'Texto', icono: 'Ícono', insignias: 'Insignias flotantes', posicion: 'Posición',
+  fraseInicio: 'Frase: inicio', resaltado: 'Frase: resaltado', fraseFin: 'Frase: final',
+  boton: 'Botón', mostrarAutor: 'Mostrar autor', mostrarEstadisticas: 'Mostrar estadísticas',
+  mostrarDestacado: 'Mostrar destacado', cantidadUltimos: 'Cantidad de últimos',
+  mostrarWebcomics: 'Mostrar webcomics', mostrarTemas: 'Mostrar temas', mostrarNewsletter: 'Mostrar newsletter',
+  porPagina: 'Artículos por tanda', etiqueta: 'Etiqueta pequeña', titulo: 'Título', vacio: 'Texto si está vacío',
+  barraProgreso: 'Barra de progreso', mostrarIndice: 'Mostrar índice', mostrarRelacionados: 'Mostrar relacionados',
+  mostrarAnteriorSiguiente: 'Mostrar anterior/siguiente', barraDerecha: 'Columna derecha', barraLateral: 'Widgets (en orden)',
+  comentarios: 'Comentarios (Giscus)', activo: 'Activado', repo: 'Repositorio', repoId: 'ID del repositorio',
+  categoria: 'Categoría', categoriaId: 'ID de la categoría', recientesCantidad: 'Cantidad de recientes',
+  etiquetasMaximo: 'Máximo de etiquetas', nombreCat: 'Nombre', emoji: 'Emoji', color: 'Color', descripcionCat: 'Descripción',
+  textoWidget: 'Texto del widget', placeholder: 'Texto de ejemplo', accion: 'URL del formulario', campo: 'Nombre del campo',
+  mensajeOk: 'Mensaje de éxito', mensajeError: 'Mensaje de error', mensajeDemo: 'Mensaje de demostración',
+  leyendaFoto: 'Leyenda de la foto', parrafos: 'Párrafos', datos: 'Datos', valor: 'Valor', intereses: 'Intereses',
+  tituloIntereses: 'Título de intereses', enlaces: 'Enlaces', modoOscuro: 'Botón modo oscuro', inicial: 'Modo inicial',
+  acentos: 'Colores de acento', claro: 'Modo claro', oscuro: 'Modo oscuro', fondo: 'Fondo', rejilla: 'Rejilla',
+  suave: 'Texto suave', borde: 'Borde', tarjeta: 'Tarjeta', panel: 'Panel', textoPanel: 'Texto del panel', cinta: 'Cinta',
+  principal: 'Fuente principal', manuscrita: 'Fuente manuscrita', pixel: 'Fuente pixel', mono: 'Fuente mono',
+  amarillo: 'Amarillo', verde: 'Verde', rosa: 'Rosa', azul: 'Azul', naranja: 'Naranja', morado: 'Morado',
+  nombreRed: 'Nombre',
+};
+const PISTAS = {
+  url: 'Ejemplo: https://usuario.github.io/nombre-del-repo (sin / al final)',
+  base: 'Solo la carpeta del final de la dirección, ej: /nombre-del-repo. Vacío si usas dominio propio.',
+  barraDerecha: 'Quita o reordena lo que sale a la derecha del artículo.',
+  barraLateral: 'Quita o reordena los widgets de la barra lateral.',
+  porPagina: 'Cuántas tarjetas se muestran al inicio y cada vez que pulsas "Mostrar más".',
+  accion: 'Si lo dejas vacío, el formulario funciona en modo demostración.',
+  cinta: 'Formato rgba(r, g, b, opacidad)',
+  inicial: 'sistema = sigue el modo de tu dispositivo',
+};
+const LARGOS = new Set(['descripcion', 'bio', 'noEncontradaTexto', 'mensajeDemo', 'textoWidget']);
+const OPCIONES_LISTA = {
+  barraDerecha: ['meta', 'autor', 'etiquetas', 'compartir', 'recientes', 'categorias', 'newsletter'],
+  barraLateral: ['sobreMi', 'categorias', 'recientes', 'etiquetas', 'newsletter'],
+};
+
+function humanizar(k) {
+  const s = String(k).replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+const etiquetaDe = (k, ruta = []) => (k === 'url' && ruta.length > 1 ? 'Enlace' : (ETIQUETAS[k] ?? humanizar(k)));
+
+function opcionesPara(nombre, ruta) {
+  if (nombre === 'icono') return ['', ...ICONOS];
+  if (nombre === 'posicion') return ['tl', 'tr', 'bl', 'br'];
+  if (nombre === 'inicial') return ['sistema', 'claro', 'oscuro'];
+  if (nombre === 'color' && (ruta.includes('insignias') || ruta.includes('categorias'))) return Object.keys(estado.tema.acentos);
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Estado
+// ---------------------------------------------------------------------------
+let estado = null;       // lo que estás editando
+let original = '';       // JSON de lo que hay guardado en sitio.js
+let ICONOS = [];
+let seccion = 'general';
+let temporizador = null;
+
+const sucio = () => JSON.stringify(estado) !== original;
+
+function pintarEstado(extra) {
+  const e = $('#estado');
+  const s = sucio();
+  e.className = 'estado ' + (s ? 'sucio' : 'ok');
+  e.textContent = extra || (s ? 'Cambios sin guardar (borrador al día)' : 'Todo guardado');
+  $('#btn-guardar').disabled = !s;
+  $('#btn-descartar').disabled = !s;
+}
+
+function cambio() {
+  pintarEstado('Cambios sin guardar…');
+  clearTimeout(temporizador);
+  temporizador = setTimeout(guardarBorrador, 600);
+}
+
+async function guardarBorrador() {
+  clearTimeout(temporizador);
+  temporizador = null;
+  try {
+    if (sucio()) {
+      try { localStorage.setItem('panel-borrador', JSON.stringify(estado)); } catch {}
+      await api('borrador', 'PUT', { sitio: estado });
+    } else {
+      try { localStorage.removeItem('panel-borrador'); } catch {}
+      await api('borrador', 'DELETE');
+    }
+    pintarEstado();
+  } catch (e) {
+    pintarEstado('No pude guardar el borrador');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Campos
+// ---------------------------------------------------------------------------
+function fila(nombre, control, pista, ruta = []) {
+  const id = 'c' + Math.random().toString(36).slice(2, 8);
+  const ctrl = control;
+  if (ctrl.matches && ctrl.matches('input,select,textarea')) ctrl.id = id;
+  return h('div', { class: 'fila', 'data-buscar': (etiquetaDe(nombre) + ' ' + nombre).toLowerCase() },
+    h('label', { class: 'nombre', for: id }, etiquetaDe(nombre, ruta)),
+    ctrl,
+    pista ? h('div', { class: 'pista' }, pista) : null);
+}
+
+function controlEscalar(padre, k, nombre, ruta) {
+  const v = padre[k];
+  const poner = (x) => { padre[k] = x; cambio(); };
+
+  if (typeof v === 'boolean') {
+    const txt = h('span', {}, v ? 'Sí' : 'No');
+    return h('label', { class: 'interruptor' },
+      h('input', { type: 'checkbox', checked: v, onchange: (e) => { txt.textContent = e.target.checked ? 'Sí' : 'No'; poner(e.target.checked); } }), txt);
+  }
+  if (typeof v === 'number') {
+    return h('input', { type: 'number', value: v, oninput: (e) => poner(e.target.value === '' ? 0 : Number(e.target.value)) });
+  }
+  const opciones = opcionesPara(nombre, ruta);
+  if (opciones) {
+    const lista = opciones.includes(v) ? opciones : [v, ...opciones];
+    return h('select', { onchange: (e) => poner(e.target.value) },
+      lista.map((o) => h('option', { value: o, selected: o === v }, o === '' ? '(ninguno)' : o)));
+  }
+  if (/^#[0-9a-f]{6}$/i.test(v)) {
+    const txt = h('input', { type: 'text', value: v });
+    const sel = h('input', { type: 'color', value: v, 'aria-label': 'Elegir color' });
+    sel.addEventListener('input', () => { txt.value = sel.value; poner(sel.value); });
+    txt.addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test(txt.value)) sel.value = txt.value; poner(txt.value); });
+    return h('div', { class: 'colores' }, sel, txt);
+  }
+  if (typeof v === 'string' && (v.length > 80 || LARGOS.has(nombre))) {
+    return h('textarea', { rows: v.length > 200 ? 5 : 3, value: v, oninput: (e) => poner(e.target.value) });
+  }
+  return h('input', { type: 'text', value: v ?? '', oninput: (e) => poner(e.target.value) });
+}
+
+function plantilla(modelo) {
+  if (typeof modelo === 'string') return '';
+  if (typeof modelo === 'number') return 0;
+  if (typeof modelo === 'boolean') return false;
+  if (Array.isArray(modelo)) return [];
+  if (modelo && typeof modelo === 'object') return Object.fromEntries(Object.entries(modelo).map(([k, x]) => [k, plantilla(x)]));
+  return '';
+}
+
+function titulo(item, i) {
+  if (typeof item === 'string') return item || '(vacío)';
+  for (const k of ['texto', 'nombre', 'etiqueta', 'titulo']) if (item[k]) return item[k];
+  return 'Elemento ' + (i + 1);
+}
+
+function mover(arr, i, d) {
+  const j = i + d;
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  cambio();
+  pintarSeccion();
+}
+
+function nodo(padre, k, ruta, nombre = k) {
+  const v = padre[k];
+  const rutaNueva = [...ruta, nombre];
+  if (Array.isArray(v)) return lista(v, nombre, rutaNueva);
+  if (v && typeof v === 'object') return grupo(v, nombre, rutaNueva);
+  return fila(nombre, controlEscalar(padre, k, nombre, rutaNueva), nombre === 'url' && rutaNueva.length > 1 ? null : PISTAS[nombre], rutaNueva);
+}
+
+// Los hijos de un objeto. En "categorias" cada una lleva su botón de quitar y hay uno para agregar.
+function hijosDe(obj, ruta) {
+  const esCategorias = ruta.length === 1 && ruta[0] === 'categorias';
+  const nodos = Object.keys(obj).map((k) => {
+    const el = nodo(obj, k, ruta, k);
+    if (!esCategorias) return el;
+    el.append(h('button', { class: 'btn mini peligro', onclick: () => {
+      if (!confirm(`¿Quitar la categoría "${k}"? Los artículos que la usen darán error hasta que les cambies la categoría.`)) return;
+      delete obj[k]; cambio(); pintarSeccion();
+    } }, 'Quitar esta categoría'));
+    return el;
+  });
+  if (esCategorias) {
+    nodos.push(h('button', { class: 'btn', onclick: () => {
+      const clave = (prompt('Clave de la nueva categoría (minúsculas, sin espacios ni tildes, ej: viajes):') || '').trim();
+      if (!clave) return;
+      if (!/^[a-z0-9-]+$/.test(clave)) return aviso('Usa solo minúsculas, números y guiones.', true);
+      if (obj[clave]) return aviso('Esa clave ya existe.', true);
+      const modelo = Object.values(obj)[0] ?? { nombre: '', emoji: '', color: 'amarillo', descripcion: '' };
+      obj[clave] = plantilla(modelo);
+      obj[clave].color = Object.keys(estado.tema.acentos)[0];
+      cambio(); pintarSeccion();
+    } }, '+ Agregar categoría'));
+  }
+  return nodos;
+}
+
+function grupo(obj, nombre, ruta) {
+  return h('fieldset', {}, h('legend', {}, etiquetaDe(nombre)), hijosDe(obj, ruta));
+}
+
+function lista(arr, nombre, ruta) {
+  const simples = arr.every((x) => typeof x === 'string');
+  const cont = h('fieldset', {}, h('legend', {}, etiquetaDe(nombre)));
+  if (PISTAS[nombre]) cont.append(h('div', { class: 'pista' }, PISTAS[nombre]));
+  if (!arr.length) cont.append(h('p', { class: 'vacio' }, 'Sin elementos.'));
+
+  if (simples) {
+    const opciones = OPCIONES_LISTA[nombre];
+    arr.forEach((v, i) => {
+      const control = opciones
+        ? h('select', { onchange: (e) => { arr[i] = e.target.value; cambio(); } },
+            (opciones.includes(v) ? opciones : [v, ...opciones]).map((o) => h('option', { value: o, selected: o === v }, o)))
+        : h('input', { type: 'text', value: v, oninput: (e) => { arr[i] = e.target.value; cambio(); } });
+      cont.append(h('div', { class: 'fila-lista' }, control, botonesFila(arr, i)));
+    });
+    cont.append(h('button', { class: 'btn mini', onclick: () => {
+      const libre = opciones ? opciones.find((o) => !arr.includes(o)) : '';
+      if (opciones && libre === undefined) return aviso('Ya están todas las opciones.', true);
+      arr.push(libre ?? ''); cambio(); pintarSeccion();
+    } }, '+ Agregar'));
+    return cont;
+  }
+
+  arr.forEach((item, i) => {
+    const dentro = h('div', { class: 'dentro' }, Object.keys(item).map((k) => nodo(item, k, ruta, k)));
+    cont.append(h('details', { class: 'item', open: arr.length <= 6 },
+      h('summary', {}, h('span', { class: 't' }, titulo(item, i)), botonesFila(arr, i)),
+      dentro));
+  });
+  cont.append(h('button', { class: 'btn mini', onclick: () => {
+    if (!arr.length) return aviso('Esta lista está vacía y no sé qué campos llevaría. Agrega el primero a mano en sitio.js.', true);
+    arr.push(plantilla(arr[0])); cambio(); pintarSeccion();
+  } }, '+ Agregar'));
+  return cont;
+}
+
+function botonesFila(arr, i) {
+  const b = (txt, tit, fn, extra = '') => h('button', { class: 'btn mini ' + extra, title: tit, onclick: (e) => { e.preventDefault(); e.stopPropagation(); fn(); } }, txt);
+  return h('span', { class: 'acciones-fila' },
+    b('↑', 'Subir', () => mover(arr, i, -1)),
+    b('↓', 'Bajar', () => mover(arr, i, 1)),
+    b('✕', 'Quitar', () => { arr.splice(i, 1); cambio(); pintarSeccion(); }, 'peligro'));
+}
+
+// ---------------------------------------------------------------------------
+// Pantalla
+// ---------------------------------------------------------------------------
+function listaSecciones() {
+  return ['general', ...Object.keys(estado).filter((k) => !GENERAL.includes(k))];
+}
+
+function pintarMenu() {
+  const nav = $('#secciones');
+  nav.replaceChildren(...listaSecciones().map((s) =>
+    h('button', { class: s === seccion ? 'activa' : '', onclick: () => { seccion = s; pintarMenu(); pintarSeccion(); } }, SECCIONES[s] ?? humanizar(s))));
+}
+
+function pintarSeccion() {
+  const main = $('#principal');
+  const y = window.scrollY;
+  const buscador = h('input', { type: 'text', placeholder: 'Filtrar campos…', 'aria-label': 'Filtrar campos', oninput: (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    main.querySelectorAll('.fila').forEach((f) => { f.hidden = q !== '' && !f.dataset.buscar.includes(q) && !f.textContent.toLowerCase().includes(q); });
+  } });
+  main.replaceChildren(h('div', { class: 'titulo-seccion' }, h('h2', {}, SECCIONES[seccion] ?? humanizar(seccion)), buscador));
+
+  if (seccion === 'general') {
+    GENERAL.filter((k) => k in estado).forEach((k) => main.append(nodo(estado, k, [], k)));
+  } else if (Array.isArray(estado[seccion])) {
+    main.append(lista(estado[seccion], seccion, [seccion]));
+  } else if (estado[seccion] && typeof estado[seccion] === 'object') {
+    main.append(...hijosDe(estado[seccion], [seccion]));
+  } else {
+    main.append(nodo(estado, seccion, [], seccion));
+  }
+  window.scrollTo(0, y);
+}
+
+// ---------------------------------------------------------------------------
+// Guardar / descartar / publicar
+// ---------------------------------------------------------------------------
+async function guardar() {
+  if (temporizador) await guardarBorrador();
+  await api('guardar', 'POST', { sitio: estado });
+  original = JSON.stringify(estado);
+  try { localStorage.removeItem('panel-borrador'); } catch {}
+  pintarEstado();
+}
+
+$('#btn-guardar').onclick = async () => {
+  try { await guardar(); aviso('Guardado en sitio.js'); } catch (e) { aviso(e.message, true); }
+};
+
+$('#btn-descartar').onclick = async () => {
+  if (!confirm('¿Descartar todos los cambios y volver a lo que hay en sitio.js?')) return;
+  estado = JSON.parse(original);
+  await guardarBorrador();
+  pintarMenu(); pintarSeccion();
+};
+
+const dlg = $('#dialogo');
+let terminado = false;
+$('#btn-publicar').onclick = async () => {
+  terminado = false;
+  $('#registro').replaceChildren();
+  $('#dialogo-ok').disabled = false;
+  $('#dialogo-ok').textContent = 'Publicar';
+  try {
+    const g = (await api('datos')).git;
+    $('#dialogo-git').textContent = !g.repo
+      ? 'Esta carpeta no es un repositorio git: no se podrá publicar.'
+      : `Rama: ${g.rama || '?'} · Remoto: ${g.remoto || 'ninguno'}. Se hará commit solo de sitio.js y luego push.`;
+  } catch { $('#dialogo-git').textContent = ''; }
+  dlg.showModal();
+  $('#mensaje').select();
+};
+$('#dialogo-cerrar').onclick = () => dlg.close();
+
+$('#dialogo-ok').onclick = async () => {
+  if (terminado) return dlg.close();
+  const reg = $('#registro');
+  const paso = (txt, clase = '') => reg.append(h('li', { class: clase }, txt));
+  reg.replaceChildren();
+  $('#dialogo-ok').disabled = true;
+  try {
+    paso('Guardando sitio.js…');
+    await guardar();
+    paso('✓ sitio.js guardado', 'bien');
+    paso('Haciendo commit y push…');
+    const r = await api('publicar', 'POST', { mensaje: $('#mensaje').value });
+    r.pasos.forEach((p) => paso('✓ ' + p, 'bien'));
+    terminado = true;
+    $('#dialogo-ok').textContent = 'Listo';
+    aviso('Publicado');
+  } catch (e) {
+    paso('✗ ' + e.message, 'mal');
+    $('#dialogo-ok').textContent = 'Reintentar';
+  }
+  $('#dialogo-ok').disabled = false;
+};
+
+// Aviso al cerrar la pestaña con cambios sin guardar (el borrador igual queda guardado)
+window.addEventListener('beforeunload', (e) => { if (sucio()) { e.preventDefault(); e.returnValue = ''; } });
+document.addEventListener('visibilitychange', () => { if (document.hidden && temporizador) guardarBorrador(); });
+
+// ---------------------------------------------------------------------------
+// Inicio
+// ---------------------------------------------------------------------------
+(async () => {
+  try {
+    const d = await api('datos');
+    ICONOS = d.iconos;
+    original = JSON.stringify(d.sitio);
+    estado = JSON.parse(original);
+
+    if (d.borrador && JSON.stringify(d.borrador.sitio) !== original) {
+      const cuando = d.borrador.guardado ? '(' + new Date(d.borrador.guardado).toLocaleString('es') + ')' : '';
+      $('#aviso-fecha').textContent = cuando;
+      $('#aviso-borrador').hidden = false;
+      $('#btn-recuperar').onclick = () => {
+        estado = d.borrador.sitio;
+        $('#aviso-borrador').hidden = true;
+        pintarMenu(); pintarSeccion(); pintarEstado();
+        aviso('Borrador recuperado');
+      };
+      $('#btn-olvidar').onclick = async () => {
+        $('#aviso-borrador').hidden = true;
+        await api('borrador', 'DELETE');
+        try { localStorage.removeItem('panel-borrador'); } catch {}
+      };
+    }
+    pintarMenu(); pintarSeccion(); pintarEstado();
+  } catch (e) {
+    $('#estado').textContent = 'Error';
+    $('#principal').replaceChildren(h('p', {}, 'No pude leer sitio.js: ' + e.message));
+  }
+})();
+</script>
+</body>
+</html>
