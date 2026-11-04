@@ -8,7 +8,7 @@ import { sitio } from './sitio.js';
 export default defineConfig({
   site: new URL(sitio.url).origin, // solo el dominio, ej: https://olialex.github.io
   base: sitio.base || '/', // la carpeta del repositorio, ej: /cuaderno (vacío si el sitio va en la raíz)
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: { theme: 'github-dark', wrap: true },
   },

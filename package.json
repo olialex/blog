@@ -12,10 +12,13 @@
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
     "@astrojs/rss": "^4.0.9",
-    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/sitemap": "3.2.1",
     "astro": "^4.16.18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
