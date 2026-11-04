@@ -1,6 +1,6 @@
 ---
 import { sitio } from '../../sitio.js';
-import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, portadaDe, serieNombre } from '../lib/utils.js';
+import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, esNovela, portadaDe, serieNombre } from '../lib/utils.js';
 
 // Tarjeta tipo PORTADA: imagen vertical a todo el tamaño con el título encima
 const { post } = Astro.props;
@@ -9,6 +9,7 @@ const cat = categoriaInfo(d.categoria);
 const url = urlPost(post);
 const t = sitio.textos;
 const comic = esComic(post);
+const novela = esNovela(post);
 const portada = portadaDe(post);
 const meta = comic
   ? [serieNombre(post), d.comic.capitulo ? `${t.capAbrev} ${d.comic.capitulo}` : null].filter(Boolean).join(' · ')
@@ -28,6 +29,7 @@ const meta = comic
     <span class="card-portada-top">
       <span class="tag">{cat.emoji} {cat.nombre}</span>
       {comic && <span class="tag tag-comic">{t.comic}</span>}
+      {novela && <span class="tag tag-comic">{t.novela}</span>}
     </span>
     <span class="card-portada-info">
       <strong class="card-portada-titulo">{d.titulo}</strong>

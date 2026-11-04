@@ -1,0 +1,71 @@
+---
+// Novela gráfica animada: dibuja las escenas del frontmatter (tipo: novela).
+// Toda la animación la hace src/scripts/novela.js al hacer scroll.
+import { escenasNovela } from '../lib/utils.js';
+import { sitio } from '../../sitio.js';
+
+const { post } = Astro.props;
+const escenas = escenasNovela(post);
+const t = sitio.textos;
+
+// Lo que necesita el script de cada escena (sin los textos, que ya están en el HTML)
+const plan = (e) => ({
+  entrada: e.entrada,
+  salida: e.salida,
+  planos: e.planos.map((p) => ({
+    panel: p.panel,
+    foco: p.foco,
+    duracion: p.duracion,
+    efecto: p.efecto,
+    qte: p.qte
+      ? { tecla: p.qte.tecla, etiqueta: p.qte.etiqueta ?? (p.qte.tecla === 'espacio' ? t.toca : undefined), texto: p.qte.texto, tiempo: p.qte.tiempo, obligatorio: p.qte.obligatorio }
+      : undefined,
+  })),
+});
+const posDefecto = { voz: 'abajo', globo: 'arriba', cuadro: 'arriba-izq' };
+---
+
+<div class="novela" data-novela data-bien={t.qteBien} data-mal={t.qteMal}>
+  {
+    escenas.map((e, ei) => (
+      <section class="nv-escena" data-escena data-plan={JSON.stringify(plan(e))} style={`--nv-fondo:${e.fondo}`}>
+        <div class:list={['nv-escenario', { 'nv-con-barras': e.barras }]}>
+          <div class="nv-camara">
+            <img class="nv-fondo" src={e.imagen} alt={e.alt ?? ''} decoding="async" loading={ei === 0 ? 'eager' : 'lazy'} />
+            {e.capas.map((c) => <img class="nv-capa" src={c.imagen} alt="" data-prof={c.profundidad} decoding="async" />)}
+          </div>
+          <div class="nv-fx"></div>
+          <div class="nv-textos">
+            {
+              e.planos.map((p, pi) =>
+                p.textos.map((tx, ti) => (
+                  <div class:list={['nv-texto', `nv-${tx.tipo}`, `pos-${tx.pos ?? posDefecto[tx.tipo]}`]} data-plano={pi} data-orden={ti} data-si={tx.si}>
+                    {tx.quien && <b class="nv-quien">{tx.quien}</b>}
+                    <span class="nv-txt" data-texto={tx.texto}>{tx.texto}</span>
+                  </div>
+                )),
+              )
+            }
+          </div>
+          {ei === 0 && <div class="nv-pista">{t.desliza} ↓</div>}
+          <div class="nv-velo"></div>
+          <div class="nv-qte" hidden>
+            <div class="nv-qte-caja">
+              <p class="nv-qte-texto"></p>
+              <button type="button" class="nv-qte-btn">
+                <svg class="nv-qte-aro" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46"></circle></svg>
+                <span class="nv-qte-tecla"></span>
+              </button>
+              <p class="nv-qte-res" aria-live="assertive"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+</div>
+
+<script>
+  import { iniciarNovelas } from '../scripts/novela.js';
+  iniciarNovelas();
+</script>

@@ -20,6 +20,41 @@ const comic = z.object({
   paginas: z.array(paginaComic).default([]),
 });
 
+const textoNovela = z.object({
+  tipo: z.enum(['voz', 'globo', 'cuadro']).default('voz'),
+  quien: z.string().optional(),
+  texto: z.string(),
+  pos: z.enum(['arriba', 'centro', 'abajo', 'arriba-izq', 'arriba-der', 'abajo-izq', 'abajo-der']).optional(),
+  si: z.enum(['exito', 'fallo']).optional(),
+});
+const qte = z.object({
+  tecla: z.string().default('espacio'),
+  etiqueta: z.string().optional(),
+  texto: z.string().optional(),
+  tiempo: z.number().default(2.5),
+  obligatorio: z.boolean().default(false),
+});
+const plano = z.object({
+  panel: z.tuple([z.number(), z.number(), z.number(), z.number()]).optional(),
+  foco: z.object({ x: z.number(), y: z.number(), zoom: z.number().default(1) }).optional(),
+  duracion: z.number().default(1),
+  efecto: z.enum(['temblor', 'destello', 'rojo']).optional(),
+  textos: z.array(textoNovela).default([]),
+  qte: qte.optional(),
+});
+const capaNovela = z.object({ imagen: z.string(), profundidad: z.number().default(0.3) });
+const escena = z.object({
+  imagen: z.string(),
+  alt: z.string().optional(),
+  fondo: z.string().default('#000'),
+  entrada: z.enum(['negro', 'blanco', 'corte']).default('negro'),
+  salida: z.enum(['negro', 'blanco', 'corte']).default('negro'),
+  barras: z.boolean().default(true),
+  capas: z.array(capaNovela).default([]),
+  planos: z.array(plano).min(1),
+});
+const novela = z.object({ escenas: z.array(escena).default([]) });
+
 const posts = defineCollection({
   type: 'content',
   schema: z.object({
@@ -33,8 +68,9 @@ const posts = defineCollection({
     portadaAlt: z.string().optional(),
     destacado: z.boolean().default(false),
     borrador: z.boolean().default(false),
-    tipo: z.enum(['articulo', 'webcomic']).default('articulo'),
+    tipo: z.enum(['articulo', 'webcomic', 'novela']).default('articulo'),
     comic: comic.optional(),
+    novela: novela.optional(),
   }),
 });
 

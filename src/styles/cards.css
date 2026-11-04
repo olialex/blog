@@ -13,11 +13,6 @@
 }
 .read-article-link:hover { gap: 12px; color: var(--acento, var(--c-amarillo));}
 
-@media (max-width: 400px){
-  .read-article-link{
-    display: none;
-  }
-}
 
 .tag {
   display: inline-block; background: var(--acento, var(--c-amarillo)); color: #121212;
@@ -27,6 +22,15 @@
 a.tag:hover { filter: brightness(1.08); }
 .tag-comic { background: #121212; color: #fff; border-color: rgba(255,255,255,.7); }
 
+@media (max-width: 475px){
+  .read-article-link{
+    display: none;
+  }
+
+  .tag{
+    display: none;
+  }
+}
 /* ----- Cuadrícula ----- */
 .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
 .posts-grid-lista { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }

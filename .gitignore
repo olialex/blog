@@ -2,4 +2,6 @@ node_modules/
 dist/
 .astro/
 .DS_Store
-.panel/
+panel/.borrador.json
+panel/.respaldo-sitio.js
+panel/.sitio-prueba.mjs

@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import TOC from '../../components/TOC.astro';
 import ListaCapitulos from '../../components/ListaCapitulos.astro';
 import ComicReader from '../../components/ComicReader.astro';
+import Novela from '../../components/Novela.astro';
+import Cabecera from '../../components/Cabecera.astro';
 import ComicNav from '../../components/ComicNav.astro';
 import PostCard from '../../components/PostCard.astro';
 import Comentarios from '../../components/Comentarios.astro';
@@ -22,6 +24,7 @@ import {
   tiempoLectura,
   urlPost,
   esComic,
+  esNovela,
   seriesDe,
   serieNombre,
   portadaDe,
@@ -60,6 +63,7 @@ const cat = categoriaInfo(d.categoria);
 const t = sitio.textos;
 const a = sitio.articulo;
 const comic = esComic(post);
+const novela = esNovela(post);
 const portada = portadaDe(post);
 const urlCompleta = new URL(urlPost(post), Astro.site).href;
 const tieneTexto = post.body.trim().length > 0;
@@ -104,6 +108,23 @@ const jsonLd = {
 
   {a.barraProgreso && <div class="progreso" id="progreso" aria-hidden="true"></div>}
 
+  {
+    novela ? (
+      <div class="novela-pagina">
+        <div class="contenedor">
+          <Cabecera etiqueta={t.novelaEtiqueta} titulo={d.titulo} descripcion={d.descripcion} />
+        </div>
+        <Novela post={post} />
+        <div class="novela-pie">
+          {tieneTexto && (
+            <div class="prose notas-comic">
+              <Content />
+            </div>
+          )}
+          <Comentarios />
+        </div>
+      </div>
+    ) : (
   <div class:list={['single-layout', { 'es-comic': comic }]}>
     <!-- ============ COLUMNA IZQUIERDA: índice sticky ============ -->
     {
@@ -207,9 +228,11 @@ const jsonLd = {
       )
     }
   </div>
+    )
+  }
 
   {
-    a.mostrarRelacionados && !comic && relacionados.length > 0 && (
+    a.mostrarRelacionados && !comic && !novela && relacionados.length > 0 && (
       <section class="seccion">
         <div class="section-title-wrap">
           <h2 class="section-title">{t.relacionados}</h2>

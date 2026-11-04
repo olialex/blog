@@ -34,6 +34,8 @@
 
 /* ----- Cabecera y cuerpo ----- */
 .articulo { min-width: 0; }
+
+
 .progreso { position: fixed; top: 0; left: 0; height: 5px; width: 0; z-index: 200; background: var(--c-rosa); border-bottom: 1.5px solid var(--line); }
 .migas { font-size: .8rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; }
 .migas a { text-decoration: none; }
@@ -92,7 +94,7 @@
 
 /* ----- Pantallas medianas y pequeñas: una sola columna ----- */
 @media (max-width: 1000px) {
-  .single-layout, .single-layout.es-comic { grid-template-columns: minmax(0, 1fr); max-width: 760px; gap: 24px; }
+    .single-layout, .single-layout.es-comic { grid-template-columns: minmax(0, 1fr); max-width: 760px; gap: 24px; padding-inline: 20px; }
   .rail-izq { position: static; max-height: none; overflow: visible; order: -1; }
   .rail-vacio { display: none; }
   .rail-der { flex-direction: row; flex-wrap: wrap; gap: 20px 32px; }
