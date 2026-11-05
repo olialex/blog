@@ -14,7 +14,7 @@ export const sitio = {
   // --------------------------------------------------------------------------
   url: 'https://blogdeoliver.pages.dev/',
 
-  base: '',
+  base: '/',
 
   idioma: 'es',
 
