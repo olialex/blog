@@ -320,6 +320,7 @@ export const servidor = http.createServer(async (req, res) => {
       const { mensaje } = await leerCuerpo(req);
       return enviar(res, 200, { ok: true, pasos: await publicar(mensaje) });
     }
+    if (req.method === 'GET' && url.pathname === '/api/categorias-uso') return enviar(res, 200, { uso: await arch.usoCategorias() });
     // ----- imágenes, íconos y fuentes -----
     const B = (l) => leerCuerpo(req, l);
     const G = 25_000_000;

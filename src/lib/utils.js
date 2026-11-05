@@ -113,8 +113,10 @@ export function categoriaInfo(clave) {
 }
 
 export function contarCategorias(posts) {
-  const conteo = {};
-  for (const p of posts) conteo[p.data.categoria] = (conteo[p.data.categoria] ?? 0) + 1;
+  // La lista de categorías es la de sitio.categorias (aunque no tengan artículos todavía).
+  // Un artículo con una categoría que ya no existe sigue visible, pero esa categoría no sale en las listas.
+  const conteo = Object.fromEntries(Object.keys(sitio.categorias).map((k) => [k, 0]));
+  for (const p of posts) if (p.data.categoria in conteo) conteo[p.data.categoria] += 1;
   return Object.entries(conteo)
     .map(([clave, total]) => ({ ...categoriaInfo(clave), total }))
     .sort((a, b) => b.total - a.total || a.nombre.localeCompare(b.nombre));
@@ -165,12 +167,17 @@ export function cssTema() {
   const textos = Object.entries(acentos)
     .map(([k, v]) => `--t-${k}:${sitio.tema.textoAcento?.[k] || sobre(v)};`)
     .join('');
+  // Colores de elementos sueltos (tema.elementos): nombre de acento o color propio
+  const elementos = Object.entries(sitio.tema.elementos ?? {})
+    .filter(([k, v]) => /^[a-zA-Z]+$/.test(k) && /^(#[0-9a-f]{6}|[a-z0-9-]+)$/i.test(String(v)))
+    .map(([k, v]) => `--el-${k}:${v.startsWith('#') ? v : `var(--c-${v})`};`)
+    .join('');
   // Los elementos con style="--acento:var(--c-X)" reciben también --acento-t
   const reglas = Object.keys(acentos)
     .map((k) => `[style*="--acento:var(--c-${k})"]{--acento-t:var(--t-${k});}`)
     .join('');
   return (
-    `:root{${colores}${textos}${bloque(claro)}` +
+    `:root{${colores}${textos}${elementos}${bloque(claro)}` +
     `--font-main:${f.principal};--font-hand:${f.manuscrita};--font-pixel:${f.pixel};--font-mono:${f.mono};}` +
     `[data-theme="dark"]{${bloque(oscuro)}}` +
     reglas

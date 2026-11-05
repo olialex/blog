@@ -25,7 +25,7 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 button { font-family: inherit; color: inherit; }
-:focus-visible { outline: 3px solid var(--c-azul); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--el-foco, var(--c-azul)); outline-offset: 2px; }
 
 .skip-link {
   position: absolute; left: -999px; top: 8px; z-index: 100;
@@ -34,13 +34,19 @@ button { font-family: inherit; color: inherit; }
 }
 .skip-link:focus { left: 8px; }
 
-.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 10px; }
 .seccion { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; }
 .seccion-sub { color: var(--muted); margin: -16px 0 24px; }
 .resaltado {
   background: var(--acento, var(--c-amarillo)); color: var(--acento-t, var(--t-amarillo, #121212));
   padding: 0 8px; border-radius: 6px; border: 2px solid var(--line);
   box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+
+@media (max-width: 450px){
+  .seccion{
+    padding: 0 8px;
+  }
 }
 
 /* ===== 2. CINTA (tape) — se aplica con la clase .cinta ===== */
@@ -101,9 +107,9 @@ button { font-family: inherit; color: inherit; }
 .btn-cta {
   display: inline-flex; align-items: center; gap: 8px; background: var(--panel); color: var(--panel-ink);
   text-decoration: none; font-weight: 700; padding: 10px 22px; border-radius: 6px;
-  border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--c-amarillo); transition: all .2s ease;
+  border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--el-sombraBoton, var(--c-amarillo)); transition: all .2s ease;
 }
-.btn-cta:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--c-amarillo); }
+.btn-cta:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--el-sombraBoton, var(--c-amarillo)); }
 
 .hero-autor {
   display: inline-flex; align-items: center; gap: 10px; margin: 26px auto 0;
@@ -154,7 +160,7 @@ button { font-family: inherit; color: inherit; }
 .autor-franja {
   display: grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center;
   background: var(--card); border: 3px solid var(--line); border-radius: 12px;
-  padding: 28px; box-shadow: 6px 6px 0 var(--c-verde);
+  padding: 28px; box-shadow: 6px 6px 0 var(--el-sombraAutor, var(--c-verde));
 }
 .autor-foto {
   width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
@@ -194,7 +200,7 @@ button { font-family: inherit; color: inherit; }
 /* ===== 14. NEWSLETTER ===== */
 .newsletter-box {
   max-width: 800px; margin: 0 auto 60px; background: var(--card); border: 3px solid var(--line);
-  box-shadow: 6px 6px 0 var(--c-rosa); padding: 40px 20px; text-align: center; border-radius: 12px;
+  box-shadow: 6px 6px 0 var(--el-sombraNewsletter, var(--c-rosa)); padding: 40px 20px; text-align: center; border-radius: 12px;
 }
 .newsletter-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
 .newsletter-desc { color: var(--muted); max-width: 480px; margin: 0 auto 24px; }
@@ -205,7 +211,7 @@ button { font-family: inherit; color: inherit; }
   border: 2px solid var(--line); border-radius: 6px; font-family: var(--font-main); font-weight: 600;
   outline: none; box-shadow: 2px 2px 0 var(--line);
 }
-.newsletter-input:focus { outline: 3px solid var(--c-azul); outline-offset: 1px; }
+.newsletter-input:focus { outline: 3px solid var(--el-foco, var(--c-azul)); outline-offset: 1px; }
 .newsletter-btn {
   background: var(--c-amarillo); color: var(--t-amarillo, #121212); border: 2px solid var(--line); padding: 12px 20px;
   border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0 var(--line); transition: transform .15s ease;
@@ -215,12 +221,12 @@ button { font-family: inherit; color: inherit; }
 .newsletter-msg { margin-top: 12px; font-size: .88rem; font-weight: 700; min-height: 1.2em; }
 
 /* ===== 15. SOBRE MÍ ===== */
-.sobre-grid { margin: 0 5rem; display: grid; grid-template-columns: 380px 2fr; gap: 80px; align-items: start; margin-bottom: 80px; align-items: center;}
+.sobre-grid { display: grid; grid-template-columns: 280px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
 .polaroid-card {
   background: var(--card); padding: 12px 12px 26px; border: 2px solid var(--line);
   box-shadow: 5px 6px 0 rgba(0,0,0,.18); text-align: center; transform: rotate(-3deg);
 }
-.polaroid-card img { max-width: 420px; width: 100%; height: 380px; object-fit: cover; border: 1px solid var(--muted); }
+.polaroid-card img { width: 100%; height: 300px; object-fit: cover; border: 1px solid var(--muted); }
 .polaroid-card .caption { font-family: var(--font-hand); font-size: 1.4rem; margin-top: 10px; color: var(--muted); }
 .sobre-texto > p { font-size: 1.08rem; margin-bottom: 1em; }
 .datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 26px 0; }
@@ -229,12 +235,6 @@ button { font-family: inherit; color: inherit; }
 .datos dd { font-weight: 700; }
 .subtitulo { font-family: var(--font-hand); font-size: 1.9rem; margin: 22px 0 10px; }
 .redes-grandes { margin-top: 24px; }
-
-@media (max-width: 920px){
-  .sobre-grid{
-    margin: 0;
-  }
-}
 
 /* ===== 16. FOOTER ===== */
 .footer { max-width: 1100px; margin: 150px auto 0; padding: 0 20px; }

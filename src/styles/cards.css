@@ -13,24 +13,14 @@
 }
 .read-article-link:hover { gap: 12px; color: var(--acento, var(--c-amarillo));}
 
-
 .tag {
-  display: inline-block; background: var(--acento, var(--c-amarillo)); color: var(--acento-t, #121212);
+  display: inline-block; background: var(--acento, var(--c-amarillo)); color: var(--acento-t, var(--t-amarillo, #121212));
   border: 1.5px solid var(--line); border-radius: 999px; padding: 2px 10px; line-height: 1.5;
   font-size: .68rem; font-weight: 800; text-transform: uppercase; text-decoration: none;
 }
 a.tag:hover { filter: brightness(1.08); }
 .tag-comic { background: #121212; color: #fff; border-color: rgba(255,255,255,.7); }
 
-@media (max-width: 475px){
-  .read-article-link{
-    display: none;
-  }
-
-  .tag{
-    display: none;
-  }
-}
 /* ----- Cuadrícula ----- */
 .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
 .posts-grid-lista { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
@@ -59,7 +49,8 @@ a.tag:hover { filter: brightness(1.08); }
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,0) 68%);
 }
-.card-portada-top { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2; display: flex; justify-content: space-between; gap: 6px; }
+.card-portada-top { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 5px; }
+.card-portada-top .tag { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card-portada-info { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 4px; padding: 14px; }
 .card-portada-titulo { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
 .card-portada-meta { font-size: .66rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; opacity: .8; }
@@ -96,4 +87,63 @@ a.tag:hover { filter: brightness(1.08); }
   .posts-grid, .posts-grid-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .destacado-portada { aspect-ratio: auto; min-height: 360px; }
   .destacado-info { padding: 22px; }
+}
+
+/* ----- Estilo Pinterest (/articulos/): columnas con alturas fijas distintas -----
+   Cada tarjeta ocupa N filas de 10px (--filas). El ancho se adapta; el alto es fijo. */
+.posts-pin { grid-auto-rows: 10px; grid-auto-flow: dense; row-gap: 0; }
+.posts-pin > .pin { display: flex; grid-row-end: span var(--filas, 40); padding-bottom: 20px; }
+.posts-pin > .pin[hidden] { display: none; }
+.posts-pin > .pin > .card-portada { flex: 1; aspect-ratio: auto; min-width: 0; }
+.pin-0 { --filas: 40; }
+.pin-1 { --filas: 44; }
+.pin-2 { --filas: 42; }
+.pin-3 { --filas: 46; }
+.pin-4 { --filas: 43; }
+@media (max-width: 560px) {
+  .pin-0 { --filas: 29; }
+  .pin-1 { --filas: 32; }
+  .pin-2 { --filas: 30; }
+  .pin-3 { --filas: 34; }
+  .pin-4 { --filas: 31; }
+  .posts-pin > .pin { padding-bottom: 6px; }
+}
+
+/* ----- /articulos/ en móvil: la cuadrícula casi llega a los bordes de la pantalla (6px), como Pinterest ----- */
+@media (max-width: 560px) {
+  .posts-borde { margin-inline: -20px; padding-inline: 6px; column-gap: 6px; }
+  .posts-borde:not(.posts-pin) { row-gap: 6px; }
+  .posts-grid .card-portada { border-radius: 8px; box-shadow: 2px 2px 0 var(--line); }
+  .posts-grid .card-portada-top { top: 7px; left: 7px; right: 7px; gap: 4px; }
+  .posts-grid .tag { font-size: .58rem; padding: 1px 7px; }
+  .posts-grid .card-portada-info { padding: 10px; }
+  .posts-grid .card-portada-titulo { font-size: .95rem; }
+}
+
+/* ----- /articulos/ en pantallas medianas (tablets, laptops pequeñas, ventanas partidas) -----
+   Columnas de mínimo 240px: así salen 3 columnas en vez de 2 enormes, y nunca queda 1 sola.
+   Si las quieres más pequeñas o grandes, cambia el 240px. */
+@media (min-width: 561px) {
+  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+/* ----- Móvil: tarjetas compactas en todo el sitio y cabeceras de sección que no se aprietan ----- */
+@media (max-width: 560px) {
+  .posts-grid:not(.posts-borde) { gap: 12px; }
+  .posts-grid .card-portada-meta { font-size: .6rem; }
+  .section-title-wrap { flex-wrap: wrap; row-gap: 10px; margin-bottom: 20px; }
+  .section-title { font-size: 1.45rem; }
+  .section-title-wrap > div { align-items: center; gap: .7rem; }
+  .section-title-wrap .badge-icon { align-self: center; }
+  .ver-todos { text-align: left; }
+  .ver-todos .read-article-link { white-space: nowrap; font-size: .9rem; }
+}
+
+/* ----- Pantallas medianas (tablets, ventanas estrechas): nunca 1 sola tarjeta gigante ----- */
+@media (min-width: 561px) and (max-width: 900px) {
+  .posts-grid:not(:empty) { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+/* Entre 901 y 1200px (portada y secciones sin barra lateral) se mantienen 3 columnas */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .posts-grid:not(.posts-grid-lista):not(.posts-borde) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

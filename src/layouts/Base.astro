@@ -9,13 +9,15 @@ import '../styles/single.css';
 import '../styles/comic.css';
 import '../styles/novela.css';
 import '../styles/fuentes.css'; // fuentes propias (las gestiona el panel)
+import '../styles/continuar.css';
 import '../styles/hover.css'; // ← la clase .hover-opacidad vive solo aquí. Quita esta línea para desactivarla
 import { sitio } from '../../sitio.js';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { cssTema, ruta } from '../lib/utils.js';
 
-const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website' } = Astro.props;
+const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website', lectura } = Astro.props;
+
 
 const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : sitio.nombre;
 const canonica = new URL(Astro.url.pathname, Astro.site).href;
@@ -71,5 +73,10 @@ const imgAbsoluta = imgFinal
       <slot />
     </main>
     <Footer />
+    {lectura && sitio.articulo.recordarLectura !== false && <div hidden data-lectura={JSON.stringify({ titulo: lectura })} data-retomado={sitio.textos.retomado ?? 'Seguimos donde lo dejaste.'} data-nuevo={sitio.textos.empezarDeNuevo ?? 'Empezar de nuevo'}></div>}
+    <script>
+      import { iniciarContinuar } from '../scripts/continuar.js';
+      iniciarContinuar();
+    </script>
   </body>
 </html>

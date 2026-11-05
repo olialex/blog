@@ -75,6 +75,14 @@ const orden = (n) => `order:${lista.includes(n) ? lista.indexOf(n) : 50 + base.i
   </section>
 
   <div class="home-orden">
+  {sitio.home.mostrarContinuar !== false && (
+    <a class="continuar" data-continuar hidden href="#">
+      <span class="continuar-et">{t.continuar ?? 'Continuar leyendo'}</span>
+      <b data-titulo></b>
+      <small data-pct></small>
+    </a>
+  )}
+
   <!-- ============ DESTACADO ============ -->
   {
     sitio.home.mostrarDestacado && destacado && (

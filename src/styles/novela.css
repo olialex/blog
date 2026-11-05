@@ -45,10 +45,10 @@
 
 /* Subtítulo de cinemática */
 .nv-voz { width: min(92vw, 760px); text-align: center; font-weight: 700; font-size: clamp(.95rem, 2.4vw, 1.25rem); line-height: 1.35; text-shadow: 0 2px 6px #000; background: rgba(0, 0, 0, .6); border-radius: 8px; padding: .55em 1em; }
-.nv-quien { display: block; color: var(--c-amarillo); font-size: .72em; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: .15em; }
+.nv-quien { display: block; color: var(--el-novelaDestaque, var(--c-amarillo)); font-size: .72em; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: .15em; }
 
 /* Globo de cómic */
-.nv-globo { max-width: min(70vw, 320px); background: #fff; color: var(--t-amarillo, #121212); border: 3px solid #121212; border-radius: 22px; padding: .65em 1em; font-weight: 700; line-height: 1.3; box-shadow: 3px 3px 0 rgba(0, 0, 0, .55); }
+.nv-globo { max-width: min(70vw, 320px); background: #fff; color: #121212; border: 3px solid #121212; border-radius: 22px; padding: .65em 1em; font-weight: 700; line-height: 1.3; box-shadow: 3px 3px 0 rgba(0, 0, 0, .55); }
 .nv-globo .nv-quien { color: #555; }
 
 /* Recuadro de narración */
@@ -80,7 +80,7 @@
 .nv-qte-btn { position: relative; width: 132px; height: 132px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .14); cursor: pointer; display: grid; place-items: center; }
 .nv-qte-btn:active { background: rgba(255, 255, 255, .3); }
 .nv-qte-aro { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.nv-qte-aro circle { fill: none; stroke: var(--c-amarillo); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 289; stroke-dashoffset: 0; }
+.nv-qte-aro circle { fill: none; stroke: var(--el-novelaDestaque, var(--c-amarillo)); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 289; stroke-dashoffset: 0; }
 .nv-qte.corre .nv-qte-aro circle { animation: nv-aro var(--tiempo, 2.5s) linear forwards; }
 @keyframes nv-aro { to { stroke-dashoffset: 289; } }
 .nv-qte-tecla { font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: 1px; }

@@ -8,7 +8,7 @@ import { getPosts, categoriaInfo } from '../../lib/utils.js';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
-  const claves = [...new Set(posts.map((p) => p.data.categoria))];
+  const claves = [...new Set([...Object.keys(sitio.categorias), ...posts.map((p) => p.data.categoria)])];
   return claves.map((clave) => ({
     params: { categoria: clave },
     props: { posts: posts.filter((p) => p.data.categoria === clave) },

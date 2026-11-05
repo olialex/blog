@@ -9,6 +9,8 @@ import { getPosts, contarCategorias, categoriaInfo } from '../../lib/utils.js';
 
 const posts = await getPosts();
 const categorias = contarCategorias(posts);
+// Estilo Pinterest (columnas con alturas distintas y fijas) o cuadrícula normal: sitio.listado.estilo
+const pin = sitio.listado.estilo === 'pinterest';
 const l = sitio.listado;
 const t = sitio.textos;
 
@@ -42,10 +44,10 @@ const textoDe = (p) =>
           <p class="explorador-estado" data-estado role="status" aria-live="polite"></p>
         </div>
 
-        <div class="posts-grid posts-grid-lista">
+        <div class:list={['posts-grid', 'posts-grid-lista', 'posts-borde', { 'posts-pin': pin }]}>
           {
-            posts.map((p) => (
-              <div data-item data-cat={p.data.categoria} data-texto={textoDe(p)}>
+            posts.map((p, i) => (
+              <div class={pin ? `pin pin-${i % 5}` : undefined} data-item data-cat={p.data.categoria} data-texto={textoDe(p)}>
                 <PostCard post={p} />
               </div>
             ))

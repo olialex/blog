@@ -29,14 +29,12 @@
   transition: color .15s ease, border-color .15s ease;
 }
 .toc a:hover { color: var(--ink); }
-.toc a.activo { color: var(--ink); font-weight: 800; border-left-color: var(--c-rosa); }
+.toc a.activo { color: var(--ink); font-weight: 800; border-left-color: var(--el-indiceActivo, var(--c-rosa)); }
 .toc li.sub a { padding-left: 24px; font-size: .78rem; }
 
 /* ----- Cabecera y cuerpo ----- */
 .articulo { min-width: 0; }
-
-
-.progreso { position: fixed; top: 0; left: 0; height: 5px; width: 0; z-index: 200; background: var(--acento, var(--c-amarillo)); border-bottom: 1.5px solid var(--line); }
+.progreso { position: fixed; top: 0; left: 0; height: 5px; width: 0; z-index: 200; background: var(--el-progreso, var(--c-rosa)); border-bottom: 1.5px solid var(--line); }
 .migas { font-size: .8rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; }
 .migas a { text-decoration: none; }
 .migas a:hover { text-decoration: underline; }
@@ -60,12 +58,12 @@
 .prose > * + * { margin-top: 1.1em; }
 .prose h2 { font-size: 1.7rem; line-height: 1.25; margin-top: 2em; scroll-margin-top: 90px; }
 .prose h3 { font-size: 1.3rem; line-height: 1.3; margin-top: 1.7em; scroll-margin-top: 90px; }
-.prose a { color: var(--c-azul); font-weight: 700; }
+.prose a { color: var(--el-enlaces, var(--c-azul)); font-weight: 700; }
 .prose strong { font-weight: 800; }
 .prose ul, .prose ol { padding-left: 1.5em; }
 .prose li + li { margin-top: .4em; }
 .prose blockquote {
-  border-left: 6px solid var(--c-amarillo); background: var(--card); padding: 14px 20px;
+  border-left: 6px solid var(--el-cita, var(--c-amarillo)); background: var(--card); padding: 14px 20px;
   border-radius: 0 8px 8px 0; font-family: var(--font-hand); font-size: 1.5rem; line-height: 1.35;
 }
 .prose code:not(pre code) { background: var(--card); border: 1.5px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: .9em; }
@@ -94,7 +92,7 @@
 
 /* ----- Pantallas medianas y pequeñas: una sola columna ----- */
 @media (max-width: 1000px) {
-    .single-layout, .single-layout.es-comic { grid-template-columns: minmax(0, 1fr); max-width: 760px; gap: 24px; padding-inline: 20px; }
+  .single-layout, .single-layout.es-comic { grid-template-columns: minmax(0, 1fr); max-width: 760px; gap: 24px; padding-inline: 20px; }
   .rail-izq { position: static; max-height: none; overflow: visible; order: -1; }
   .rail-vacio { display: none; }
   .rail-der { flex-direction: row; flex-wrap: wrap; gap: 20px 32px; }

@@ -219,6 +219,7 @@ const etiquetaDe = (k, ruta = []) => (k === 'url' && ruta.length > 1 ? 'Enlace' 
 function opcionesPara(nombre, ruta) {
   if (nombre === 'icono') return ['', ...ICONOS];
   if (nombre === 'posicion') return ['tl', 'tr', 'bl', 'br'];
+  if (nombre === 'estilo') return ['pinterest', 'cuadricula'];
   if (nombre === 'inicial') return ['sistema', 'claro', 'oscuro'];
   if (nombre === 'color' && (ruta.includes('insignias') || ruta.includes('categorias'))) return Object.keys(estado.tema.acentos);
   return null;
@@ -352,8 +353,11 @@ function hijosDe(obj, ruta) {
   const nodos = Object.keys(obj).map((k) => {
     const el = nodo(obj, k, ruta, k);
     if (!esCategorias) return el;
-    el.append(h('button', { class: 'btn mini peligro', onclick: () => {
-      if (!confirm(`¿Quitar la categoría "${k}"? Los artículos que la usen darán error hasta que les cambies la categoría.`)) return;
+    el.append(h('button', { class: 'btn mini peligro', onclick: async () => {
+      let usan = [];
+      try { usan = (await api('categorias-uso')).uso[k] ?? []; } catch {}
+      const aviso2 = usan.length ? `\n\nOJO: ${usan.length} artículo(s) la usan (${usan.join(', ')}). Seguirán existiendo, pero cambia su "categoria:" a otra o se verán sin categoría.` : '';
+      if (!confirm(`¿Quitar la categoría "${k}"?${aviso2}`)) return;
       delete obj[k]; cambio(); pintarSeccion();
     } }, 'Quitar esta categoría'));
     return el;

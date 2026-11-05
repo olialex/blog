@@ -21,7 +21,7 @@
   flex-direction: column;
   align-items: center;
 }
-.widget-autor .autor-foto { width: 52px; height: 52px; margin: 0 0 8px; box-shadow: none; border-width: 2px; }
+.widget-autor .autor-foto { width: 100px; height: 100px; margin: 0 0 16px; box-shadow: none; border: solid 2px var(--acento, var(--c-azul)); border-radius: 12px}
 .widget-autor .autor-nombre { font-size: 1rem; margin: 0 0 4px; }
 .widget-autor .redes { justify-content: flex-start; margin: 8px 0; }
 
@@ -43,7 +43,7 @@
 .recientes small { color: var(--muted); font-weight: 600; font-size: .72rem; }
 
 .resultados { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
-.resultados li { border-left: 3px solid var(--c-amarillo); padding-left: 10px; }
+.resultados li { border-left: 3px solid var(--el-resultados, var(--c-amarillo)); padding-left: 10px; }
 .resultados a { font-weight: 700; text-decoration: none; display: block; font-size: .85rem; }
 .resultados a:hover { text-decoration: underline; }
 .resultados small { display: block; color: var(--muted); font-size: .74rem; line-height: 1.3; }

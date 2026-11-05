@@ -11,7 +11,7 @@
 }
 
 /* --- Escritorio: oculto hasta que pasas el mouse por arriba --- */
-@media (hover: hover) and (min-width: 761px) {
+@media (hover: hover) and (min-width: 981px) {
   .navbar-container { transform: translateY(-100%); transition: transform .3s ease; }
   /* Franja invisible de 16px pegada al borde superior de la pantalla: activa el header */
   .navbar-container::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 32px; }
@@ -38,7 +38,7 @@ main { padding-top: 28px; }
   transition: color .15s ease, background-color .15s ease;
 }
 .nav-link:hover { color: var(--ink); background: var(--grid); }
-.nav-link.active { color: var(--ink); box-shadow: inset 0 -2px 0 var(--c-amarillo); border-radius: 0; }
+.nav-link.active { color: var(--ink); box-shadow: inset 0 -2px 0 var(--el-menuActivo, var(--c-amarillo)); border-radius: 0; }
 
 .nav-actions { display: flex; align-items: center; gap: 8px; }
 .theme-toggle, .nav-toggle {
@@ -57,7 +57,7 @@ main { padding-top: 28px; }
 .btn-subscribe:hover { color: var(--t-amarillo, #121212); background: var(--c-amarillo); border-color: var(--line); }
 
 /* --- Móvil: logo a la izquierda, botones a la derecha, fondo translúcido --- */
-@media (max-width: 760px) {
+@media (max-width: 980px) {
   .navbar-container {
     background: color-mix(in srgb, var(--bg) 55%, transparent);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);

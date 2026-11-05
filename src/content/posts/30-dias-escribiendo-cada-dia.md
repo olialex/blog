@@ -37,3 +37,6 @@ Los días que intenté escribir "algo bueno" fueron los días que no escribí na
 ## Lo que sigo haciendo
 
 Mantengo la versión mínima: una frase al día. Algunos días se convierte en un artículo, otros se queda en una frase, y las dos cosas están bien.
+
+
+[esto es un hipervinculo](https://google.com).
