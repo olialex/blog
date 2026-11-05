@@ -8,6 +8,7 @@ const n = sitio.newsletter;
 const esWidget = variante === 'widget';
 ---
 
+<div class="news-container">
 {
   n.activo && (
     <section class={esWidget ? 'widget' : 'newsletter-box cinta cinta-doble'} id={esWidget ? undefined : 'newsletter'}>
@@ -32,6 +33,7 @@ const esWidget = variante === 'widget';
     </section>
   )
 }
+</div>
 
 <script>
   document.querySelectorAll('form[data-newsletter]').forEach((form) => {

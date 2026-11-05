@@ -200,8 +200,17 @@ button { font-family: inherit; color: inherit; }
 .pagina:hover, .pagina.activa { background: var(--c-amarillo); color: var(--t-amarillo, #121212); }
 
 /* ===== 14. NEWSLETTER ===== */
+
+.news-container{
+  display: flex;
+  justify-content: center;
+  margin: 0 0 60px;
+
+  padding: 0 16px;
+}
+
 .newsletter-box {
-  max-width: 800px; margin: 0 auto 60px; background: var(--card); border: 3px solid var(--line);
+  max-width: 800px; background: var(--card); border: 3px solid var(--line);
   box-shadow: 6px 6px 0 var(--el-sombraNewsletter, var(--c-rosa)); padding: 40px 20px; text-align: center; border-radius: 12px;
 }
 .newsletter-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
@@ -239,7 +248,7 @@ button { font-family: inherit; color: inherit; }
 .redes-grandes { margin-top: 24px; }
 
 /* ===== 16. FOOTER ===== */
-.footer { max-width: 1100px; margin: 150px auto 0; padding: 0 20px; }
+.footer { max-width: 1100px; margin: 60px auto 0; padding: 0 20px; }
 .footer-caja {
   display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 24px; align-items: center;
   background: var(--card); border: 2.5px solid var(--line); border-radius: 12px;
