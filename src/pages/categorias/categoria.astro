@@ -16,8 +16,16 @@ export async function getStaticPaths() {
 }
 
 const { categoria } = Astro.params;
-const { posts } = Astro.props;
-const cat = categoriaInfo(categoria);
+// 1. Asignamos un arreglo vacío por defecto a posts
+const { posts = [] } = Astro.props; 
+
+// 2. Protegemos cat por si categoriaInfo(categoria) no encuentra la categoría
+const cat = categoriaInfo(categoria) || { 
+  nombre: categoria, 
+  descripcion: sitio.descripcion, 
+  emoji: '📁', 
+  color: 'default' 
+};
 ---
 
 <Base titulo={`${sitio.textos.articulosEn} ${cat.nombre}`} descripcion={cat.descripcion || sitio.descripcion}>
@@ -26,7 +34,7 @@ const cat = categoriaInfo(categoria);
     <div class="layout">
       <section>
         <div class="posts-grid posts-grid-lista">
-          {posts.map((p) => <PostCard post={p} />)}
+          {posts?.map((p) => <PostCard post={p} />)}
         </div>
       </section>
       <Sidebar />
