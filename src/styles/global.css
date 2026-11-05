@@ -41,6 +41,8 @@ button { font-family: inherit; color: inherit; }
   background: var(--acento, var(--c-amarillo)); color: var(--acento-t, var(--t-amarillo, #121212));
   padding: 0 8px; border-radius: 6px; border: 2px solid var(--line);
   box-decoration-break: clone; -webkit-box-decoration-break: clone;
+
+  line-height: 1.6;
 }
 
 @media (max-width: 450px){
