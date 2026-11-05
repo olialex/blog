@@ -78,12 +78,13 @@ export const sitio = {
   // 4b. SECCIONES DE LA PORTADA
   // --------------------------------------------------------------------------
   home: {
-    mostrarDestacado: false,
-    cantidadUltimos: 6,
+    mostrarDestacado: true,
+    cantidadUltimos: 4,
     mostrarWebcomics: true,
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
+    mostrarContinuar: true,
     orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
@@ -91,10 +92,11 @@ export const sitio = {
   // 5. LISTADO DE ARTÍCULOS (/articulos/)
   // --------------------------------------------------------------------------
   listado: {
-    porPagina: 12,
+    porPagina: 15,
     etiqueta: 'todo lo que he escrito',
     titulo: 'Artículos',
     descripcion: 'Todas las entradas del cuaderno, de la más nueva a la más antigua.',
+    estilo: 'cuadricula',
   },
 
   // --------------------------------------------------------------------------
@@ -112,6 +114,7 @@ export const sitio = {
   // --------------------------------------------------------------------------
   articulo: {
     barraProgreso: true,
+    recordarLectura: true,
     mostrarIndice: true,
     mostrarRelacionados: true,
     mostrarAnteriorSiguiente: true,
@@ -125,7 +128,7 @@ export const sitio = {
   widgets: {
     barraLateral: ['sobreMi', 'categorias', 'recientes', 'etiquetas', 'newsletter'],
     recientesCantidad: 4,
-    etiquetasMaximo: 20,
+    etiquetasMaximo: 15,
   },
 
   // --------------------------------------------------------------------------
@@ -150,12 +153,6 @@ export const sitio = {
       color: 'rosa',
       descripcion: 'Cosas que construyo, paso a paso y con errores incluidos.',
     },
-    vida: {
-      nombre: 'Vida diaria',
-      emoji: '🌱',
-      color: 'azul',
-      descripcion: 'Hábitos, rutinas y pequeñas decisiones del día a día.',
-    },
     webcomics: {
       nombre: 'Webcomics',
       color: 'rojo',
@@ -168,7 +165,7 @@ export const sitio = {
   // 9. NEWSLETTER
   // --------------------------------------------------------------------------
   newsletter: {
-    activo: false,
+    activo: true,
     titulo: 'Únete al Diario del Domingo 📬',
     texto: 'Un resumen semanal con lo nuevo del cuaderno y algunas notas que no publico en otro lado. Sin spam.',
     textoWidget: 'Recibe lo nuevo del cuaderno cada semana.',
@@ -297,6 +294,9 @@ export const sitio = {
     explorarVacio: 'No encontré nada con eso.',
     cerrar: 'Cerrar',
     mostrarMas: 'Mostrar más',
+    continuar: 'Continuar leyendo',
+    retomado: 'Seguimos donde lo dejaste.',
+    empezarDeNuevo: 'Empezar de nuevo',
   },
 
   // --------------------------------------------------------------------------
@@ -315,6 +315,7 @@ export const sitio = {
       rojo: '#fd3044',
     },
     textoAcento: { rojo: '#ffffff' },
+    elementos: { progreso: 'azul', indiceActivo: 'azul', cita: 'rojo', foco: 'amarillo' },
     claro: {
       fondo: '#fbfbf9',
       rejilla: '#e5e5df',
