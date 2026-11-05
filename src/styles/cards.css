@@ -111,8 +111,8 @@ a.tag:hover { filter: brightness(1.08); }
 
 /* ----- /articulos/ en móvil: la cuadrícula casi llega a los bordes de la pantalla (6px), como Pinterest ----- */
 @media (max-width: 560px) {
-  .posts-borde { margin-inline: -20px; padding-inline: 6px; column-gap: 6px; }
-  .posts-borde:not(.posts-pin) { row-gap: 6px; }
+  .posts-borde { margin-inline: -20px; padding-inline: 14px; column-gap: 8px; }
+  .posts-borde:not(.posts-pin) { row-gap: 8px; }
   .posts-grid .card-portada { border-radius: 8px; box-shadow: 2px 2px 0 var(--line); }
   .posts-grid .card-portada-top { top: 7px; left: 7px; right: 7px; gap: 4px; }
   .posts-grid .tag { font-size: .58rem; padding: 1px 7px; }
@@ -124,14 +124,14 @@ a.tag:hover { filter: brightness(1.08); }
    Columnas de mínimo 240px: así salen 3 columnas en vez de 2 enormes, y nunca queda 1 sola.
    Si las quieres más pequeñas o grandes, cambia el 240px. */
 @media (min-width: 561px) {
-  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));  padding-inline: 6px;}
 }
 
 /* ----- Móvil: tarjetas compactas en todo el sitio y cabeceras de sección que no se aprietan ----- */
 @media (max-width: 560px) {
-  .posts-grid:not(.posts-borde) { gap: 12px; }
+  .posts-grid:not(.posts-borde) { gap: 16px; }
   .posts-grid .card-portada-meta { font-size: .6rem; }
-  .section-title-wrap { flex-wrap: wrap; row-gap: 10px; margin-bottom: 20px; }
+  .section-title-wrap { flex-wrap: wrap; row-gap: 16px; margin-bottom: 20px; }
   .section-title { font-size: 1.45rem; }
   .section-title-wrap > div { align-items: center; gap: .7rem; }
   .section-title-wrap .badge-icon { align-self: center; }
