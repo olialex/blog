@@ -65,7 +65,7 @@
   display: grid; place-items: center; width: 36px; height: 36px; text-decoration: none; font-weight: 800;
   background: var(--card); border: 2px solid var(--line); border-radius: 8px; box-shadow: 2px 2px 0 var(--line);
 }
-.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: #121212; }
+.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: var(--t-amarillo, #121212); }
 
 @media (max-width: 900px) {
   .layout { grid-template-columns: minmax(0, 1fr); }

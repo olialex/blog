@@ -158,7 +158,7 @@ const jsonLd = {
         <h1>{d.titulo}</h1>
         <p class="articulo-desc">{d.descripcion}</p>
         <div class="post-meta">
-          <img class="mini-avatar" src={sitio.autor.avatar} alt="" />
+          <img class="mini-avatar" src={ruta(sitio.autor.avatar)} alt="" />
           <span>{sitio.autor.nombre}</span> •
           <span>{formatoFecha(d.fecha)}</span> •
           <span>{comic ? `${d.comic.paginas.length} ${t.paginas}` : `${tiempoLectura(post.body)} ${t.minLectura}`}</span>

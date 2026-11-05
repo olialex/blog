@@ -48,12 +48,12 @@
 .nv-quien { display: block; color: var(--c-amarillo); font-size: .72em; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: .15em; }
 
 /* Globo de cómic */
-.nv-globo { max-width: min(70vw, 320px); background: #fff; color: #121212; border: 3px solid #121212; border-radius: 22px; padding: .65em 1em; font-weight: 700; line-height: 1.3; box-shadow: 3px 3px 0 rgba(0, 0, 0, .55); }
+.nv-globo { max-width: min(70vw, 320px); background: #fff; color: var(--t-amarillo, #121212); border: 3px solid #121212; border-radius: 22px; padding: .65em 1em; font-weight: 700; line-height: 1.3; box-shadow: 3px 3px 0 rgba(0, 0, 0, .55); }
 .nv-globo .nv-quien { color: #555; }
 
 /* Recuadro de narración */
-.nv-cuadro { max-width: min(75vw, 380px); background: var(--c-amarillo); color: #121212; border: 3px solid #121212; padding: .5em .8em; font-weight: 700; font-size: .9rem; line-height: 1.3; box-shadow: 3px 3px 0 #000; }
-.nv-cuadro .nv-quien { color: #121212; opacity: .7; }
+.nv-cuadro { max-width: min(75vw, 380px); background: var(--c-amarillo); color: var(--t-amarillo, #121212); border: 3px solid #121212; padding: .5em .8em; font-weight: 700; font-size: .9rem; line-height: 1.3; box-shadow: 3px 3px 0 #000; }
+.nv-cuadro .nv-quien { color: var(--t-amarillo, #121212); opacity: .7; }
 
 /* ----- Efectos ----- */
 .nv-fx { position: absolute; inset: 0; pointer-events: none; opacity: 0; z-index: 6; }

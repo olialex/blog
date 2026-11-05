@@ -9,6 +9,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { crearArchivos } from './archivos.mjs';
 
 const run = promisify(execFile);
 
@@ -31,6 +32,7 @@ async function cargarSitio() {
   const { sitio } = await importar(SITIO);
   return JSON.parse(JSON.stringify(sitio));
 }
+const arch = crearArchivos(RAIZ, importar);
 async function cargarIconos() {
   try {
     const { iconos } = await importar(ICONOS);
@@ -173,12 +175,24 @@ async function estadoGit() {
   }
   const rama = (await git('rev-parse', '--abbrev-ref', 'HEAD').catch(() => ({ stdout: '' }))).stdout.trim();
   const remoto = (await git('remote').catch(() => ({ stdout: '' }))).stdout.trim().split('\n')[0] || '';
-  const cambios = (await git('status', '--porcelain', '--', 'sitio.js').catch(() => ({ stdout: '' }))).stdout.trim();
+  const rutas = await rutasGit();
+  const cambios = rutas.length ? (await git('status', '--porcelain', '--', ...rutas).catch(() => ({ stdout: '' }))).stdout.trim() : '';
   return { repo: true, rama, remoto, sinSubir: Boolean(cambios) };
 }
 
+// Archivos que el panel puede cambiar (solo los que existen o ya están en git)
+async function rutasGit() {
+  const sal = [];
+  for (const r of arch.carpetasGit()) {
+    const hay = await fs.access(path.join(RAIZ, r)).then(() => true, () => false);
+    const rastreado = hay || (await git('ls-files', '--', r).catch(() => ({ stdout: '' }))).stdout.trim();
+    if (rastreado) sal.push(r);
+  }
+  return sal;
+}
+
 async function publicar(mensaje) {
-  const texto = String(mensaje || '').trim().slice(0, 200) || 'Actualizar sitio.js desde el panel';
+  const texto = String(mensaje || '').trim().slice(0, 200) || 'Actualizar el sitio desde el panel';
   const pasos = [];
   try {
     await git('rev-parse', '--is-inside-work-tree');
@@ -186,22 +200,23 @@ async function publicar(mensaje) {
     throw new Error('Esta carpeta no es un repositorio git.');
   }
 
-  await git('add', 'sitio.js');
+  const rutas = await rutasGit();
+  await git('add', '-A', '--', ...rutas);
   let hayCambios = true;
   try {
-    await git('diff', '--cached', '--quiet', '--', 'sitio.js');
+    await git('diff', '--cached', '--quiet', '--', ...rutas);
     hayCambios = false;
   } catch {}
 
   if (hayCambios) {
     try {
-      await git('commit', '-m', texto, '--', 'sitio.js');
+      await git('commit', '-m', texto, '--', ...rutas);
       pasos.push('Commit creado: ' + texto);
     } catch (e) {
       throw new Error('No se pudo hacer el commit: ' + (e.stderr || e.message));
     }
   } else {
-    pasos.push('No había cambios nuevos en sitio.js, no se creó un commit.');
+    pasos.push('No había cambios nuevos, no se creó un commit.');
   }
 
   try {
@@ -230,13 +245,13 @@ const enviar = (res, codigo, datos) => {
   res.end(JSON.stringify(datos));
 };
 
-function leerCuerpo(req) {
+function leerCuerpo(req, limite = 2_000_000) {
   return new Promise((resolver, rechazar) => {
     let total = 0;
     const partes = [];
     req.on('data', (p) => {
       total += p.length;
-      if (total > 2_000_000) {
+      if (total > limite) {
         rechazar(new Error('Datos demasiado grandes.'));
         req.destroy();
       } else partes.push(p);
@@ -263,6 +278,16 @@ export const servidor = http.createServer(async (req, res) => {
       const html = await fs.readFile(path.join(AQUI, 'index.html'));
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
       return res.end(html);
+    }
+
+    if (req.method === 'GET' && url.pathname === '/assets.js') {
+      res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
+      return res.end(await fs.readFile(path.join(AQUI, 'assets.js')));
+    }
+    if (req.method === 'GET' && url.pathname.startsWith('/img/')) {
+      const buf = await fs.readFile(arch.rutaImagen(decodeURIComponent(url.pathname.slice(5))));
+      res.writeHead(200, { 'Content-Type': 'image/webp', 'Cache-Control': 'no-store' });
+      return res.end(buf);
     }
 
     if (!url.pathname.startsWith('/api/')) return enviar(res, 404, { error: 'No existe.' });
@@ -295,6 +320,17 @@ export const servidor = http.createServer(async (req, res) => {
       const { mensaje } = await leerCuerpo(req);
       return enviar(res, 200, { ok: true, pasos: await publicar(mensaje) });
     }
+    // ----- imágenes, íconos y fuentes -----
+    const B = (l) => leerCuerpo(req, l);
+    const G = 25_000_000;
+    if (req.method === 'GET' && url.pathname === '/api/imagenes') return enviar(res, 200, { imagenes: await arch.listarImagenes() });
+    if (req.method === 'POST' && url.pathname === '/api/imagenes') return enviar(res, 200, await arch.guardarImagen(await B(G)));
+    if (req.method === 'POST' && url.pathname === '/api/imagenes/borrar') { await arch.borrarImagen(await B()); return enviar(res, 200, { ok: true }); }
+    if (req.method === 'GET' && url.pathname === '/api/iconos') return enviar(res, 200, await arch.leerIconos());
+    if (req.method === 'POST' && url.pathname === '/api/iconos') { await arch.guardarIconos(await B(5_000_000)); return enviar(res, 200, { ok: true, git: await estadoGit() }); }
+    if (req.method === 'GET' && url.pathname === '/api/fuentes') return enviar(res, 200, await arch.listarFuentes());
+    if (req.method === 'POST' && url.pathname === '/api/fuentes') return enviar(res, 200, await arch.guardarFuente(await B(G)));
+    if (req.method === 'POST' && url.pathname === '/api/fuentes/borrar') { await arch.borrarFuente(await B()); return enviar(res, 200, { ok: true }); }
     return enviar(res, 404, { error: 'No existe.' });
   } catch (e) {
     return enviar(res, 400, { error: e.message || String(e) });

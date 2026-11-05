@@ -46,6 +46,7 @@ export function esComic(post) {
   return post.data.tipo === 'webcomic' && Boolean(post.data.comic?.paginas?.length);
 }
 
+// Una novela gráfica animada tiene tipo: novela y una lista novela.escenas
 export function esNovela(post) {
   return post.data.tipo === 'novela' && Boolean(post.data.novela?.escenas?.length);
 }
@@ -154,9 +155,24 @@ export function cssTema() {
   const colores = Object.entries(acentos)
     .map(([k, v]) => `--c-${k}:${v};`)
     .join('');
+  // Color del texto que va SOBRE cada acento: el que pones en tema.textoAcento o, si no, negro/blanco automático
+  const sobre = (hex) => {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex).trim());
+    if (!m) return '#121212';
+    const [r, g, bl] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl > 0.18 ? '#121212' : '#ffffff';
+  };
+  const textos = Object.entries(acentos)
+    .map(([k, v]) => `--t-${k}:${sitio.tema.textoAcento?.[k] || sobre(v)};`)
+    .join('');
+  // Los elementos con style="--acento:var(--c-X)" reciben también --acento-t
+  const reglas = Object.keys(acentos)
+    .map((k) => `[style*="--acento:var(--c-${k})"]{--acento-t:var(--t-${k});}`)
+    .join('');
   return (
-    `:root{${colores}${bloque(claro)}` +
+    `:root{${colores}${textos}${bloque(claro)}` +
     `--font-main:${f.principal};--font-hand:${f.manuscrita};--font-pixel:${f.pixel};--font-mono:${f.mono};}` +
-    `[data-theme="dark"]{${bloque(oscuro)}}`
+    `[data-theme="dark"]{${bloque(oscuro)}}` +
+    reglas
   );
 }

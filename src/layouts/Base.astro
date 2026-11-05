@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import '../styles/fuentes.css';
 import '../styles/iconos.css';
 import '../styles/header.css';
 import '../styles/explorador.css';
@@ -9,6 +8,7 @@ import '../styles/sidebar.css';
 import '../styles/single.css';
 import '../styles/comic.css';
 import '../styles/novela.css';
+import '../styles/fuentes.css'; // fuentes propias (las gestiona el panel)
 import '../styles/hover.css'; // ← la clase .hover-opacidad vive solo aquí. Quita esta línea para desactivarla
 import { sitio } from '../../sitio.js';
 import Navbar from '../components/Navbar.astro';
@@ -23,7 +23,7 @@ const imgFinal = imagen || sitio.imagenCompartir;
 const imgAbsoluta = imgFinal
   ? imgFinal.startsWith('http')
     ? imgFinal
-    : new URL(imgFinal, Astro.site).href
+    : new URL(ruta(imgFinal), Astro.site).href
   : null;
 ---
 
@@ -46,6 +46,10 @@ const imgAbsoluta = imgFinal
     <meta property="og:site_name" content={sitio.nombre} />
     {imgAbsoluta && <meta property="og:image" content={imgAbsoluta} />}
     <meta name="twitter:card" content={imgAbsoluta ? 'summary_large_image' : 'summary'} />
+
+    {sitio.fuentes.url && <link rel="preconnect" href="https://fonts.googleapis.com" />}
+    {sitio.fuentes.url && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
+    {sitio.fuentes.url && <link rel="stylesheet" href={sitio.fuentes.url} />}
 
     <style is:inline set:html={cssTema()}></style>
 

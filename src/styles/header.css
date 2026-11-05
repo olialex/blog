@@ -46,7 +46,7 @@ main { padding-top: 28px; }
   background: transparent; color: var(--muted); border: 1px solid var(--muted); border-radius: 50%;
   transition: all .15s ease;
 }
-.theme-toggle:hover, .nav-toggle:hover { color: #121212; background: var(--c-amarillo); border-color: var(--line); }
+.theme-toggle:hover, .nav-toggle:hover { color: var(--t-amarillo, #121212); background: var(--c-amarillo); border-color: var(--line); }
 .nav-toggle { display: none; }
 
 .btn-subscribe {
@@ -54,7 +54,7 @@ main { padding-top: 28px; }
   font-size: .75rem; font-weight: 700; color: var(--muted); border: 1px solid var(--muted);
   border-radius: 999px; padding: 4px 12px; transition: all .15s ease;
 }
-.btn-subscribe:hover { color: #121212; background: var(--c-amarillo); border-color: var(--line); }
+.btn-subscribe:hover { color: var(--t-amarillo, #121212); background: var(--c-amarillo); border-color: var(--line); }
 
 /* --- Móvil: logo a la izquierda, botones a la derecha, fondo translúcido --- */
 @media (max-width: 760px) {

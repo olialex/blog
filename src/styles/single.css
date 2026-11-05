@@ -36,7 +36,7 @@
 .articulo { min-width: 0; }
 
 
-.progreso { position: fixed; top: 0; left: 0; height: 5px; width: 0; z-index: 200; background: var(--c-rosa); border-bottom: 1.5px solid var(--line); }
+.progreso { position: fixed; top: 0; left: 0; height: 5px; width: 0; z-index: 200; background: var(--acento, var(--c-amarillo)); border-bottom: 1.5px solid var(--line); }
 .migas { font-size: .8rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; }
 .migas a { text-decoration: none; }
 .migas a:hover { text-decoration: underline; }
@@ -74,7 +74,7 @@
 .prose hr { border: none; border-top: 2px dashed var(--muted); margin: 2em 0; }
 .prose table { width: 100%; border-collapse: collapse; font-size: .95rem; }
 .prose th, .prose td { border: 2px solid var(--line); padding: 8px 12px; text-align: left; }
-.prose th { background: var(--c-amarillo); color: #121212; }
+.prose th { background: var(--c-amarillo); color: var(--t-amarillo, #121212); }
 .prose.notas-comic { margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--muted); font-size: 1rem; }
 
 /* Compartir (dentro de la columna derecha) */

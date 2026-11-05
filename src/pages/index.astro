@@ -17,6 +17,10 @@ const categorias = contarCategorias(posts);
 const primerAnio = posts.length ? posts[posts.length - 1].data.fecha.getUTCFullYear() : new Date().getFullYear();
 const h = sitio.hero;
 const t = sitio.textos;
+// Orden de las secciones (sitio.home.orden). Las que no aparezcan van al final.
+const base = ['destacado', 'webcomics', 'ultimos', 'temas', 'autor', 'newsletter'];
+const lista = sitio.home.orden ?? base;
+const orden = (n) => `order:${lista.includes(n) ? lista.indexOf(n) : 50 + base.indexOf(n)}`;
 ---
 
 <Base>
@@ -45,7 +49,7 @@ const t = sitio.textos;
     {
       h.mostrarAutor && (
         <div class="hero-autor">
-          <img src={sitio.autor.avatar} alt={sitio.autor.nombre} />
+          <img src={ruta(sitio.autor.avatar)} alt={sitio.autor.nombre} />
           <span>
             {t.escritoPor} <strong>{sitio.autor.nombre}</strong> · {sitio.autor.ubicacion}
           </span>
@@ -70,10 +74,11 @@ const t = sitio.textos;
     }
   </section>
 
+  <div class="home-orden">
   <!-- ============ DESTACADO ============ -->
   {
     sitio.home.mostrarDestacado && destacado && (
-      <section class="seccion" id="destacado">
+      <section class="seccion" id="destacado" style={orden('destacado')}>
         <FeaturedPost post={destacado} />
       </section>
     )
@@ -82,7 +87,7 @@ const t = sitio.textos;
   <!-- ============ WEBCOMICS ============ -->
   {
     sitio.home.mostrarWebcomics && series.length > 0 && (
-      <section class="seccion" id="webcomics">
+      <section class="seccion" id="webcomics" style={orden('webcomics')}>
         <div class="section-title-wrap">
           <div>
             <span class="badge-icon">{t.comic}</span>
@@ -98,7 +103,7 @@ const t = sitio.textos;
   }
 
   <!-- ============ ÚLTIMOS ARTÍCULOS ============ -->
-  <section class="seccion" id="articulos">
+  <section class="seccion" id="articulos" style={orden('ultimos')}>
     <div class="section-title-wrap">
       <div>
         <span class="badge-icon">{t.nuevo}</span>
@@ -117,7 +122,7 @@ const t = sitio.textos;
   <!-- ============ TEMAS ============ -->
   {
     sitio.home.mostrarTemas && (
-      <section class="seccion" id="temas">
+      <section class="seccion" id="temas" style={orden('temas')}>
         <div class="section-title-wrap">
           <h2 class="section-title">{t.temas}</h2>
         </div>
@@ -139,9 +144,9 @@ const t = sitio.textos;
   <!-- ============ QUIÉN ESCRIBE ============ -->
   {
     sitio.home.mostrarAutor && (
-      <section class="seccion" id="autor">
+      <section class="seccion" id="autor" style={orden('autor')}>
         <div class="autor-franja cinta">
-          <img class="autor-foto" src={sitio.autor.avatar} alt={sitio.autor.nombre} loading="lazy" />
+          <img class="autor-foto" src={ruta(sitio.autor.avatar)} alt={sitio.autor.nombre} loading="lazy" />
           <div>
             <div class="handwritten-label">{t.autorSeccion}</div>
             <h2 class="autor-nombre">{sitio.autor.nombre}</h2>
@@ -153,5 +158,6 @@ const t = sitio.textos;
     )
   }
 
-  {sitio.home.mostrarNewsletter && <Newsletter />}
+  {sitio.home.mostrarNewsletter && <div style={orden('newsletter')}><Newsletter /></div>}
+  </div>
 </Base>

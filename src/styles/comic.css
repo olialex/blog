@@ -25,7 +25,7 @@
   background: var(--card); color: var(--ink); border: 2px solid var(--line); border-radius: 50%;
   box-shadow: 2px 2px 0 var(--line); transition: transform .15s ease, background-color .15s ease;
 }
-.comic-barra button:hover { background: var(--c-amarillo); color: #121212; transform: translateY(-2px); }
+.comic-barra button:hover { background: var(--c-amarillo); color: var(--t-amarillo, #121212); transform: translateY(-2px); }
 .comic-contador { font-weight: 800; font-size: .9rem; text-align: center; min-width: 120px; }
 .comic-rtl { display: block; font-size: .68rem; font-weight: 700; color: var(--muted); }
 
@@ -36,7 +36,7 @@
   font-weight: 800; font-size: .88rem; background: var(--card); border: 1.5px solid var(--line);
   border-radius: 999px; padding: 8px 16px; box-shadow: 3px 3px 0 var(--line); transition: transform .15s ease, background-color .15s ease;
 }
-.comic-nav-item:hover { background: var(--c-amarillo); color: #121212; transform: translateY(-2px); }
+.comic-nav-item:hover { background: var(--c-amarillo); color: var(--t-amarillo, #121212); transform: translateY(-2px); }
 .comic-nav-item.centro { justify-self: center; }
 .comic-nav-item.der { justify-self: end; }
 .comic-nav-fin { justify-self: end; color: var(--muted); font-weight: 700; font-size: .85rem; }

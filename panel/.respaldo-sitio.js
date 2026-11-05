@@ -24,7 +24,7 @@ export const sitio = {
 
   descripcion: 'Un rincón tranquilo de internet donde escribo sobre ideas, aprendizaje, proyectos y vida diaria.',
 
-  imagenCompartir: '',
+  imagenCompartir: '/img/img_392.webp',
 
   // --------------------------------------------------------------------------
   // 2. AUTOR
@@ -33,7 +33,7 @@ export const sitio = {
     nombre: 'Oliver',
     rol: 'Me gustaría crear mis propias webtoons',
     ubicacion: '',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
+    avatar: '/img/avatar.webp',
     bio: 'Escribo sobre lo que aprendo, lo que construyo y lo que me hace pensar. Este blog es mi cuaderno abierto.',
     redes: [
       { nombre: '', icono: 'instagram', url: 'https://instagram.com/' },
@@ -61,10 +61,10 @@ export const sitio = {
   // --------------------------------------------------------------------------
   hero: {
     insignias: [
-      { texto: 'LEE Y APRENDE', color: 'verde', posicion: 'tl' },
+      { texto: 'LEE Y APRENDE', color: 'azul', posicion: 'tl' },
       { texto: 'ENSAYOS SEMANALES', color: 'amarillo', posicion: 'tr' },
       { texto: 'IDEAS Y PROYECTOS', color: 'naranja', posicion: 'bl' },
-      { texto: 'TU CIUDAD', color: 'verde', posicion: 'br' },
+      { texto: 'VENEZUELA', color: 'rojo', posicion: 'br' },
     ],
     fraseInicio: 'Escribo sobre ideas, aprendizaje y proyectos que',
     resaltado: 'VALEN',
@@ -78,12 +78,13 @@ export const sitio = {
   // 4b. SECCIONES DE LA PORTADA
   // --------------------------------------------------------------------------
   home: {
-    mostrarDestacado: true,
+    mostrarDestacado: false,
     cantidadUltimos: 6,
     mostrarWebcomics: true,
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
+    orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
   // --------------------------------------------------------------------------
@@ -157,7 +158,7 @@ export const sitio = {
     },
     webcomics: {
       nombre: 'Webcomics',
-      color: 'azul',
+      color: 'rojo',
       emoji: '💬',
       descripcion: 'Historias en viñetas, capítulo a capítulo.',
     },
@@ -219,9 +220,9 @@ export const sitio = {
   // 12. TEXTOS DE LA INTERFAZ
   // --------------------------------------------------------------------------
   textos: {
-    leer: 'Leer >',
-    leerArticulo: 'LEER ARTÍCULO >',
-    verTodos: 'Ver todos los artículos >',
+    leer: 'Leer',
+    leerArticulo: 'LEER ARTÍCULO',
+    verTodos: 'Ver todos los artículos',
     nuevo: 'NUEVO',
     destacado: 'DESTACADO',
     ultimos: 'Últimos artículos',
@@ -245,16 +246,16 @@ export const sitio = {
     compartir: 'Compartir',
     copiarEnlace: 'Copiar enlace',
     enlaceCopiado: '¡Copiado!',
-    anterior: '< Anterior',
-    siguiente: 'Siguiente >',
+    anterior: 'Anterior',
+    siguiente: 'Siguiente',
     relacionados: 'Sigue leyendo',
     comentarios: 'Comentarios',
     inicio: 'Inicio',
-    paginaAnterior: '< Más nuevos',
-    paginaSiguiente: 'Más antiguos >',
+    paginaAnterior: 'Más nuevos',
+    paginaSiguiente: 'Más antiguos',
     articulosEn: 'Artículos en',
     articulosCon: 'Artículos con la etiqueta',
-    volverInicio: '← Volver al inicio',
+    volverInicio: 'Volver al inicio',
     noEncontrada: 'Esta página no existe',
     noEncontradaTexto: 'Puede que el enlace esté roto o que la página se haya movido. Aquí tienes lo más reciente:',
     todosLosTemas: 'Todos los temas',
@@ -273,7 +274,7 @@ export const sitio = {
     verCapitulos: 'Capítulos',
     finPorAhora: 'Fin por ahora',
     webcomicsTitulo: 'Webcomics',
-    verTodosComics: 'Ver todos los webcomics >',
+    verTodosComics: 'Ver todos los webcomics',
     empezarLeer: 'EMPEZAR A LEER',
     ultimoCap: 'Último capítulo',
     lecturaRtl: 'Lectura de derecha a izquierda',
@@ -311,7 +312,9 @@ export const sitio = {
       azul: '#60a5fa',
       naranja: '#fb923c',
       morado: '#a78bfa',
+      rojo: '#fd3044',
     },
+    textoAcento: { rojo: '#ffffff' },
     claro: {
       fondo: '#fbfbf9',
       rejilla: '#e5e5df',
@@ -328,7 +331,7 @@ export const sitio = {
       rejilla: '#1d1d21',
       texto: '#f4f4f5',
       suave: '#a1a1aa',
-      borde: '#f4f4f5',
+      borde: '#c2c2c2',
       tarjeta: '#1c1c21',
       panel: '#2a2a31',
       textoPanel: '#f4f4f5',

@@ -102,7 +102,7 @@
   <h3>Guardar y publicar</h3>
   <p id="dialogo-git" style="color:var(--muted);margin:0 0 10px"></p>
   <label for="mensaje"><b>Mensaje del commit</b></label>
-  <input type="text" id="mensaje" value="Actualizar sitio.js desde el panel" />
+  <input type="text" id="mensaje" value="Actualizar el sitio desde el panel" />
   <ul class="registro" id="registro"></ul>
   <div class="botones">
     <button class="btn" id="dialogo-cerrar">Cancelar</button>
@@ -164,6 +164,7 @@ const SECCIONES = {
   webcomics: 'Webcomics', articulo: 'Artículo', widgets: 'Barra lateral', categorias: 'Categorías',
   newsletter: 'Newsletter', sobreMi: 'Sobre mí', pie: 'Pie de página', textos: 'Textos de la interfaz',
   tema: 'Colores', fuentes: 'Fuentes',
+  _imagenes: '🖼 Imágenes', _iconos: '✦ Íconos', _fuentes: '🔤 Archivos de fuentes',
 };
 const GENERAL = ['url', 'base', 'idioma', 'nombre', 'eslogan', 'descripcion', 'imagenCompartir'];
 
@@ -186,7 +187,7 @@ const ETIQUETAS = {
   mensajeOk: 'Mensaje de éxito', mensajeError: 'Mensaje de error', mensajeDemo: 'Mensaje de demostración',
   leyendaFoto: 'Leyenda de la foto', parrafos: 'Párrafos', datos: 'Datos', valor: 'Valor', intereses: 'Intereses',
   tituloIntereses: 'Título de intereses', enlaces: 'Enlaces', modoOscuro: 'Botón modo oscuro', inicial: 'Modo inicial',
-  acentos: 'Colores de acento', claro: 'Modo claro', oscuro: 'Modo oscuro', fondo: 'Fondo', rejilla: 'Rejilla',
+  acentos: 'Colores de acento', orden: 'Orden de las secciones', textoAcento: 'Texto sobre acentos', claro: 'Modo claro', oscuro: 'Modo oscuro', fondo: 'Fondo', rejilla: 'Rejilla',
   suave: 'Texto suave', borde: 'Borde', tarjeta: 'Tarjeta', panel: 'Panel', textoPanel: 'Texto del panel', cinta: 'Cinta',
   principal: 'Fuente principal', manuscrita: 'Fuente manuscrita', pixel: 'Fuente pixel', mono: 'Fuente mono',
   amarillo: 'Amarillo', verde: 'Verde', rosa: 'Rosa', azul: 'Azul', naranja: 'Naranja', morado: 'Morado',
@@ -206,6 +207,7 @@ const LARGOS = new Set(['descripcion', 'bio', 'noEncontradaTexto', 'mensajeDemo'
 const OPCIONES_LISTA = {
   barraDerecha: ['meta', 'autor', 'etiquetas', 'compartir', 'recientes', 'categorias', 'newsletter'],
   barraLateral: ['sobreMi', 'categorias', 'recientes', 'etiquetas', 'newsletter'],
+  orden: ['destacado', 'webcomics', 'ultimos', 'temas', 'autor', 'newsletter'],
 };
 
 function humanizar(k) {
@@ -302,6 +304,10 @@ function controlEscalar(padre, k, nombre, ruta) {
     sel.addEventListener('input', () => { txt.value = sel.value; poner(sel.value); });
     txt.addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test(txt.value)) sel.value = txt.value; poner(txt.value); });
     return h('div', { class: 'colores' }, sel, txt);
+  }
+  if (typeof v === 'string' && /^(avatar|imagen|imagenCompartir|foto)$/.test(nombre) && window.Assets) {
+    const txt = h('input', { type: 'text', value: v ?? '', oninput: (e) => poner(e.target.value) });
+    return h('div', { class: 'colores' }, txt, h('button', { class: 'btn', type: 'button', onclick: () => window.Assets.elegirImagen((url) => { txt.value = url; poner(url); }) }, 'Elegir…'));
   }
   if (typeof v === 'string' && (v.length > 80 || LARGOS.has(nombre))) {
     return h('textarea', { rows: v.length > 200 ? 5 : 3, value: v, oninput: (e) => poner(e.target.value) });
@@ -419,7 +425,7 @@ function botonesFila(arr, i) {
 // Pantalla
 // ---------------------------------------------------------------------------
 function listaSecciones() {
-  return ['general', ...Object.keys(estado).filter((k) => !GENERAL.includes(k))];
+  return ['general', ...Object.keys(estado).filter((k) => !GENERAL.includes(k)), '_imagenes', '_iconos', '_fuentes'];
 }
 
 function pintarMenu() {
@@ -437,7 +443,15 @@ function pintarSeccion() {
   } });
   main.replaceChildren(h('div', { class: 'titulo-seccion' }, h('h2', {}, SECCIONES[seccion] ?? humanizar(seccion)), buscador));
 
-  if (seccion === 'general') {
+  if (seccion.startsWith('_')) {
+    window.Assets ? window.Assets.pintar(seccion, main) : main.append(h('p', {}, 'No se cargó assets.js'));
+    window.scrollTo(0, y);
+    return;
+  }
+  window.Assets?.extras(seccion, main);
+  if (seccion === 'tema') {
+    main.append(...hijosDe({ claro: estado.tema.claro, oscuro: estado.tema.oscuro }, ['tema']));
+  } else if (seccion === 'general') {
     GENERAL.filter((k) => k in estado).forEach((k) => main.append(nodo(estado, k, [], k)));
   } else if (Array.isArray(estado[seccion])) {
     main.append(lista(estado[seccion], seccion, [seccion]));
@@ -482,7 +496,7 @@ $('#btn-publicar').onclick = async () => {
     const g = (await api('datos')).git;
     $('#dialogo-git').textContent = !g.repo
       ? 'Esta carpeta no es un repositorio git: no se podrá publicar.'
-      : `Rama: ${g.rama || '?'} · Remoto: ${g.remoto || 'ninguno'}. Se hará commit solo de sitio.js y luego push.`;
+      : `Rama: ${g.rama || '?'} · Remoto: ${g.remoto || 'ninguno'}. Se hará commit de sitio.js y de lo que cambiaste en imágenes, íconos y fuentes, y luego push.`;
   } catch { $('#dialogo-git').textContent = ''; }
   dlg.showModal();
   $('#mensaje').select();
@@ -510,6 +524,14 @@ $('#dialogo-ok').onclick = async () => {
     $('#dialogo-ok').textContent = 'Reintentar';
   }
   $('#dialogo-ok').disabled = false;
+};
+
+// API compartida con assets.js
+window.Panel = {
+  h, api, aviso, $,
+  get estado() { return estado; },
+  cambio, repintar: () => pintarSeccion(),
+  setIconos: (l) => { ICONOS = l; },
 };
 
 // Aviso al cerrar la pestaña con cambios sin guardar (el borrador igual queda guardado)
@@ -549,5 +571,6 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && tem
   }
 })();
 </script>
+<script src="/assets.js"></script>
 </body>
 </html>
