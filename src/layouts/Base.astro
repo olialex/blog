@@ -18,6 +18,9 @@ import { cssTema, ruta } from '../lib/utils.js';
 
 const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website', lectura } = Astro.props;
 
+// Fuentes propias (woff2 de src/fonts): se precargan para que lleguen antes del primer dibujo
+const fuentesPropias = Object.values(import.meta.glob('../fonts/*.woff2', { query: '?url', import: 'default', eager: true }));
+
 
 const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : sitio.nombre;
 const canonica = new URL(Astro.url.pathname, Astro.site).href;
@@ -49,6 +52,7 @@ const imgAbsoluta = imgFinal
     {imgAbsoluta && <meta property="og:image" content={imgAbsoluta} />}
     <meta name="twitter:card" content={imgAbsoluta ? 'summary_large_image' : 'summary'} />
 
+    {fuentesPropias.map((u) => <link rel="preload" as="font" type="font/woff2" href={u} crossorigin />)}
     {sitio.fuentes.url && <link rel="preconnect" href="https://fonts.googleapis.com" />}
     {sitio.fuentes.url && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
     {sitio.fuentes.url && <link rel="stylesheet" href={sitio.fuentes.url} />}
