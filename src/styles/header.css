@@ -79,3 +79,8 @@ main { padding-top: 28px; }
   .nav-links.abierto { display: flex; }
   .nav-link.active { box-shadow: none; background: var(--grid); border-radius: 6px; }
 }
+
+svg {
+ width: 16px;
+ height: auto;
+}

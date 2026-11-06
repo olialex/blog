@@ -11,6 +11,11 @@ a, button, input, textarea, select, label {
   -webkit-tap-highlight-color: transparent !important;
 }
 
+svg {
+  width: 24px;
+  height: auto;
+}
+
 html { scroll-behavior: smooth; overflow-x: clip; } /* red de seguridad: nada puede crear scroll horizontal */
 
 body {

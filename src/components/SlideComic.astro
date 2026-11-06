@@ -1,0 +1,39 @@
+---
+// Pantalla completa (solo móvil) para una serie o un capítulo: la portada es el fondo y encima
+// va solo lo esencial (número, título y botón). En escritorio no se ve (se usa la cuadrícula).
+import '../styles/slides.css';
+import Foto from './Foto.astro';
+import Icono from './Icono.astro';
+import { sitio } from '../../sitio.js';
+
+const { indice, total, color = 'amarillo', titulo, imagen, alt = '', href, boton, etiqueta, meta, ultimo = false } = Astro.props;
+const t = sitio.textos;
+const dos = (n) => String(n).padStart(2, '0');
+---
+
+<section class:list={['wc-slide', { 'wc-sin-imagen': !imagen }]} style={`--sl:var(--c-${color});--sl-t:var(--t-${color}, #121212)`}>
+  {
+    imagen ? (
+      <Foto class="wc-fondo" src={imagen} alt={alt} widths={[480, 720, 960, 1280]} sizes="100vw" loading="lazy" decoding="async" />
+    ) : (
+      <span class="wc-fondo-emoji" aria-hidden="true">{sitio.webcomics.emoji || '🎞️'}</span>
+    )
+  }
+  <span class="wc-velo" aria-hidden="true"></span>
+
+  <div class="wc-info">
+    <div class="wc-top">
+      <span class="wc-num">{dos(indice)}<small>/{dos(total)}</small></span>
+      {etiqueta && <span class="wc-etiqueta">{etiqueta}</span>}
+    </div>
+    <h2 class="wc-titulo"><a href={href}>{titulo}</a></h2>
+    {meta && <p class="wc-meta">{meta}</p>}
+    <div class="wc-pie">
+      <a class="wc-boton" href={href}>
+        <span>{boton}</span>
+        <Icono nombre="flecha-derecha" tamano={16} />
+      </a>
+      {!ultimo && <span class="wc-desliza" aria-label={t.desliza ?? 'desliza'}><Icono nombre="flecha-abajo" tamano={20} /></span>}
+    </div>
+  </div>
+</section>

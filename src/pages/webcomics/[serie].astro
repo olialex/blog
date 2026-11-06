@@ -2,9 +2,11 @@
 import Base from '../../layouts/Base.astro';
 import Cabecera from '../../components/Cabecera.astro';
 import PostCard from '../../components/PostCard.astro';
+import SlideComic from '../../components/SlideComic.astro';
 import Icono from '../../components/Icono.astro';
+import '../../styles/slides.css';
 import { sitio } from '../../../sitio.js';
-import { getPosts, seriesDe, urlPost } from '../../lib/utils.js';
+import { getPosts, seriesDe, urlPost, portadaDe, formatoFecha } from '../../lib/utils.js';
 
 export async function getStaticPaths() {
   const series = seriesDe(await getPosts());
@@ -16,30 +18,55 @@ const t = sitio.textos;
 const primero = datos.capitulos[0];
 const ultimo = datos.ultimo;
 const n = datos.capitulos.length;
+const colores = ['rosa', 'azul', 'verde', 'naranja', 'morado', 'amarillo']; // orden de colores de las pantallas (móvil)
+const etiquetaSerie = `${n} ${n === 1 ? t.capitulo.toLowerCase() : t.capitulos}`;
+const textoUltimo = ultimo.data.comic.capitulo ? `${t.capAbrev} ${ultimo.data.comic.capitulo}` : ultimo.data.titulo;
 ---
 
 <Base titulo={datos.nombre} descripcion={primero.data.descripcion} imagen={datos.portada}>
-  <div class="contenedor">
-    <Cabecera
-      etiqueta={`${n} ${n === 1 ? t.capitulo.toLowerCase() : t.capitulos}`}
-      titulo={datos.nombre}
-      descripcion={primero.data.descripcion}
-      color="morado"
-      emoji={sitio.webcomics.emoji}
-    />
+  <!-- ===== MÓVIL: una pantalla por capítulo ===== -->
+  <div class="wc-movil">
+    <section class="wc-slide wc-intro">
+      <Cabecera etiqueta={etiquetaSerie} titulo={datos.nombre} descripcion={primero.data.descripcion} color="morado" emoji={sitio.webcomics.emoji} />
+      <p class="acciones-serie" style="margin:0">
+        <a class="btn-cta" href={urlPost(primero)}>
+          <span>{t.empezarLeer}</span>
+          <Icono nombre="flecha-derecha" tamano={16} />
+        </a>
+        {n > 1 && <a class="chip" href={urlPost(ultimo)}>{t.ultimoCap}: {textoUltimo}</a>}
+      </p>
+      <span class="wc-desliza" aria-hidden="true">{t.desliza ?? 'desliza'} <Icono nombre="flecha-abajo" tamano={14} /></span>
+    </section>
+    {
+      datos.capitulos.map((c, i) => (
+        <SlideComic
+          indice={i + 1}
+          total={n}
+          color={colores[i % colores.length]}
+          titulo={c.data.titulo}
+          descripcion={c.data.descripcion}
+          imagen={portadaDe(c) || datos.portada}
+          alt={c.data.portadaAlt}
+          href={urlPost(c)}
+          boton={t.leerCapitulo ?? 'LEER CAPÍTULO'}
+          etiqueta={c.data.comic.capitulo ? `${t.capitulo} ${c.data.comic.capitulo}` : ''}
+          meta={formatoFecha(c.data.fecha)}
+          ultimo={i === n - 1}
+        />
+      ))
+    }
+  </div>
+
+  <!-- ===== ESCRITORIO / TABLET: cuadrícula de siempre ===== -->
+  <div class="contenedor wc-escritorio">
+    <Cabecera etiqueta={etiquetaSerie} titulo={datos.nombre} descripcion={primero.data.descripcion} color="morado" emoji={sitio.webcomics.emoji} />
 
     <p class="acciones-serie">
       <a class="btn-cta" href={urlPost(primero)}>
         <span>{t.empezarLeer}</span>
         <Icono nombre="flecha-derecha" tamano={16} />
       </a>
-      {
-        n > 1 && (
-          <a class="chip" href={urlPost(ultimo)}>
-            {t.ultimoCap}: {ultimo.data.comic.capitulo ? `${t.capAbrev} ${ultimo.data.comic.capitulo}` : ultimo.data.titulo}
-          </a>
-        )
-      }
+      {n > 1 && <a class="chip" href={urlPost(ultimo)}>{t.ultimoCap}: {textoUltimo}</a>}
     </p>
 
     <div class="posts-grid posts-grid-lista">

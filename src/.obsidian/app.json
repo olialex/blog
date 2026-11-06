@@ -1,0 +1,12 @@
+{
+  "useMarkdownLinks": true,
+  "newLinkFormat": "relative",
+  "alwaysUpdateLinks": true,
+  "userIgnoreFilters": [
+    "README.md"
+  ],
+  "promptDelete": false,
+  "attachmentFolderPath": "assets/img",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "content/posts"
+}

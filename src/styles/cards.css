@@ -83,7 +83,13 @@ a.tag:hover { filter: brightness(1.08); }
 .vacio { text-align: center; color: var(--muted); font-weight: 700; margin: 40px 0; }
 .acciones-serie { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin: -10px 0 40px; }
 
+/* ----- Destacados de la portada: 3 en escritorio, 2 en móvil ----- */
+.destacados-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 24px; }
+.destacados-grid .card-portada-titulo { font-size: clamp(1rem, 1.6vw, 1.35rem); }
+
 @media (max-width: 560px) {
+  .destacados-grid { grid-template-columns: repeat(var(--cols-movil, 2), minmax(0, 1fr)); gap: 16px; }
+  .destacado-item.solo-escritorio { display: none; }
   .posts-grid, .posts-grid-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .destacado-portada { aspect-ratio: auto; min-height: 360px; }
   .destacado-info { padding: 22px; }
@@ -111,27 +117,31 @@ a.tag:hover { filter: brightness(1.08); }
 
 /* ----- /articulos/ en móvil: la cuadrícula casi llega a los bordes de la pantalla (6px), como Pinterest ----- */
 @media (max-width: 560px) {
-  .posts-borde { margin-inline: -20px; padding-inline: 14px; column-gap: 8px; }
-  .posts-borde:not(.posts-pin) { row-gap: 8px; }
+  .posts-borde { margin-inline: -20px; padding-inline: 6px; column-gap: 10px; }
+  .posts-borde:not(.posts-pin) { row-gap: 10px; }
   .posts-grid .card-portada { border-radius: 8px; box-shadow: 2px 2px 0 var(--line); }
   .posts-grid .card-portada-top { top: 7px; left: 7px; right: 7px; gap: 4px; }
   .posts-grid .tag { font-size: .58rem; padding: 1px 7px; }
   .posts-grid .card-portada-info { padding: 10px; }
   .posts-grid .card-portada-titulo { font-size: .95rem; }
+
+  .posts-grid.posts-grid-lista{
+    padding: 0 15px;
+  }
 }
 
 /* ----- /articulos/ en pantallas medianas (tablets, laptops pequeñas, ventanas partidas) -----
    Columnas de mínimo 240px: así salen 3 columnas en vez de 2 enormes, y nunca queda 1 sola.
    Si las quieres más pequeñas o grandes, cambia el 240px. */
 @media (min-width: 561px) {
-  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));  padding-inline: 6px;}
+  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
 
 /* ----- Móvil: tarjetas compactas en todo el sitio y cabeceras de sección que no se aprietan ----- */
 @media (max-width: 560px) {
-  .posts-grid:not(.posts-borde) { gap: 16px; }
+  .posts-grid:not(.posts-borde) { gap: 12px; }
   .posts-grid .card-portada-meta { font-size: .6rem; }
-  .section-title-wrap { flex-wrap: wrap; row-gap: 16px; margin-bottom: 20px; }
+  .section-title-wrap { flex-wrap: wrap; row-gap: 10px; margin-bottom: 20px; }
   .section-title { font-size: 1.45rem; }
   .section-title-wrap > div { align-items: center; gap: .7rem; }
   .section-title-wrap .badge-icon { align-self: center; }

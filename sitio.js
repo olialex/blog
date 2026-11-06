@@ -78,12 +78,14 @@ export const sitio = {
   // 4b. SECCIONES DE LA PORTADA
   // --------------------------------------------------------------------------
   home: {
-    mostrarDestacado: true,
+    mostrarDestacado: false,
     cantidadUltimos: 4,
     mostrarWebcomics: true,
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
+    cantidadDestacados: 3,
+    cantidadDestacadosMovil: 2,
     orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
@@ -295,6 +297,9 @@ export const sitio = {
     mostrarMas: 'Mostrar más',
     retomado: 'Seguimos donde lo dejaste.',
     empezarDeNuevo: 'Empezar de nuevo',
+    verSerie: 'VER SERIE',
+    leerCapitulo: 'LEER CAPÍTULO',
+    destacadosTitulo: 'Lo Mas Visto',
     emoji404: '🧭',
   },
 

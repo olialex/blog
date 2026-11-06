@@ -5,4 +5,12 @@ dist/
 panel/.borrador.json
 panel/.respaldo-sitio.js
 panel/.sitio-prueba.mjs
-panel/
+
+# Obsidian
+/.obsidian/
+.trash/
+
+# Secretos y basura
+.env
+.env.*
+*.log

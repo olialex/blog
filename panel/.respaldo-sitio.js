@@ -84,7 +84,8 @@ export const sitio = {
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
-    mostrarContinuar: true,
+    cantidadDestacados: 3,
+    cantidadDestacadosMovil: 2,
     orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
@@ -115,7 +116,6 @@ export const sitio = {
   // --------------------------------------------------------------------------
   articulo: {
     barraProgreso: true,
-    recordarLectura: true,
     mostrarIndice: true,
     mostrarRelacionados: true,
     mostrarAnteriorSiguiente: true,
@@ -295,10 +295,11 @@ export const sitio = {
     explorarVacio: 'No encontré nada con eso.',
     cerrar: 'Cerrar',
     mostrarMas: 'Mostrar más',
-    continuar: 'Continuar leyendo',
     retomado: 'Seguimos donde lo dejaste.',
     empezarDeNuevo: 'Empezar de nuevo',
-    continuarCorto: 'Continuar',
+    verSerie: 'VER SERIE',
+    leerCapitulo: 'LEER CAPÍTULO',
+    destacadosTitulo: 'Lo Mas Visto',
     emoji404: '🧭',
   },
 

@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
-import FeaturedPost from '../components/FeaturedPost.astro';
 import Newsletter from '../components/Newsletter.astro';
 import SerieCard from '../components/SerieCard.astro';
 import Foto from '../components/Foto.astro';
@@ -10,9 +9,12 @@ import { sitio } from '../../sitio.js';
 import { getPosts, contarCategorias, esComic, seriesDe, ruta } from '../lib/utils.js';
 
 const posts = await getPosts();
-const destacado = posts.find((p) => p.data.destacado) ?? posts[0];
+// Destacados: primero los marcados con destacado: true y, si faltan, los más recientes
+const nDest = sitio.home.cantidadDestacados ?? 3;
+const nMovil = Math.min(sitio.home.cantidadDestacadosMovil ?? 2, nDest); // en móvil solo se ven estos
+const destacados = [...posts.filter((p) => p.data.destacado), ...posts.filter((p) => !p.data.destacado)].slice(0, nDest);
 // Los webcomics tienen su propia sección, así que no se repiten en "Últimos artículos"
-const ultimos = posts.filter((p) => p !== destacado && !esComic(p)).slice(0, sitio.home.cantidadUltimos);
+const ultimos = posts.filter((p) => !destacados.includes(p) && !esComic(p)).slice(0, sitio.home.cantidadUltimos);
 const series = seriesDe(posts);
 const categorias = contarCategorias(posts);
 const primerAnio = posts.length ? posts[posts.length - 1].data.fecha.getUTCFullYear() : new Date().getFullYear();
@@ -79,9 +81,23 @@ const orden = (n) => `order:${lista.includes(n) ? lista.indexOf(n) : 50 + base.i
 
   <!-- ============ DESTACADO ============ -->
   {
-    sitio.home.mostrarDestacado && destacado && (
+    sitio.home.mostrarDestacado && destacados.length > 0 && (
       <section class="seccion" id="destacado" style={orden('destacado')}>
-        <FeaturedPost post={destacado} />
+        {t.destacadosTitulo !== '' && (
+          <div class="section-title-wrap">
+            <div>
+              <span class="badge-icon">{t.destacado}</span>
+              <h2 class="section-title">{t.destacadosTitulo ?? 'Destacados'}</h2>
+            </div>
+          </div>
+        )}
+        <div class="destacados-grid" style={`--cols:${destacados.length};--cols-movil:${Math.min(nMovil, destacados.length)}`}>
+          {destacados.map((p, i) => (
+            <div class:list={['destacado-item', { 'solo-escritorio': i >= nMovil }]}>
+              <PostCard post={p} />
+            </div>
+          ))}
+        </div>
       </section>
     )
   }
