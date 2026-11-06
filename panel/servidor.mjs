@@ -325,6 +325,7 @@ export const servidor = http.createServer(async (req, res) => {
     const B = (l) => leerCuerpo(req, l);
     const G = 25_000_000;
     if (req.method === 'GET' && url.pathname === '/api/imagenes') return enviar(res, 200, { imagenes: await arch.listarImagenes() });
+    if (req.method === 'POST' && url.pathname === '/api/imagenes/procesar') return enviar(res, 200, await arch.procesarImagen(await B(60_000_000)));
     if (req.method === 'POST' && url.pathname === '/api/imagenes') return enviar(res, 200, await arch.guardarImagen(await B(G)));
     if (req.method === 'POST' && url.pathname === '/api/imagenes/borrar') { await arch.borrarImagen(await B()); return enviar(res, 200, { ok: true }); }
     if (req.method === 'GET' && url.pathname === '/api/iconos') return enviar(res, 200, await arch.leerIconos());
