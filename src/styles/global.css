@@ -5,7 +5,11 @@
    ========================================================================== */
 
 /* ===== 1. BASE ===== */
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none;;}
+
+a, button, input, textarea, select, label {
+  -webkit-tap-highlight-color: transparent !important;
+}
 
 html { scroll-behavior: smooth; overflow-x: clip; } /* red de seguridad: nada puede crear scroll horizontal */
 
