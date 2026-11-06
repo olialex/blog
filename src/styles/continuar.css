@@ -1,10 +1,19 @@
-/* "Continuar leyendo" (inicio) y aviso de avance retomado */
-.continuar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto 40px; padding: 12px 18px; width: calc(100% - 40px); background: var(--card); border: 2px solid var(--line); border-radius: 12px; box-shadow: 4px 4px 0 var(--line); position: relative; overflow: hidden; text-decoration: none; color: inherit; }
-.continuar[hidden] { display: none; }
-.continuar::after { content: ''; position: absolute; left: 0; bottom: 0; height: 4px; width: var(--avance, 0); background: var(--el-progreso, var(--c-rosa)); }
-.continuar-et { font-family: var(--font-hand); font-size: 1.4rem; color: var(--muted); }
-.continuar b { flex: 1; min-width: 160px; }
-.continuar small { font-weight: 800; }
-.continuar:hover { transform: translateY(-2px); }
-.retomado { display: grid; grid-template-columns: repeat(auto-fit, 1fr); position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 300; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 24px; font-weight: 700; font-size: .9rem; box-shadow: 0 6px 20px #0005; max-width: calc(100vw - 32px); }
-.retomado button { margin-left: 8px; padding: 2px 10px; border: 0; border-radius: 24px; background: var(--c-amarillo); color: var(--t-amarillo, #121212); font-weight: 800; cursor: pointer; }
+/* Botón redondo "Continuar" (abajo a la derecha) */
+.continuar-fab {
+  position: fixed; right: 16px; bottom: 20px; z-index: 200;
+  display: inline-flex; align-items: center; height: 52px; padding: 0 13px; gap: 0; box-sizing: border-box;
+  border: 2px solid var(--line); border-radius: 999px; cursor: pointer;
+  background: var(--c-amarillo); color: var(--t-amarillo, #121212);
+  box-shadow: 3px 3px 0 var(--line); font: 800 .9rem/1 inherit; font-family: inherit;
+  opacity: 0; transform: translateY(14px) scale(.9);
+  transition: opacity .4s ease, transform .4s ease, padding .3s ease;
+}
+.continuar-fab.ver { opacity: 1; transform: none; }
+.continuar-fab.ver.tenue { opacity: .3; }
+.continuar-fab.ver.tenue:hover, .continuar-fab.ver.tenue:focus-visible, .continuar-fab.ver.tenue:active { opacity: 1; }
+.continuar-fab svg { width: 22px; height: 22px; fill: currentColor; flex: none; }
+.continuar-fab span { max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0; transition: max-width .45s ease, opacity .3s ease, margin .3s ease; }
+.continuar-fab.abierto span { max-width: 180px; opacity: 1; margin-left: 8px; }
+.continuar-fab.abierto { padding-right: 18px; }
+@media (prefers-reduced-motion: reduce) { .continuar-fab, .continuar-fab span { transition: none; } }
+@media print { .continuar-fab { display: none; } }

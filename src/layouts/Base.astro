@@ -73,7 +73,7 @@ const imgAbsoluta = imgFinal
       <slot />
     </main>
     <Footer />
-    {lectura && sitio.articulo.recordarLectura !== false && <div hidden data-lectura={JSON.stringify({ titulo: lectura })} data-retomado={sitio.textos.retomado ?? 'Seguimos donde lo dejaste.'} data-nuevo={sitio.textos.empezarDeNuevo ?? 'Empezar de nuevo'}></div>}
+    {lectura && sitio.articulo.recordarLectura !== false && <div hidden data-lectura={JSON.stringify({ titulo: lectura })} data-texto={sitio.textos.continuarCorto ?? 'Continuar'}></div>}
     <script>
       import { iniciarContinuar } from '../scripts/continuar.js';
       iniciarContinuar();

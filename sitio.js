@@ -297,6 +297,7 @@ export const sitio = {
     continuar: 'Continuar leyendo',
     retomado: 'Seguimos donde lo dejaste.',
     empezarDeNuevo: 'Empezar de nuevo',
+    continuarCorto: 'Continuar',
   },
 
   // --------------------------------------------------------------------------
