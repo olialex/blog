@@ -104,7 +104,7 @@ const jsonLd = {
 };
 ---
 
-<Base titulo={d.titulo} descripcion={d.descripcion} imagen={portada} tipo="article" lectura={d.titulo}>
+<Base titulo={d.titulo} descripcion={d.descripcion} imagen={portada} tipo="article">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
 
   {a.barraProgreso && <div class="progreso" id="progreso" aria-hidden="true"></div>}

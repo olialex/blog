@@ -84,7 +84,7 @@ export const sitio = {
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
-    mostrarContinuar: false,
+    mostrarContinuar: true,
     orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
@@ -107,6 +107,7 @@ export const sitio = {
     titulo: 'Webcomics',
     descripcion: 'Series y one-shots para leer capítulo a capítulo.',
     vacio: 'Todavía no hay webcomics publicados.',
+    emoji: '',
   },
 
   // --------------------------------------------------------------------------
@@ -238,7 +239,7 @@ export const sitio = {
     widgetRecientes: 'Lo más nuevo',
     widgetEtiquetas: 'Etiquetas',
     widgetSobreMi: 'Quién escribe',
-    verMas: 'Conóceme >',
+    verMas: 'Conóceme',
     indice: 'En este artículo',
     compartir: 'Compartir',
     copiarEnlace: 'Copiar enlace',
@@ -297,6 +298,8 @@ export const sitio = {
     continuar: 'Continuar leyendo',
     retomado: 'Seguimos donde lo dejaste.',
     empezarDeNuevo: 'Empezar de nuevo',
+    continuarCorto: 'Continuar',
+    emoji404: '🧭',
   },
 
   // --------------------------------------------------------------------------

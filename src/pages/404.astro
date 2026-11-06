@@ -11,7 +11,7 @@ const t = sitio.textos;
 
 <Base titulo="404" descripcion={t.noEncontrada}>
   <div class="contenedor">
-    <Cabecera etiqueta="404" titulo={t.noEncontrada} descripcion={t.noEncontradaTexto} color="rosa" emoji="🧭" />
+    <Cabecera etiqueta="404" titulo={t.noEncontrada} descripcion={t.noEncontradaTexto} color="rosa" emoji={sitio.emoji404} />
     <div class="posts-grid">
       {recientes.map((p) => <PostCard post={p} />)}
     </div>

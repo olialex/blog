@@ -11,7 +11,7 @@ const w = sitio.webcomics;
 
 <Base titulo={w.titulo} descripcion={w.descripcion}>
   <div class="contenedor">
-    <Cabecera etiqueta={w.etiqueta} titulo={w.titulo} descripcion={w.descripcion} color="morado" emoji="🎞️" />
+    <Cabecera etiqueta={w.etiqueta} titulo={w.titulo} descripcion={w.descripcion} color="morado" emoji={w.emoji} />
     {
       series.length > 0 ? (
         <div class="posts-grid">
