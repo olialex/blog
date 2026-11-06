@@ -13,5 +13,4 @@ export default defineConfig({
     shikiConfig: { theme: 'github-dark', wrap: true },
   },
   prefetch: { prefetchAll: true },
-  vite: { build: { assetsInlineLimit: 200000 } },
 });

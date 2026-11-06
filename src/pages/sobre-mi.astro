@@ -42,7 +42,7 @@ const a = sitio.autor;
         <div class="redes redes-grandes">
           {
           a.redes.map((r) => (
-            <a class="chip" href={r.url} target="_blank" rel="noopener noreferrer">
+            <a class="chip" href={r.url} target="_blank" rel="noopener noreferrer" aria-label={r.nombre || r.icono}>
               {r.icono && <Icono nombre={r.icono} tamano={14} />} {r.nombre}
             </a>
           ))

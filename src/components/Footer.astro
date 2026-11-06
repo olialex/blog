@@ -19,7 +19,7 @@ const anio = new Date().getFullYear();
       {
         sitio.autor.redes.map((r) => (
           <li>
-            <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={r.nombre} title={r.nombre}>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={r.nombre || r.icono} title={r.nombre || r.icono}>
               {r.icono ? <Icono nombre={r.icono} tamano={20} /> : r.nombre}
             </a>
           </li>

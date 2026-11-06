@@ -12,9 +12,9 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://blogdeoliver.pages.dev/',
+  url: 'https://blogdeoliver.pages.dev',
 
-  base: '/',
+  base: '',
 
   idioma: 'es',
 
@@ -84,7 +84,7 @@ export const sitio = {
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
-    mostrarContinuar: true,
+    mostrarContinuar: false,
     orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 

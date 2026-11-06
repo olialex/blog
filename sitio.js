@@ -12,7 +12,7 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://blogdeoliver.pages.dev/',
+  url: 'https://blogdeoliver.pages.dev',
 
   base: '',
 
