@@ -5,7 +5,8 @@
    ========================================================================== */
 
 /* ===== 1. BASE ===== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;}
+
 html { scroll-behavior: smooth; overflow-x: clip; } /* red de seguridad: nada puede crear scroll horizontal */
 
 body {
