@@ -24,16 +24,19 @@ body {
 }
 
 img { max-width: 100%; display: block; }
-a { color: inherit; }
-button { font-family: inherit; color: inherit; }
+a { color: inherit; transition: all .20s ease;}
+
+button { font-family: inherit; color: inherit; transition: all .20s ease; }
+
 :focus-visible { outline: 3px solid var(--el-foco, var(--c-azul)); outline-offset: 2px; }
 
 .skip-link {
   position: absolute; left: -999px; top: 8px; z-index: 100;
   background: var(--c-amarillo); color: var(--t-amarillo, #121212); padding: 8px 14px;
   border: 2px solid var(--line); border-radius: 6px; font-weight: 800;
+  transition: all .20s ease;
 }
-.skip-link:focus { left: 8px; }
+.skip-link:focus { left: 8px; transform: none; }
 
 .contenedor { max-width: 1300px; margin: 0 auto; padding: 0 10px; }
 .seccion { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; }
@@ -112,7 +115,7 @@ button { font-family: inherit; color: inherit; }
   text-decoration: none; font-weight: 700; padding: 10px 22px; border-radius: 6px;
   border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--el-sombraBoton, var(--c-amarillo)); transition: all .2s ease;
 }
-.btn-cta:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--el-sombraBoton, var(--c-amarillo)); }
+.btn-cta:hover { transform: translate(-4px, -4px); box-shadow: 6px 6px 0 var(--el-sombraBoton, var(--c-amarillo)); }
 
 .hero-autor {
   display: inline-flex; align-items: center; gap: 10px; margin: 26px auto 0;
@@ -149,7 +152,7 @@ button { font-family: inherit; color: inherit; }
   border: 2.5px solid var(--line); border-radius: 10px; padding: 22px 20px;
   box-shadow: 5px 5px 0 var(--acento, var(--c-amarillo)); transition: transform .2s ease;
 }
-.tema-card:hover { transform: translate(-3px, -3px) rotate(-.6deg); }
+.tema-card:hover { transform: translate(-4px, -4px) rotate(-.6deg); }
 .tema-emoji { font-size: 2rem; line-height: 1; }
 .tema-card strong { font-size: 1.2rem; }
 .tema-card small { color: var(--muted); font-size: .85rem; }
@@ -178,15 +181,21 @@ button { font-family: inherit; color: inherit; }
   padding: 22px; margin: 34px 0; box-shadow: 5px 5px 0 var(--line);
 }
 .caja-autor .autor-foto { width: 90px; height: 90px; }
-.redes { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.redes { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
 
 /* ===== 10. CHIPS ===== */
 .chip {
   display: inline-flex; align-items: center; gap: 6px; background: var(--card); color: var(--ink);
   border: 2px solid var(--line); border-radius: 999px; padding: 5px 14px; font-weight: 800; font-size: .8rem;
-  text-decoration: none; box-shadow: 2px 2px 0 var(--line); cursor: pointer; transition: all .15s ease;
+  text-decoration: none; box-shadow: 2px 2px 0 var(--line); cursor: pointer; transition: all .20s ease;
 }
-.chip:hover, .chip.activo { background: var(--acento, var(--c-amarillo)); color: var(--acento-t, var(--t-amarillo, #121212)); transform: translateY(-2px); box-shadow: 3px 4px 0 var(--line); }
+
+.chip svg{
+  width: 24px;
+  height: auto;
+}
+
+.chip:hover, .chip.activo { background: var(--acento, var(--c-amarillo)); color: var(--acento-t, var(--t-amarillo, #121212)); transform: translateY(-4px); box-shadow: 3px 4px 0 var(--line); }
 .chip small { opacity: .7; }
 .chips-fila { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
 .nube { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -197,8 +206,9 @@ button { font-family: inherit; color: inherit; }
 .pagina {
   display: grid; place-items: center; width: 38px; height: 38px; text-decoration: none; font-weight: 800;
   background: var(--card); border: 2px solid var(--line); border-radius: 8px; box-shadow: 2px 2px 0 var(--line);
+  transition: all .20s ease;
 }
-.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: var(--t-amarillo, #121212); }
+.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: var(--t-amarillo, #121212); transform: translateY(-4px); }
 
 /* ===== 14. NEWSLETTER ===== */
 
@@ -226,10 +236,10 @@ button { font-family: inherit; color: inherit; }
 .newsletter-input:focus { outline: 3px solid var(--el-foco, var(--c-azul)); outline-offset: 1px; }
 .newsletter-btn {
   background: var(--c-amarillo); color: var(--t-amarillo, #121212); border: 2px solid var(--line); padding: 12px 20px;
-  border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0 var(--line); transition: transform .15s ease;
+  border-radius: 6px; font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0 var(--line); transition: all .20s ease;
 }
-.newsletter-btn:hover { transform: translateY(-2px); background: var(--c-naranja); }
-.newsletter-btn:disabled { opacity: .6; cursor: wait; }
+.newsletter-btn:hover { transform: translateY(-4px); background: var(--c-naranja); }
+.newsletter-btn:disabled { opacity: .6; cursor: wait; transform: none; }
 .newsletter-msg { margin-top: 12px; font-size: .88rem; font-weight: 700; min-height: 1.2em; }
 
 /* ===== 15. SOBRE MÍ ===== */
@@ -274,6 +284,16 @@ button { font-family: inherit; color: inherit; }
 .footer-enlaces a:hover { text-decoration: underline; }
 .footer-redes a { font-size: 1.4rem; text-decoration: none; }
 .footer-copy { text-align: center; font-size: .85rem; font-weight: 700; color: var(--muted); margin-top: 22px; }
+
+.footer-redes li a svg{
+  width: 24px;
+  height: auto;
+  transition: all .25s ease;
+}
+
+.footer-redes li a svg:hover{
+  color: var(--c-amarillo);
+}
 
 /* ===== 17. RESPONSIVE (general) ===== */
 @media (max-width: 900px) {
