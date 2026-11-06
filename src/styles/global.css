@@ -185,7 +185,9 @@ button { font-family: inherit; color: inherit; transition: all .20s ease; }
   padding: 22px; margin: 34px 0; box-shadow: 5px 5px 0 var(--line);
 }
 .caja-autor .autor-foto { width: 90px; height: 90px; }
-.redes { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.redes { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+
+
 
 /* ===== 10. CHIPS ===== */
 .chip {
