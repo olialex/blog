@@ -24,7 +24,6 @@
   .navbar-container:hover::before, .navbar-container:focus-within::before { opacity: 0; }
 }
 
-
 main { padding-top: 28px; }
 
 .brand {

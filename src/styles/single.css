@@ -66,6 +66,7 @@
 .prose blockquote {
   border-left: 6px solid var(--el-cita, var(--c-amarillo)); background: var(--card); padding: 14px 20px;
   border-radius: 0 var(--r-md) var(--r-md) 0; font-family: var(--font-hand); font-size: 1.5rem; line-height: 1.35;
+  box-shadow: var(--sombra);
 }
 .prose code:not(pre code) { background: var(--card); border: 1px solid var(--borde); border-radius: var(--r-xs); padding: 1px 6px; font-size: .9em; }
 .prose pre { border: 1px solid var(--borde); border-radius: var(--r-md); padding: 16px; overflow-x: auto; box-shadow: var(--sombra); font-size: .9rem; line-height: 1.6; }

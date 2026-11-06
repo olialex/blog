@@ -70,7 +70,7 @@ export const sitio = {
     resaltado: 'VALEN',
     fraseFin: 'la pena.',
     boton: { texto: 'EXPLORAR ARTÍCULOS', url: '/articulos/', icono: 'flecha-abajo' },
-    mostrarAutor: true,
+    mostrarAutor: false,
     mostrarEstadisticas: true,
   },
 
@@ -342,7 +342,7 @@ export const sitio = {
       textoPanel: '#f4f4f5',
       cinta: 'rgba(120, 110, 80, 0.65)',
     },
-    estilo: { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true },
+    estilo: { esquinas: 'duras', bordeOpacidad: 8, bordeHover: 20, sombras: false },
   },
 
   // --------------------------------------------------------------------------
