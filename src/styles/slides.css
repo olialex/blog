@@ -54,7 +54,7 @@
     border: 1px solid rgba(0,0,0,.1); box-shadow: 0 6px 18px -6px rgba(0,0,0,.5);
   }
   .wc-boton:active { transform: translateY(1px); }
-  .wc-desliza { display: inline-flex; opacity: .85; animation: wc-rebote 1.6s ease-in-out infinite; filter: drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
+  .wc-desliza { display:flex; flex-direction: column; align-items: center; opacity: .85; animation: wc-rebote 1.6s ease-in-out infinite; filter: drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
 }
 
 @keyframes wc-rebote { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
