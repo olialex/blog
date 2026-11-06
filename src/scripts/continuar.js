@@ -9,8 +9,8 @@
 const CLAVE = 'cuaderno:lectura';
 const IR = 'cuaderno:ir'; // se usa al venir del botón del inicio: retoma sin volver a preguntar
 const MAX = 30;
-const ABIERTO_MS = 4500; // cuánto tiempo se ve desplegado con el texto
-const ARTICULO_MS = 12000; // en un artículo, cuánto tarda en desaparecer si no lo usas
+const ABIERTO_MS = 3500; // cuánto tiempo se ve desplegado con el texto
+const ARTICULO_MS = 5500; // en un artículo, cuánto tarda en desaparecer si no lo usas
 
 const leer = () => { try { return JSON.parse(localStorage.getItem(CLAVE) || '{}'); } catch { return {}; } };
 const escribir = (o) => {
