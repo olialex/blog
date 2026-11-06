@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Cabecera from '../components/Cabecera.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Icono from '../components/Icono.astro';
+import Foto from '../components/Foto.astro';
 import { sitio } from '../../sitio.js';
 import { ruta } from '../lib/utils.js';
 
@@ -16,7 +17,7 @@ const a = sitio.autor;
 
     <section class="sobre-grid">
       <div class="polaroid-card cinta">
-        <img src={ruta(a.avatar)} alt={a.nombre} />
+        <Foto src={a.avatar} alt={a.nombre} widths={[280, 560, 840]} sizes="280px" />
         <div class="caption">{s.leyendaFoto}</div>
       </div>
 

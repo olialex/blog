@@ -2,10 +2,17 @@
 // Novela gráfica animada: dibuja las escenas del frontmatter (tipo: novela).
 // Toda la animación la hace src/scripts/novela.js al hacer scroll.
 import { escenasNovela } from '../lib/utils.js';
+import { urlImagen } from '../lib/imagenes.js';
 import { sitio } from '../../sitio.js';
 
 const { post } = Astro.props;
-const escenas = escenasNovela(post);
+const escenas = await Promise.all(
+  escenasNovela(post).map(async (e) => ({
+    ...e,
+    imagen: await urlImagen(e.imagen, 1920),
+    capas: await Promise.all(e.capas.map(async (c) => ({ ...c, imagen: await urlImagen(c.imagen, 1920) }))),
+  })),
+);
 const t = sitio.textos;
 
 // Lo que necesita el script de cada escena (sin los textos, que ya están en el HTML)

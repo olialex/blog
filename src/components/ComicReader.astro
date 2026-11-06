@@ -2,11 +2,12 @@
 import { sitio } from '../../sitio.js';
 import Icono from './Icono.astro';
 import { paginasComic } from '../lib/utils.js';
+import { urlImagen } from '../lib/imagenes.js';
 
 // Lector de webcomic. Lee los datos del frontmatter:  comic.modo, comic.direccion, comic.paginas
 const { post } = Astro.props;
 const c = post.data.comic;
-const paginas = paginasComic(post);
+const paginas = await Promise.all(paginasComic(post).map(async (p) => ({ ...p, imagen: await urlImagen(p.imagen, 1200) })));
 const modo = c.modo ?? 'vertical';
 const dir = c.direccion ?? 'ltr';
 const t = sitio.textos;

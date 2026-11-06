@@ -1,6 +1,7 @@
 ---
 import { sitio } from '../../sitio.js';
 import Icono from './Icono.astro';
+import Foto from './Foto.astro';
 import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, portadaDe, serieNombre } from '../lib/utils.js';
 
 const { post } = Astro.props;
@@ -17,7 +18,7 @@ const dato = comic ? serieNombre(post) : `${tiempoLectura(post.body)} ${t.minLec
   <a class="card-portada-link" href={url}>
     {
       portada ? (
-        <img class="card-portada-img" src={portada} alt="" fetchpriority="high" decoding="async" />
+        <Foto class="card-portada-img" src={portada} widths={[480, 800, 1200, 1600]} sizes="(max-width: 1100px) 100vw, 1060px" fetchpriority="high" decoding="async" />
       ) : (
         <span class="card-portada-fondo" aria-hidden="true">{cat.emoji}</span>
       )

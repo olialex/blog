@@ -8,27 +8,28 @@ import '../styles/sidebar.css';
 import '../styles/single.css';
 import '../styles/comic.css';
 import '../styles/novela.css';
-import '../styles/fuentes.css'; // fuentes propias (las gestiona el panel)
+import '../styles/fuentes.css'; 
 import '../styles/continuar.css';
-import '../styles/hover.css'; // ← la clase .hover-opacidad vive solo aquí. Quita esta línea para desactivarla
+import '../styles/hover.css';
 import { sitio } from '../../sitio.js';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import { cssTema, ruta } from '../lib/utils.js';
+import { cssTema } from '../lib/utils.js';
+import { urlImagen } from '../lib/imagenes.js';
+import { ruta } from '../lib/utils.js'; // ← ¡Añade esta línea aquí!
 
-const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website', lectura } = Astro.props;
-
-// Fuentes propias (woff2 de src/fonts): se precargan para que lleguen antes del primer dibujo
+const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website', lectura } = Astro.props;// Fuentes propias (woff2 de src/fonts): se precargan para que lleguen antes del primer dibujo
 const fuentesPropias = Object.values(import.meta.glob('../fonts/*.woff2', { query: '?url', import: 'default', eager: true }));
 
 
 const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : sitio.nombre;
 const canonica = new URL(Astro.url.pathname, Astro.site).href;
 const imgFinal = imagen || sitio.imagenCompartir;
+// Imagen al compartir: si está en src/assets se genera una versión JPG de 1200px
 const imgAbsoluta = imgFinal
   ? imgFinal.startsWith('http')
     ? imgFinal
-    : new URL(ruta(imgFinal), Astro.site).href
+    : new URL(await urlImagen(imgFinal, 1200, 'jpeg'), Astro.site).href
   : null;
 ---
 

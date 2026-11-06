@@ -1,6 +1,7 @@
 ---
 import { sitio } from '../../../sitio.js';
 import { formatoFecha, urlPost, portadaDe } from '../../lib/utils.js';
+import Foto from '../Foto.astro';
 
 const { posts } = Astro.props;
 const recientes = posts.slice(0, sitio.widgets.recientesCantidad);
@@ -12,7 +13,7 @@ const recientes = posts.slice(0, sitio.widgets.recientesCantidad);
     {
       recientes.map((p) => (
         <li>
-          {portadaDe(p) && <img src={portadaDe(p)} alt="" loading="lazy" />}
+          {portadaDe(p) && <Foto src={portadaDe(p)} widths={[96, 192]} sizes="64px" loading="lazy" decoding="async" />}
           <div>
             <a href={urlPost(p)}>{p.data.titulo}</a>
             <small>{formatoFecha(p.data.fecha)}</small>

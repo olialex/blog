@@ -53,8 +53,8 @@ export function esNovela(post) {
 export function escenasNovela(post) {
   return post.data.novela.escenas.map((e) => ({
     ...e,
-    imagen: ruta(e.imagen),
-    capas: e.capas.map((c) => ({ ...c, imagen: ruta(c.imagen) })),
+    imagen: e.imagen,
+    capas: e.capas.map((c) => ({ ...c })),
   }));
 }
 
@@ -62,14 +62,14 @@ export function escenasNovela(post) {
 export function paginasComic(post) {
   return (post.data.comic?.paginas ?? []).map((p) =>
     typeof p === 'string'
-      ? { imagen: ruta(p), alt: '', nota: '' }
-      : { imagen: ruta(p.imagen), alt: p.alt ?? '', nota: p.nota ?? '' },
+      ? { imagen: p, alt: '', nota: '' }
+      : { imagen: p.imagen, alt: p.alt ?? '', nota: p.nota ?? '' },
   );
 }
 
 // Imagen de portada: la del artículo o, si es webcomic, su primera página
 export function portadaDe(post) {
-  return post.data.portada ? ruta(post.data.portada) : esComic(post) ? paginasComic(post)[0]?.imagen : esNovela(post) ? escenasNovela(post)[0].imagen : undefined;
+  return post.data.portada ? post.data.portada : esComic(post) ? paginasComic(post)[0]?.imagen : esNovela(post) ? escenasNovela(post)[0].imagen : undefined;
 }
 
 // Nombre de la serie (si no hay, el webcomic cuenta como one-shot con su propio título)

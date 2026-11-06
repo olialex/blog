@@ -4,6 +4,7 @@ import PostCard from '../components/PostCard.astro';
 import FeaturedPost from '../components/FeaturedPost.astro';
 import Newsletter from '../components/Newsletter.astro';
 import SerieCard from '../components/SerieCard.astro';
+import Foto from '../components/Foto.astro';
 import Icono from '../components/Icono.astro';
 import { sitio } from '../../sitio.js';
 import { getPosts, contarCategorias, esComic, seriesDe, ruta } from '../lib/utils.js';
@@ -49,7 +50,7 @@ const orden = (n) => `order:${lista.includes(n) ? lista.indexOf(n) : 50 + base.i
     {
       h.mostrarAutor && (
         <div class="hero-autor">
-          <img src={ruta(sitio.autor.avatar)} alt={sitio.autor.nombre} />
+          <Foto src={sitio.autor.avatar} alt={sitio.autor.nombre} widths={[32, 64, 96]} sizes="32px" />
           <span>
             {t.escritoPor} <strong>{sitio.autor.nombre}</strong> · {sitio.autor.ubicacion}
           </span>
@@ -148,7 +149,7 @@ const orden = (n) => `order:${lista.includes(n) ? lista.indexOf(n) : 50 + base.i
     sitio.home.mostrarAutor && (
       <section class="seccion" id="autor" style={orden('autor')}>
         <div class="autor-franja cinta">
-          <img class="autor-foto" src={ruta(sitio.autor.avatar)} alt={sitio.autor.nombre} loading="lazy" />
+          <Foto class="autor-foto" src={sitio.autor.avatar} alt={sitio.autor.nombre} widths={[160, 320, 480]} sizes="160px" loading="lazy" decoding="async" />
           <div>
             <div class="handwritten-label">{t.autorSeccion}</div>
             <h2 class="autor-nombre">{sitio.autor.nombre}</h2>

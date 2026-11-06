@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
 import TOC from '../../components/TOC.astro';
 import ListaCapitulos from '../../components/ListaCapitulos.astro';
 import ComicReader from '../../components/ComicReader.astro';
@@ -158,7 +159,7 @@ const jsonLd = {
         <h1>{d.titulo}</h1>
         <p class="articulo-desc">{d.descripcion}</p>
         <div class="post-meta">
-          <img class="mini-avatar" src={ruta(sitio.autor.avatar)} alt="" />
+          <Foto class="mini-avatar" src={sitio.autor.avatar} widths={[32, 64, 96]} sizes="32px" />
           <span>{sitio.autor.nombre}</span> •
           <span>{formatoFecha(d.fecha)}</span> •
           <span>{comic ? `${d.comic.paginas.length} ${t.paginas}` : `${tiempoLectura(post.body)} ${t.minLectura}`}</span>
@@ -174,7 +175,7 @@ const jsonLd = {
         ) : (
           portada && (
             <figure class="portada">
-              <img src={portada} alt={d.portadaAlt ?? ''} />
+              <Foto src={portada} alt={d.portadaAlt ?? ''} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 720px" fetchpriority="high" decoding="async" />
             </figure>
           )
         )

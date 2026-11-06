@@ -232,7 +232,20 @@ button { font-family: inherit; color: inherit; }
 .newsletter-msg { margin-top: 12px; font-size: .88rem; font-weight: 700; min-height: 1.2em; }
 
 /* ===== 15. SOBRE MÍ ===== */
-.sobre-grid { display: grid; grid-template-columns: 280px 1fr; gap: 50px; align-items: start; margin-bottom: 80px; }
+.sobre-grid { display: grid; grid-template-columns: 280px 1fr; gap: 50px; align-items: start; margin: 0 20px 80px; }
+
+@media (max-width: 1000px){
+  .sobre-grid{
+    margin: 0 50px 80px;
+  }
+}
+
+@media (max-width: 560px){
+  .sobre-grid{
+    margin: 0 10px 80px;
+  }
+}
+
 .polaroid-card {
   background: var(--card); padding: 12px 12px 26px; border: 2px solid var(--line);
   box-shadow: 5px 6px 0 rgba(0,0,0,.18); text-align: center; transform: rotate(-3deg);

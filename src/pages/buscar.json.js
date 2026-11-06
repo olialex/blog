@@ -1,3 +1,4 @@
+import { urlImagen } from '../lib/imagenes.js';
 import { getPosts, urlPost, categoriaInfo, formatoFecha, portadaDe, esComic } from '../lib/utils.js';
 
 // Índice que usa el Explorador de artículos (se genera al compilar)
@@ -13,7 +14,7 @@ export async function GET() {
       cn: cat.nombre,
       ce: cat.emoji,
       e: p.data.etiquetas,
-      i: portadaDe(p) ?? '',
+      i: (await urlImagen(portadaDe(p), 400)) ?? '',
       f: formatoFecha(p.data.fecha),
       x: esComic(p),
     };

@@ -1,5 +1,6 @@
 ---
 import { sitio } from '../../sitio.js';
+import Foto from './Foto.astro';
 import { categoriaInfo, formatoFecha, tiempoLectura, urlPost, esComic, esNovela, portadaDe, serieNombre } from '../lib/utils.js';
 
 // Tarjeta tipo PORTADA: imagen vertical a todo el tamaño con el título encima
@@ -20,7 +21,7 @@ const meta = comic
   <a class="card-portada-link" href={url}>
     {
       portada ? (
-        <img class="card-portada-img" src={portada} alt="" loading="lazy" />
+        <Foto class="card-portada-img" src={portada} widths={[300, 500, 700]} sizes="(max-width: 560px) 50vw, 340px" loading="lazy" decoding="async" />
       ) : (
         <span class="card-portada-fondo" aria-hidden="true">{cat.emoji}</span>
       )
