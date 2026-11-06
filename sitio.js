@@ -342,12 +342,7 @@ export const sitio = {
       textoPanel: '#f4f4f5',
       cinta: 'rgba(120, 110, 80, 0.65)',
     },
-    estilo: {
-      esquinas: 'redondeadas', // 'redondeadas' | 'duras'
-      bordeOpacidad: 8,        // % del borde
-      bordeHover: 20,          // % del borde al pasar el mouse
-      sombras: true,
-    },
+    estilo: { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true },
   },
 
   // --------------------------------------------------------------------------
