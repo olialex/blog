@@ -10,10 +10,10 @@
 .comic-pagina figcaption { font-family: var(--font-hand); font-size: 1.2rem; color: var(--muted); padding: 10px 4px; text-align: center; background: var(--card); }
 
 /* Vertical: un solo marco para toda la tira */
-.comic[data-modo="vertical"] .comic-paginas { border: 3px solid var(--line); box-shadow: 6px 6px 0 var(--line); background: var(--card); }
+.comic[data-modo="vertical"] .comic-paginas { border: 1px solid var(--borde); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sombra); background: var(--card); }
 
 /* Paginado: cada página con su marco */
-.comic[data-modo="paginado"] .comic-pagina { border: 3px solid var(--line); box-shadow: 6px 6px 0 var(--line); background: var(--card); }
+.comic[data-modo="paginado"] .comic-pagina { border: 1px solid var(--borde); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sombra); background: var(--card); }
 .comic-js .comic-pagina { display: none; cursor: pointer; }
 .comic-js .comic-pagina.activa { display: block; }
 
@@ -22,27 +22,27 @@
 .comic-js .comic-barra { display: flex; }
 .comic-barra button {
   display: grid; place-items: center; width: 38px; height: 38px; cursor: pointer;
-  background: var(--card); color: var(--ink); border: 2px solid var(--line); border-radius: 50%;
-  box-shadow: 2px 2px 0 var(--line); transition: transform .15s ease, background-color .15s ease;
+  background: var(--card); color: var(--ink); border: 1px solid var(--borde); border-radius: 50%;
+  transition: transform .15s ease, background-color .15s ease, border-color .15s ease;
 }
-.comic-barra button:hover { background: var(--c-amarillo); color: var(--t-amarillo, #121212); transform: translateY(-2px); }
+.comic-barra button:hover { background: var(--panel); color: var(--panel-ink); border-color: transparent; box-shadow: var(--sombra); }
 .comic-contador { font-weight: 800; font-size: .9rem; text-align: center; min-width: 120px; }
 .comic-rtl { display: block; font-size: .68rem; font-weight: 700; color: var(--muted); }
 
 /* Navegación entre capítulos */
-.comic-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 20px 0 30px; }
+.comic-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; margin: 20px 0 30px; }
 .comic-nav-item {
   display: inline-flex; align-items: center; gap: 8px; width: fit-content; text-decoration: none;
-  font-weight: 800; font-size: .88rem; background: var(--card); border: 1.5px solid var(--line);
-  border-radius: 999px; padding: 8px 16px; box-shadow: 3px 3px 0 var(--line); transition: transform .15s ease, background-color .15s ease;
+  font-weight: 700; font-size: .88rem; background: var(--card); border: 1px solid var(--borde);
+  border-radius: var(--r-pill); padding: 8px 16px; transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
-.comic-nav-item:hover { background: var(--c-amarillo); color: var(--t-amarillo, #121212); transform: translateY(-2px); }
+.comic-nav-item:hover { background: color-mix(in srgb, var(--c-morado) var(--tinte), var(--card)); border-color: var(--borde-h); }
 .comic-nav-item.centro { justify-self: center; }
 .comic-nav-item.der { justify-self: end; }
 .comic-nav-fin { justify-self: end; color: var(--muted); font-weight: 700; font-size: .85rem; }
 
 @media (max-width: 560px) {
-  .comic-nav { display: flex; flex-wrap: wrap; justify-content: center; gap:1rem }
+  .comic-nav { grid-template-columns: 1fr 1fr; }
   .comic-nav-item.centro { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; justify-content: center; }
 }
 

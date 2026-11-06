@@ -20,6 +20,7 @@ import NewsletterWidget from '../../components/widgets/NewsletterWidget.astro';
 import { sitio } from '../../../sitio.js';
 import {
   getPosts,
+  getTodos,
   categoriaInfo,
   formatoFecha,
   tiempoLectura,
@@ -34,22 +35,24 @@ import {
 } from '../../lib/utils.js';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
-  return posts.map((post, i) => {
+  const todos = await getTodos(); // incluye los no listados: tienen página, aunque no salgan en listas
+  const posts = todos.filter((p) => !p.data.noListado); // lo que se recomienda y se enlaza
+  return todos.map((post) => {
+    const i = posts.findIndex((p) => p.slug === post.slug); // -1 si es no listado
     // Relacionados: misma categoría o etiquetas en común
     const puntaje = (otro) =>
       (otro.data.categoria === post.data.categoria ? 2 : 0) +
       otro.data.etiquetas.filter((e) => post.data.etiquetas.includes(e)).length;
     const relacionados = posts
-      .filter((otro) => otro !== post && puntaje(otro) > 0)
+      .filter((otro) => otro.slug !== post.slug && puntaje(otro) > 0)
       .sort((a, b) => puntaje(b) - puntaje(a))
       .slice(0, 4);
     return {
       params: { slug: post.slug },
       props: {
         post,
-        anterior: posts[i + 1] ?? null, // el siguiente más viejo
-        siguiente: posts[i - 1] ?? null, // el siguiente más nuevo
+        anterior: i >= 0 ? posts[i + 1] ?? null : null, // el siguiente más viejo
+        siguiente: i >= 0 ? posts[i - 1] ?? null : null, // el siguiente más nuevo
         relacionados,
       },
     };
@@ -104,7 +107,7 @@ const jsonLd = {
 };
 ---
 
-<Base titulo={d.titulo} descripcion={d.descripcion} imagen={portada} tipo="article">
+<Base titulo={d.titulo} descripcion={d.descripcion} imagen={portada} tipo="article" noindex={d.noListado}>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
 
   {a.barraProgreso && <div class="progreso" id="progreso" aria-hidden="true"></div>}

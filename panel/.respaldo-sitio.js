@@ -78,7 +78,7 @@ export const sitio = {
   // 4b. SECCIONES DE LA PORTADA
   // --------------------------------------------------------------------------
   home: {
-    mostrarDestacado: true,
+    mostrarDestacado: false,
     cantidadUltimos: 4,
     mostrarWebcomics: true,
     mostrarTemas: true,
@@ -336,7 +336,7 @@ export const sitio = {
       rejilla: '#1d1d21',
       texto: '#f4f4f5',
       suave: '#a1a1aa',
-      borde: '#cccccc',
+      borde: '#ffcf25',
       tarjeta: '#1c1c21',
       panel: '#2a2a31',
       textoPanel: '#f4f4f5',

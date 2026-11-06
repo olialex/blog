@@ -188,7 +188,7 @@ const ETIQUETAS = {
   leyendaFoto: 'Leyenda de la foto', parrafos: 'Párrafos', datos: 'Datos', valor: 'Valor', intereses: 'Intereses',
   tituloIntereses: 'Título de intereses', enlaces: 'Enlaces', modoOscuro: 'Botón modo oscuro', inicial: 'Modo inicial',
   acentos: 'Colores de acento', orden: 'Orden de las secciones', textoAcento: 'Texto sobre acentos', claro: 'Modo claro', oscuro: 'Modo oscuro', fondo: 'Fondo', rejilla: 'Rejilla',
-  suave: 'Texto suave', borde: 'Borde', tarjeta: 'Tarjeta', panel: 'Panel', textoPanel: 'Texto del panel', cinta: 'Cinta',
+  suave: 'Texto suave', borde: 'Color base del borde', estilo: 'Estilo', esquinas: 'Esquinas', bordeOpacidad: 'Opacidad del borde (%)', bordeHover: 'Opacidad del borde al pasar el mouse (%)', sombras: 'Sombras suaves', tarjeta: 'Tarjeta', panel: 'Panel', textoPanel: 'Texto del panel', cinta: 'Cinta',
   principal: 'Fuente principal', manuscrita: 'Fuente manuscrita', pixel: 'Fuente pixel', mono: 'Fuente mono',
   amarillo: 'Amarillo', verde: 'Verde', rosa: 'Rosa', azul: 'Azul', naranja: 'Naranja', morado: 'Morado',
   nombreRed: 'Nombre',
@@ -202,6 +202,10 @@ const PISTAS = {
   accion: 'Si lo dejas vacío, el formulario funciona en modo demostración.',
   cinta: 'Formato rgba(r, g, b, opacidad)',
   inicial: 'sistema = sigue el modo de tu dispositivo',
+  esquinas: 'redondeadas = esquinas suaves · duras = casi rectas',
+  bordeOpacidad: 'Recomendado: 8. Súbelo si quieres bordes más visibles.',
+  bordeHover: 'Recomendado: 20.',
+  borde: 'Color con el que se calculan los bordes (se mezcla con la opacidad de Estilo).',
 };
 const LARGOS = new Set(['descripcion', 'bio', 'noEncontradaTexto', 'mensajeDemo', 'textoWidget']);
 const OPCIONES_LISTA = {
@@ -221,6 +225,7 @@ function opcionesPara(nombre, ruta) {
   if (nombre === 'posicion') return ['tl', 'tr', 'bl', 'br'];
   if (nombre === 'estilo') return ['pinterest', 'cuadricula'];
   if (nombre === 'inicial') return ['sistema', 'claro', 'oscuro'];
+  if (nombre === 'esquinas') return ['redondeadas', 'duras'];
   if (nombre === 'color' && (ruta.includes('insignias') || ruta.includes('categorias'))) return Object.keys(estado.tema.acentos);
   return null;
 }
@@ -454,7 +459,8 @@ function pintarSeccion() {
   }
   window.Assets?.extras(seccion, main);
   if (seccion === 'tema') {
-    main.append(...hijosDe({ claro: estado.tema.claro, oscuro: estado.tema.oscuro }, ['tema']));
+    estado.tema.estilo ??= { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true };
+    main.append(...hijosDe({ estilo: estado.tema.estilo, claro: estado.tema.claro, oscuro: estado.tema.oscuro }, ['tema']));
   } else if (seccion === 'general') {
     GENERAL.filter((k) => k in estado).forEach((k) => main.append(nodo(estado, k, [], k)));
   } else if (Array.isArray(estado[seccion])) {

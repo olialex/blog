@@ -51,11 +51,10 @@
   .wc-boton {
     display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 800; font-size: .88rem;
     padding: 10px 20px; border-radius: 999px; background: var(--sl); color: var(--sl-t);
-    border: 2px solid rgba(0,0,0,.85); box-shadow: 3px 3px 0 rgba(0,0,0,.85);
+    border: 1px solid rgba(0,0,0,.1); box-shadow: 0 6px 18px -6px rgba(0,0,0,.5);
   }
-  .wc-boton:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(0,0,0,.85); }
-  .wc-desliza { display: flex; align-items: center; opacity: .85; animation: wc-rebote 1.6s ease-in-out infinite; filter: drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
-  .wc-desliza svg { width: 24px; height: auto;} 
+  .wc-boton:active { transform: translateY(1px); }
+  .wc-desliza { display: inline-flex; opacity: .85; animation: wc-rebote 1.6s ease-in-out infinite; filter: drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
 }
 
 @keyframes wc-rebote { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }

@@ -2,9 +2,15 @@ import { getCollection } from 'astro:content';
 import { sitio } from '../../sitio.js';
 
 // Todos los artículos, del más nuevo al más viejo (los borradores solo se ven en desarrollo)
-export async function getPosts() {
+// Todos los posts publicados, incluidos los "no listados" (solo lo usa la página de cada artículo)
+export async function getTodos() {
   const posts = await getCollection('posts', ({ data }) => import.meta.env.DEV || !data.borrador);
   return posts.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+}
+
+// Los posts que sí salen en listas, buscador, RSS y recomendaciones (sin los "no listados")
+export async function getPosts() {
+  return (await getTodos()).filter((p) => !p.data.noListado);
 }
 
 // Agrega la base del sitio (astro.config.mjs → base) a un enlace interno: '/articulos/' → '/mi-repo/articulos/'
@@ -176,10 +182,25 @@ export function cssTema() {
   const reglas = Object.keys(acentos)
     .map((k) => `[style*="--acento:var(--c-${k})"]{--acento-t:var(--t-${k});}`)
     .join('');
+  // Estilo general: opacidad de bordes, sombras y esquinas (tema.estilo, se edita en el panel → Colores)
+  const e = { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true, ...(sitio.tema.estilo ?? {}) };
+  const pct = (n, def) => `${Number.isFinite(Number(n)) ? Math.min(100, Math.max(0, Number(n))) : def}%`;
+  const radios = e.esquinas === 'duras'
+    ? '--r-xs:0;--r-sm:2px;--r-md:3px;--r-lg:4px;--r-pill:3px;'
+    : '--r-xs:6px;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-pill:999px;';
+  const conSombra = e.sombras !== false;
+  const estilo =
+    `--borde-pct:${pct(e.bordeOpacidad, 8)};--borde-h-pct:${pct(e.bordeHover, 20)};${radios}` +
+    (conSombra
+      ? '--sombra:0 1px 2px rgba(0,0,0,.04),0 10px 28px -12px rgba(0,0,0,.16);--sombra-h:0 2px 4px rgba(0,0,0,.05),0 18px 36px -14px rgba(0,0,0,.26);'
+      : '--sombra:none;--sombra-h:none;');
+  const estiloOscuro = conSombra
+    ? '--sombra:0 1px 2px rgba(0,0,0,.3),0 12px 30px -12px rgba(0,0,0,.6);--sombra-h:0 2px 4px rgba(0,0,0,.35),0 20px 38px -14px rgba(0,0,0,.7);'
+    : '';
   return (
-    `:root{${colores}${textos}${elementos}${bloque(claro)}` +
+    `:root{${colores}${textos}${elementos}${bloque(claro)}${estilo}` +
     `--font-main:${f.principal};--font-hand:${f.manuscrita};--font-pixel:${f.pixel};--font-mono:${f.mono};}` +
-    `[data-theme="dark"]{${bloque(oscuro)}}` +
+    `[data-theme="dark"]{${bloque(oscuro)}${estiloOscuro}}` +
     reglas
   );
 }

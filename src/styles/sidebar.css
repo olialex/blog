@@ -1,13 +1,13 @@
 /* ==========================================================================
    LISTADOS CON BARRA LATERAL + WIDGETS DISCRETOS
-   Sin cajas, sin sombras: solo una línea punteada arriba de cada widget.
+   Sin cajas, sin sombras: solo una línea suave arriba de cada widget.
    (Estos estilos sirven para la barra lateral de los listados y para la
    columna derecha del artículo.)
    ========================================================================== */
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 44px; align-items: start; margin-bottom: 70px; }
 .sidebar { display: flex; flex-direction: column; gap: 22px; font-size: .85rem; }
 
-.widget { padding-top: 2rem; border-top: 1px dashed var(--muted); }
+.widget { padding-top: 2rem; border-top: 1px solid var(--borde); }
 .widget-titulo {
   width: 100%;
   font-family: var(--font-main); font-size: .68rem; font-weight: 800; line-height: 1.2;
@@ -21,51 +21,54 @@
   flex-direction: column;
   align-items: center;
 }
-.widget-autor .autor-foto { width: 100px; height: 100px; margin: 0 0 16px; box-shadow: none; border: solid 2px var(--acento, var(--c-azul)); border-radius: 12px}
+.widget-autor .autor-foto { width: 52px; height: 52px; margin: 0 0 8px; box-shadow: none; }
 .widget-autor .autor-nombre { font-size: 1rem; margin: 0 0 4px; }
 .widget-autor .redes { justify-content: flex-start; margin: 8px 0; }
 
-.widget .chip { font-size: .72rem; padding: 3px 10px; border-width: 1px; box-shadow: none; }
-.widget .chip:hover { transform: none; box-shadow: none; }
+.widget .chip { font-size: .72rem; padding: 3px 10px; }
 .widget .chip-icono { padding: 5px 8px; }
 
 .lista-simple { list-style: none; display: flex; flex-direction: column; gap: 2px; }
-.lista-simple a { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; padding: 4px 6px; border-radius: 6px; }
-.lista-simple a:hover { background: var(--grid); }
-.punto { width: 10px; height: 10px; border-radius: 50%; background: var(--acento); border: 1.5px solid var(--line); flex-shrink: 0; }
+.lista-simple a { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; padding: 4px 6px; border-radius: var(--r-xs); transition: background-color .15s ease; }
+.lista-simple a:hover { background: color-mix(in srgb, var(--acento, var(--c-amarillo)) var(--tinte), transparent); }
+.punto { width: 9px; height: 9px; border-radius: 50%; background: var(--acento); flex-shrink: 0; }
 .widget .contador { box-shadow: none; font-size: .66rem; }
 
 .recientes { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .recientes li { display: flex; gap: 10px; align-items: center; }
-.recientes img { width: 42px; height: 56px; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); flex-shrink: 0; }
+.recientes img { width: 42px; height: 56px; object-fit: cover; border-radius: var(--r-xs); border: 1px solid var(--borde); flex-shrink: 0; }
 .recientes a { font-weight: 700; font-size: .85rem; line-height: 1.25; text-decoration: none; display: block; }
-.recientes a:hover { text-decoration: underline; }
+.recientes li:nth-child(6n+1) { --acento: var(--c-amarillo); } .recientes li:nth-child(6n+2) { --acento: var(--c-rosa); } .recientes li:nth-child(6n+3) { --acento: var(--c-azul); }
+.recientes li:nth-child(6n+4) { --acento: var(--c-verde); } .recientes li:nth-child(6n+5) { --acento: var(--c-naranja); } .recientes li:nth-child(6n+6) { --acento: var(--c-morado); }
+.recientes a { background: linear-gradient(var(--acento, var(--c-amarillo)), var(--acento, var(--c-amarillo))) 0 100% / 0 2px no-repeat; transition: background-size .25s ease; width: fit-content; }
+.recientes a:hover { background-size: 100% 2px; }
 .recientes small { color: var(--muted); font-weight: 600; font-size: .72rem; }
 
 .resultados { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
 .resultados li { border-left: 3px solid var(--el-resultados, var(--c-amarillo)); padding-left: 10px; }
 .resultados a { font-weight: 700; text-decoration: none; display: block; font-size: .85rem; }
-.resultados a:hover { text-decoration: underline; }
+.resultados a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--el-resultados, var(--c-amarillo)); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .resultados small { display: block; color: var(--muted); font-size: .74rem; line-height: 1.3; }
 .resultados .sin-resultados { border-left-color: var(--c-rosa); color: var(--muted); font-weight: 700; }
 
-.widget .newsletter-input { padding: 8px 10px; font-size: .82rem; box-shadow: none; border-width: 1px; }
-.widget .newsletter-btn { padding: 8px 12px; font-size: .78rem; box-shadow: none; border-width: 1px; }
+.widget .newsletter-input { padding: 8px 14px; font-size: .82rem; }
+.widget .newsletter-btn { padding: 8px 14px; font-size: .78rem; }
 
 .meta-lista { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .meta-lista li { display: flex; justify-content: space-between; gap: 10px; font-size: .8rem; }
 .meta-lista span { color: var(--muted); }
 .meta-lista b, .meta-lista a { font-weight: 700; text-align: right; text-decoration: none; }
-.meta-lista a:hover { text-decoration: underline; }
+.meta-lista a:hover { text-decoration: underline; text-decoration-color: var(--c-rosa); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
 /* ----- Paginación ----- */
 .paginacion { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
 .paginas { list-style: none; display: flex; gap: 8px; }
 .pagina {
   display: grid; place-items: center; width: 36px; height: 36px; text-decoration: none; font-weight: 800;
-  background: var(--card); border: 2px solid var(--line); border-radius: 8px; box-shadow: 2px 2px 0 var(--line);
+  background: var(--card); border: 1px solid var(--borde); border-radius: var(--r-sm); transition: background-color .15s ease, border-color .15s ease;
 }
-.pagina:hover, .pagina.activa { background: var(--c-amarillo); color: var(--t-amarillo, #121212); }
+.pagina:hover { background: color-mix(in srgb, var(--c-amarillo) var(--tinte), var(--card)); border-color: var(--borde-h); }
+.pagina.activa { background: var(--panel); color: var(--panel-ink); border-color: transparent; box-shadow: var(--sombra); }
 
 @media (max-width: 900px) {
   .layout { grid-template-columns: minmax(0, 1fr); }

@@ -336,11 +336,17 @@ export const sitio = {
       rejilla: '#1d1d21',
       texto: '#f4f4f5',
       suave: '#a1a1aa',
-      borde: '#cccccc',
+      borde: '#dedede',
       tarjeta: '#1c1c21',
       panel: '#2a2a31',
       textoPanel: '#f4f4f5',
       cinta: 'rgba(120, 110, 80, 0.65)',
+    },
+    estilo: {
+      esquinas: 'redondeadas', // 'redondeadas' | 'duras'
+      bordeOpacidad: 8,        // % del borde
+      bordeHover: 20,          // % del borde al pasar el mouse
+      sombras: true,
     },
   },
 

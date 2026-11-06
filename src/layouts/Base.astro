@@ -16,7 +16,7 @@ import Footer from '../components/Footer.astro';
 import { cssTema, ruta } from '../lib/utils.js';
 import { urlImagen } from '../lib/imagenes.js';
 
-const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website' } = Astro.props;
+const { titulo, descripcion = sitio.descripcion, imagen, tipo = 'website', noindex = false } = Astro.props;
 
 // Fuentes propias (woff2 de src/fonts): se precargan para que lleguen antes del primer dibujo
 const fuentesPropias = Object.values(import.meta.glob('../fonts/*.woff2', { query: '?url', import: 'default', eager: true }));
@@ -41,6 +41,7 @@ const imgAbsoluta = imgFinal
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href={ruta('/favicon.svg')} />
     <link rel="sitemap" href={ruta('/sitemap-index.xml')} />
     <link rel="alternate" type="application/rss+xml" title={sitio.nombre} href={ruta('/rss.xml')} />
