@@ -12,9 +12,9 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://olialex.github.io/nombre-del-repo',
+  url: 'https://blogdeoliver.pages.dev',
 
-  base: '/nombre-del-repo',
+  base: '',
 
   idioma: 'es',
 
