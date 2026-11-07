@@ -45,8 +45,8 @@ button { font-family: inherit; color: inherit; }
 }
 .skip-link:focus-visible { transform: none; }
 
-.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
-.seccion { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; }
+.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 10px; }
+.seccion { max-width: 1100px; margin: 0 auto 80px; padding: 0 10px; }
 .seccion-sub { color: var(--muted); margin: -16px 0 24px; }
 .resaltado {
   /* marcador: una franja de color debajo del texto */

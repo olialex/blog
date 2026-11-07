@@ -52,6 +52,7 @@ export const sitio = {
     { texto: 'Temas', icono: 'libro', url: '/categorias/' },
     { texto: 'Webcomics', icono: 'pelicula', url: '/webcomics/' },
     { texto: 'Sobre mí', icono: 'usuario', url: '/sobre-mi/' },
+    { texto: 'Galeria', icono: 'imagen', url: '/galeria/' },
   ],
 
   botonMenu: { texto: 'Suscribirme', icono: 'correo', url: '/#newsletter' },
