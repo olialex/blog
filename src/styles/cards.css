@@ -128,7 +128,7 @@ a.tag:hover { background: color-mix(in srgb, var(--acento, var(--c-amarillo)) 34
 /* ----- /articulos/ en móvil: la cuadrícula casi llega a los bordes de la pantalla (6px), como Pinterest ----- */
 @media (max-width: 560px) {
   .posts-borde { margin-inline: -20px; padding-inline: 6px; column-gap: 6px; }
-  .posts-borde:not(.posts-pin) { row-gap: 6px; padding: 0 8px}
+  .posts-borde:not(.posts-pin) { row-gap: 6px; padding: 0 14px}
   .posts-grid .card-portada { border-radius: var(--r-md); box-shadow: none; }
   .posts-grid .card-portada-top { top: 7px; left: 7px; right: 7px; gap: 4px; }
   .posts-grid .tag { font-size: .58rem; padding: 1px 7px; }
