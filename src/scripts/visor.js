@@ -1,5 +1,5 @@
 // Visor de fotos (estilo Google Fotos, sin editor). Sin librerías.
-//  - Velocidad: se muestra al instante la miniatura (ya descargada) y, cuando llega la foto grande, se cambia sin parpadeo.
+//  - Velocidad: se precargan la foto siguiente y la anterior; mientras llega una foto se ve un recuadro del color promedio.
 //    Además se precargan la siguiente y la anterior.
 //  - Zoom: rueda del ratón, botones +/−, teclas + − 0, doble clic/toque y pellizco con dos dedos.
 //  - Mover la foto con zoom: arrastrando (dedo o ratón), manteniendo ESPACIO + arrastrar, o con las flechas.
@@ -9,7 +9,7 @@ const dato = document.getElementById('galeria-datos');
 if (el && dato) {
   const fotos = JSON.parse(dato.textContent || '[]');
   const $ = (s) => el.querySelector(s);
-  const escena = $('.visor-escena'), pista = $('.visor-pista'), img = $('.visor-img'), mini = $('.visor-mini'), cuenta = $('.visor-cuenta'), aviso = $('.visor-aviso');
+  const escena = $('.visor-escena'), pista = $('.visor-pista'), img = $('.visor-img'), cuenta = $('.visor-cuenta'), aviso = $('.visor-aviso');
   const ids = fotos.map((f) => f.id);
   const MAX = 8;
   const cache = new Map();
@@ -28,14 +28,14 @@ if (el && dato) {
   function aplicar() {
     limitar();
     const t = `translate(${TX}px, ${TY}px) scale(${S})`;
-    img.style.transform = mini.style.transform = t;
+    img.style.transform = t;
     escena.classList.toggle('con-zoom', S > 1.001);
   }
   function ajustar() { // la foto entera dentro de la pantalla
     const f = fotos[actual]; if (!f || !abierto) return;
     FIT = Math.min((escena.clientWidth - 24) / f.w, (escena.clientHeight - 24) / f.h);
     const w = f.w * FIT, h = f.h * FIT;
-    for (const i of [mini, img]) Object.assign(i.style, { width: w + 'px', height: h + 'px', marginLeft: -w / 2 + 'px', marginTop: -h / 2 + 'px' });
+    for (const i of [img]) Object.assign(i.style, { width: w + 'px', height: h + 'px', marginLeft: -w / 2 + 'px', marginTop: -h / 2 + 'px' });
     aplicar();
   }
   function zoomEn(nuevo, cx = 0, cy = 0) { // cx, cy: punto respecto al centro de la escena (el punto bajo el cursor se queda quieto)
@@ -55,11 +55,11 @@ if (el && dato) {
   function mostrar(i) {
     const f = fotos[i]; if (!f) return;
     actual = i; S = 1; TX = TY = 0;
-    mini.src = f.m; mini.hidden = false;
-    img.classList.remove('lista'); img.alt = f.t || '';
+    // Sin miniatura borrosa: mientras llega la foto se ve un recuadro del color promedio, y la foto aparece de golpe cuando está lista
+    img.removeAttribute('src'); img.alt = ''; img.style.background = f.c || '#222';
     precargar(i);
     const im = cache.get(f.id);
-    const poner = () => { if (fotos[actual] !== f) return; img.src = f.g; img.classList.add('lista'); setTimeout(() => { if (fotos[actual] === f) mini.hidden = true; }, 280); };
+    const poner = () => { if (fotos[actual] !== f) return; img.src = f.g; img.alt = f.t || ''; img.style.background = ''; };
     if (im.complete && im.naturalWidth) poner(); else im.addEventListener('load', poner, { once: true });
     ajustar();
     cuenta.textContent = `${i + 1} / ${fotos.length}`;

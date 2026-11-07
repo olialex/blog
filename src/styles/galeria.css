@@ -55,9 +55,6 @@
 .visor-escena { cursor: pointer; }
 .visor-escena img { cursor: default; }
 .visor :focus, .visor :focus-visible { outline: none !important; box-shadow: none; }
-.visor-mini[hidden] { display: none; }
-.visor-img { opacity: 0; transition: opacity .25s ease; }
-.visor-img.lista { opacity: 1; }
 .visor-barra { position: absolute; top: 0; left: 0; right: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; padding: .6rem .8rem; background: linear-gradient(#000a, transparent); pointer-events: none; }
 .visor-barra > * { pointer-events: auto; }
 .visor-acciones { display: flex; gap: .4rem; }

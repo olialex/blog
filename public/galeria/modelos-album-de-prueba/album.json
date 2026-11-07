@@ -1,0 +1,66 @@
+{
+  "titulo": "Modelos Album de Prueba",
+  "descripcion": "Esto es una **Prueba**",
+  "fecha": "2026-11-07",
+  "etiquetas": [
+    "modelos"
+  ],
+  "portada": "",
+  "noListado": false,
+  "fotos": [
+    {
+      "id": "modelo-1",
+      "titulo": "modelo 1",
+      "fecha": "2026-11-07",
+      "descripcion": "",
+      "etiquetas": [],
+      "w": 736,
+      "h": 1106,
+      "c": "#776a71"
+    },
+    {
+      "id": "modelo-2",
+      "titulo": "modelo 2",
+      "fecha": "2026-11-07",
+      "descripcion": "# Version Optimiazada\nesta foto esta tomada desde la carpeta optimizada de assets del proyecto",
+      "etiquetas": [
+        "version webp"
+      ],
+      "w": 736,
+      "h": 1068,
+      "c": "#82837e"
+    },
+    {
+      "id": "lea-seydoux",
+      "titulo": "Lea Seydoux",
+      "fecha": "2026-10-30",
+      "descripcion": "",
+      "etiquetas": [],
+      "w": 620,
+      "h": 930,
+      "c": "#908b8f"
+    },
+    {
+      "id": "732186851956689204",
+      "titulo": "732186851956689204",
+      "fecha": "2026-10-30",
+      "descripcion": "",
+      "etiquetas": [],
+      "w": 735,
+      "h": 1632,
+      "c": "#7c5e4f"
+    },
+    {
+      "id": "680043612486221456",
+      "titulo": "Modelo 1",
+      "fecha": "2026-10-30",
+      "descripcion": "# Titulo\n- lista 1\n- lista 2\n\nesto es una **Prueba**",
+      "etiquetas": [
+        "Modelos"
+      ],
+      "w": 736,
+      "h": 967,
+      "c": "#8c8585"
+    }
+  ]
+}
