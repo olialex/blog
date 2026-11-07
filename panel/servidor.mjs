@@ -10,6 +10,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { crearArchivos } from './archivos.mjs';
+import { crearGaleria } from './galeria.mjs';
 
 const run = promisify(execFile);
 
@@ -33,6 +34,7 @@ async function cargarSitio() {
   return JSON.parse(JSON.stringify(sitio));
 }
 const arch = crearArchivos(RAIZ, importar);
+const gal = crearGaleria(RAIZ, async () => (await cargarSitio()).galeria);
 async function cargarIconos() {
   try {
     const { iconos } = await importar(ICONOS);
@@ -284,6 +286,15 @@ export const servidor = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
       return res.end(await fs.readFile(path.join(AQUI, 'assets.js')));
     }
+    if (req.method === 'GET' && url.pathname === '/galeria.js') {
+      res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' });
+      return res.end(await fs.readFile(path.join(AQUI, 'galeria.js')));
+    }
+    if (req.method === 'GET' && url.pathname.startsWith('/galeria-img/')) {
+      const buf = await fs.readFile(gal.archivo(decodeURIComponent(url.pathname.slice(13))));
+      res.writeHead(200, { 'Content-Type': 'image/webp', 'Cache-Control': 'no-store' });
+      return res.end(buf);
+    }
     if (req.method === 'GET' && url.pathname.startsWith('/img/')) {
       const buf = await fs.readFile(arch.rutaImagen(decodeURIComponent(url.pathname.slice(5))));
       res.writeHead(200, { 'Content-Type': 'image/webp', 'Cache-Control': 'no-store' });
@@ -324,6 +335,15 @@ export const servidor = http.createServer(async (req, res) => {
     // ----- imágenes, íconos y fuentes -----
     const B = (l) => leerCuerpo(req, l);
     const G = 25_000_000;
+    // ----- Galería
+    if (req.method === 'GET' && url.pathname === '/api/galeria') return enviar(res, 200, { albumes: await gal.arbol() });
+    if (req.method === 'GET' && url.pathname === '/api/galeria/album') return enviar(res, 200, await gal.leerAlbum(url.searchParams.get('ruta') || ''));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/album/crear') return enviar(res, 200, await gal.crearAlbum(await B()));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/album/guardar') return enviar(res, 200, await gal.guardarAlbum(await B(5_000_000)));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/album/borrar') return enviar(res, 200, await gal.borrarAlbum(await B()));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/foto/subir') return enviar(res, 200, await gal.subirFoto(await B(90_000_000)));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/foto/borrar') return enviar(res, 200, await gal.borrarFoto(await B()));
+    if (req.method === 'POST' && url.pathname === '/api/galeria/foto/mover') return enviar(res, 200, await gal.moverFoto(await B()));
     if (req.method === 'GET' && url.pathname === '/api/imagenes') return enviar(res, 200, { imagenes: await arch.listarImagenes() });
     if (req.method === 'POST' && url.pathname === '/api/imagenes/procesar') return enviar(res, 200, await arch.procesarImagen(await B(60_000_000)));
     if (req.method === 'POST' && url.pathname === '/api/imagenes') return enviar(res, 200, await arch.guardarImagen(await B(G)));

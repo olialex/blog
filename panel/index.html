@@ -164,9 +164,9 @@ const SECCIONES = {
   webcomics: 'Webcomics', articulo: 'Artículo', widgets: 'Barra lateral', categorias: 'Categorías',
   newsletter: 'Newsletter', sobreMi: 'Sobre mí', pie: 'Pie de página', textos: 'Textos de la interfaz',
   tema: 'Colores', fuentes: 'Fuentes',
-  _imagenes: '🖼 Imágenes', _iconos: '✦ Íconos', _fuentes: '🔤 Archivos de fuentes',
+  galeria: 'Galería: ajustes', _galeria: '🖼 Galería (álbumes)', _imagenes: '🖼 Imágenes', _iconos: '✦ Íconos', _fuentes: '🔤 Archivos de fuentes',
 };
-const GENERAL = ['url', 'base', 'idioma', 'nombre', 'eslogan', 'descripcion', 'imagenCompartir'];
+const GENERAL = ['url', 'base', 'idioma', 'nombre', 'eslogan', 'descripcion', 'imagenCompartir', 'emoji404'];
 
 const ETIQUETAS = {
   url: 'Dirección del sitio', navegacion: 'Elementos del menú', categorias: 'Categorías', base: 'Carpeta base', idioma: 'Idioma', nombre: 'Nombre del blog',
@@ -177,7 +177,7 @@ const ETIQUETAS = {
   boton: 'Botón', mostrarAutor: 'Mostrar autor', mostrarEstadisticas: 'Mostrar estadísticas',
   mostrarDestacado: 'Mostrar destacados', cantidadDestacados: 'Cantidad de destacados', destacadosTitulo: 'Título de destacados', cantidadDestacadosMovil: 'Destacados en móvil', cantidadUltimos: 'Cantidad de últimos',
   mostrarWebcomics: 'Mostrar webcomics', mostrarTemas: 'Mostrar temas', mostrarNewsletter: 'Mostrar newsletter',
-  porPagina: 'Artículos por tanda', etiqueta: 'Etiqueta pequeña', titulo: 'Título', vacio: 'Texto si está vacío',
+  porPagina: 'Artículos por tanda', etiqueta: 'Etiqueta pequeña', titulo: 'Título', vacio: 'Texto si está vacío', urlBase: 'Carpeta de las fotos (URL)', miniaturaAlto: 'Alto de la miniatura (px)', calidadMiniatura: 'Calidad de la miniatura (40–100)', visorLado: 'Lado mayor de la foto del visor (px)', calidadVisor: 'Calidad de la foto del visor (40–100)',
   barraProgreso: 'Barra de progreso', mostrarIndice: 'Mostrar índice', mostrarRelacionados: 'Mostrar relacionados',
   mostrarAnteriorSiguiente: 'Mostrar anterior/siguiente', barraDerecha: 'Columna derecha', barraLateral: 'Widgets (en orden)',
   comentarios: 'Comentarios (Giscus)', activo: 'Activado', repo: 'Repositorio', repoId: 'ID del repositorio',
@@ -434,7 +434,7 @@ function botonesFila(arr, i) {
 // Pantalla
 // ---------------------------------------------------------------------------
 function listaSecciones() {
-  return ['general', ...Object.keys(estado).filter((k) => !GENERAL.includes(k)), '_imagenes', '_iconos', '_fuentes'];
+  return ['general', ...Object.keys(estado).filter((k) => !GENERAL.includes(k)), '_galeria', '_imagenes', '_iconos', '_fuentes'];
 }
 
 function pintarMenu() {
@@ -453,7 +453,8 @@ function pintarSeccion() {
   main.replaceChildren(h('div', { class: 'titulo-seccion' }, h('h2', {}, SECCIONES[seccion] ?? humanizar(seccion)), buscador));
 
   if (seccion.startsWith('_')) {
-    window.Assets ? window.Assets.pintar(seccion, main) : main.append(h('p', {}, 'No se cargó assets.js'));
+    const modulo = seccion === '_galeria' ? window.Galeria : window.Assets;
+    modulo ? modulo.pintar(seccion, main) : main.append(h('p', {}, 'No se cargó el módulo de esta sección'));
     window.scrollTo(0, y);
     return;
   }
@@ -582,5 +583,6 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && tem
 })();
 </script>
 <script src="/assets.js"></script>
+<script src="/galeria.js"></script>
 </body>
 </html>

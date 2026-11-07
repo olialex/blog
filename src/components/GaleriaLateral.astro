@@ -1,0 +1,33 @@
+---
+import { albumesPublicos, albumUrl, portadaAlbum } from '../lib/galeria-datos.js';
+import Icono from './Icono.astro';
+import { sitio } from '../../sitio.js';
+import { ruta } from '../lib/utils.js';
+// Barra lateral de la galería: los álbumes con su miniatura (en el móvil es una tira que se desliza)
+const { actual = '' } = Astro.props;
+const raices = albumesPublicos();
+const abierto = (a) => actual === a.ruta || actual.startsWith(a.ruta + '/');
+---
+
+<nav class="gal-nav" aria-label="Álbumes">
+  <a class:list={['gal-item', 'gal-todos', { activo: !actual }]} href={ruta('/galeria/')}>
+    <span class="gal-mini gal-mini-icono">{sitio.galeria.icono && <Icono nombre={sitio.galeria.icono} tamano={18} />}</span>
+    <span class="gal-txt">{sitio.galeria.titulo}</span>
+  </a>
+  {
+    raices.map((a) => (
+      <Fragment>
+        <a class:list={['gal-item', { activo: actual === a.ruta }]} href={albumUrl(a)}>
+          {portadaAlbum(a) ? <img class="gal-mini" src={portadaAlbum(a)} alt="" loading="lazy" /> : <span class="gal-mini"></span>}
+          <span class="gal-txt">{a.titulo}</span>
+        </a>
+        {abierto(a) && a.hijos.filter((h) => !h.noListado).map((h) => (
+          <a class:list={['gal-item', 'gal-sub', { activo: actual === h.ruta }]} href={albumUrl(h)}>
+            {portadaAlbum(h) ? <img class="gal-mini" src={portadaAlbum(h)} alt="" loading="lazy" /> : <span class="gal-mini"></span>}
+            <span class="gal-txt">{h.titulo}</span>
+          </a>
+        ))}
+      </Fragment>
+    ))
+  }
+</nav>

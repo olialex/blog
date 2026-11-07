@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import AlbumCard from '../../components/AlbumCard.astro';
+import GaleriaLateral from '../../components/GaleriaLateral.astro';
+import Icono from '../../components/Icono.astro';
+import '../../styles/galeria.css';
+import { sitio } from '../../../sitio.js';
+import { ruta } from '../../lib/utils.js';
+import { md, sinMd } from '../../lib/md.js';
+import { todosAlbumes, buscarAlbum, fotoUrl, miga, portadaAlbum } from '../../lib/galeria-datos.js';
+
+export function getStaticPaths() {
+  return todosAlbumes().map((a) => ({ params: { album: a.ruta }, props: { ruta: a.ruta } }));
+}
+
+const { ruta: r } = Astro.props;
+const a = buscarAlbum(r);
+const camino = miga(a);
+const colores = ['rosa', 'azul', 'verde', 'naranja', 'morado', 'amarillo'];
+const alto = Number(sitio.galeria.miniaturaAlto) || 440;
+const datos = a.fotos.map((f) => ({
+  id: f.id, t: f.titulo, f: f.fecha, d: md(f.descripcion), e: f.etiquetas ?? [],
+  m: fotoUrl(a, f.id, 'm'), g: fotoUrl(a, f.id, 'g'), w: f.w, h: f.h, c: f.c,
+}));
+---
+
+<Base titulo={a.titulo} descripcion={sinMd(a.descripcion) || sitio.galeria.descripcion} imagen={portadaAlbum(a) || undefined} noindex={a.noListado}>
+  <div class="contenedor gal-cont">
+    <div class="gal-layout">
+      <GaleriaLateral actual={a.ruta} />
+      <div class="gal-main">
+      <nav class="migas" aria-label="Migas de pan">
+        <a href={ruta('/galeria/')}>{sitio.galeria.titulo}</a>
+        {camino.slice(0, -1).map((x) => <Fragment> / <a href={ruta(`/galeria/${x.ruta}/`)}>{x.titulo}</a></Fragment>)}
+      </nav>
+      <Cabecera etiqueta={a.fecha} titulo={a.titulo} color="azul" icono={sitio.galeria.icono} />
+      {a.descripcion && <div class="album-desc" set:html={md(a.descripcion)} />}
+      {a.etiquetas.length > 0 && <p class="album-tags">{a.etiquetas.map((e) => <span class="tag">{e}</span>)}</p>}
+
+      {a.hijos.length > 0 && (
+        <section>
+          <h2 class="album-sub-titulo">Subálbumes</h2>
+          <div class="album-grid">{a.hijos.filter((h) => !h.noListado || a.noListado).map((h, i) => <AlbumCard album={h} color={colores[i % colores.length]} />)}</div>
+        </section>
+      )}
+
+      {datos.length > 0 && (
+        <section>
+          {a.hijos.length > 0 && <h2 class="album-sub-titulo">Fotos</h2>}
+          <div class="filas" style={`--alto:${Math.round(alto / 2.2)}px`}>
+            {datos.map((f, i) => (
+              <a class="foto" href={`#${f.id}`} data-i={i} style={`--ar:${f.w / f.h};--c:${f.c}`} aria-label={f.t || 'Foto'}>
+                <i></i>
+                <img src={f.m} width={Math.round((f.w / f.h) * alto)} height={alto} alt={f.t} loading={i < 8 ? 'eager' : 'lazy'} decoding="async" />
+              </a>
+            ))}
+            <span class="filas-final"></span>
+          </div>
+        </section>
+      )}
+      {datos.length === 0 && a.hijos.length === 0 && <p class="vacio">Este álbum está vacío.</p>}
+      </div>
+    </div>
+  </div>
+
+  <div class="visor" id="visor" hidden role="dialog" aria-modal="true" aria-label="Visor de fotos">
+    <div class="visor-escena">
+      <div class="visor-pista">
+        <img class="visor-mini" alt="" draggable="false" />
+        <img class="visor-img" alt="" draggable="false" />
+      </div>
+    </div>
+    <div class="visor-barra">
+      <button type="button" class="visor-btn" data-v="cerrar" aria-label="Cerrar (Esc)" title="Cerrar (Esc)"><Icono nombre="cerrar" tamano={20} /></button>
+      <span class="visor-cuenta"></span>
+      <span class="visor-acciones">
+        <button type="button" class="visor-btn" data-v="compartir" aria-label="Compartir" title="Compartir"><Icono nombre="compartir" tamano={20} /></button>
+        <button type="button" class="visor-btn visor-zoom" data-v="menos" aria-label="Alejar" title="Alejar (-)"><Icono nombre="zoom-menos" tamano={20} /></button>
+        <button type="button" class="visor-btn visor-zoom" data-v="mas" aria-label="Acercar" title="Acercar (+ o rueda del ratón)"><Icono nombre="zoom-mas" tamano={20} /></button>
+        <button type="button" class="visor-btn" data-v="info" aria-label="Información" title="Información (i)"><Icono nombre="info" tamano={20} /></button>
+      </span>
+    </div>
+    <button type="button" class="visor-nav visor-ant" data-v="ant" aria-label="Anterior"><Icono nombre="chevron-izquierda" tamano={26} /></button>
+    <button type="button" class="visor-nav visor-sig" data-v="sig" aria-label="Siguiente"><Icono nombre="chevron-derecha" tamano={26} /></button>
+    <aside class="visor-info">
+      <h2 class="visor-titulo"></h2>
+      <p class="visor-fecha"></p>
+      <div class="visor-desc"></div>
+      <p class="visor-etq"></p>
+    </aside>
+    <div class="visor-aviso" role="status" hidden></div>
+  </div>
+  <script id="galeria-datos" type="application/json" set:html={JSON.stringify(datos).replace(/</g, '\\u003c')} />
+  <script>
+    import '../../scripts/visor.js';
+  </script>
+</Base>

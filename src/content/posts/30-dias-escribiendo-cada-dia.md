@@ -40,3 +40,17 @@ Mantengo la versión mínima: una frase al día. Algunos días se convierte en u
 
 
 [esto es un hipervinculo](https://google.com).
+
+<div style="display: flex; justify-content: center;">
+
+[hola](/galeria/hola/#1000062963)
+
+</div>
+
+[hola](/galeria/hola/)
+
+![hola](/src/assets/img/avatar.webp)
+
+<div style="display: flex; justify-content: center; width: 100%;">
+	<img src="/src/assets/img/avatar.webp" alt="" style="width: 300px; height: auto;">
+</div>

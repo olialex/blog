@@ -66,7 +66,6 @@
 .prose blockquote {
   border-left: 6px solid var(--el-cita, var(--c-amarillo)); background: var(--card); padding: 14px 20px;
   border-radius: 0 var(--r-md) var(--r-md) 0; font-family: var(--font-hand); font-size: 1.5rem; line-height: 1.35;
-  box-shadow: var(--sombra);
 }
 .prose code:not(pre code) { background: var(--card); border: 1px solid var(--borde); border-radius: var(--r-xs); padding: 1px 6px; font-size: .9em; }
 .prose pre { border: 1px solid var(--borde); border-radius: var(--r-md); padding: 16px; overflow-x: auto; box-shadow: var(--sombra); font-size: .9rem; line-height: 1.6; }
@@ -106,3 +105,16 @@
   .articulo-cabecera { padding: 24px 20px; }
   .nav-post { grid-template-columns: 1fr; }
 }
+
+/* ===== Galería dentro de los artículos (enlace a un álbum o a una foto) ===== */
+.gal-embed { display: block; margin: 1.6rem 0; text-decoration: none; color: inherit; }
+.gal-embed-album { display: flex; align-items: center; gap: 14px; padding: 8px; border: 1px solid var(--borde); border-radius: var(--r-lg); background: var(--panel); transition: border-color .2s, transform .2s; max-width: 460px; }
+.gal-embed-album:hover { border-color: var(--borde-h); transform: translateY(-2px); }
+.gal-embed-album img, .gal-embed-vacio { width: 92px; height: 92px; object-fit: cover; border-radius: var(--r-md, 12px); flex-shrink: 0; margin: 0; background: var(--borde); }
+.gal-embed-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.gal-embed-info strong { font-size: 1.05rem; line-height: 1.2; }
+.gal-embed-info small { color: var(--muted); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+.gal-embed-foto { margin-left: 0; margin-right: 0; width: fit-content; max-width: min(100%, 560px); }
+.gal-embed-foto img { width: auto; max-width: 100%; max-height: 70vh; height: auto; border-radius: var(--r-md, 12px); border: 1px solid var(--borde); margin: 0; }
+.gal-embed-foto figcaption { display: flex; justify-content: space-between; gap: 12px; margin-top: .5rem; font-size: .85rem; color: var(--muted); }
+.gal-embed-foto figcaption a { font-weight: 700; }

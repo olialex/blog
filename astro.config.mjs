@@ -3,6 +3,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { sitio } from './sitio.js';
 import fs from 'node:fs';
+import remarkGaleria from './src/lib/remark-galeria.js';
+import { albumesOcultos } from './src/lib/galeria-fs.js';
 
 // Posts con  noListado: true  → no entran en el sitemap (tampoco en listas, buscador ni RSS)
 const carpeta = './src/content/posts';
@@ -20,8 +22,9 @@ try {
 export default defineConfig({
   site: new URL(sitio.url).origin, // solo el dominio, ej: https://olialex.github.io
   base: sitio.base || '/', // la carpeta del repositorio, ej: /cuaderno (vacío si el sitio va en la raíz)
-  integrations: [mdx(), sitemap({ filter: (pagina) => !ocultos.some((s) => pagina.includes(`/articulo/${s}/`)) })],
+  integrations: [mdx(), sitemap({ filter: (pagina) => !ocultos.some((s) => pagina.includes(`/articulo/${s}/`)) && !albumesOcultos().some((r) => pagina.includes(`/galeria/${r}/`)) })],
   markdown: {
+    remarkPlugins: [remarkGaleria], // enlaces a la galería dentro de artículos → tarjeta / foto
     shikiConfig: { theme: 'github-dark', wrap: true },
   },
 });

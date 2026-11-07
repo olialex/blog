@@ -232,6 +232,6 @@ export function crearArchivos(RAIZ, importar) {
   return {
     usoCategorias, procesarImagen, listarImagenes, guardarImagen, borrarImagen, leerIconos, guardarIconos, listarFuentes, guardarFuente, borrarFuente,
     rutaImagen: (n) => dentro(IMG, n), rutaFuente: (n) => dentro(FONTS, n),
-    carpetasGit: () => ['sitio.js', 'src/lib/iconos.js', 'src/fonts', 'src/styles/fuentes.css', 'src/assets/img', 'public/img'],
+    carpetasGit: () => ['sitio.js', 'src/lib/iconos.js', 'src/fonts', 'src/styles/fuentes.css', 'src/assets/img', 'public/img', 'public/galeria'],
   };
 }

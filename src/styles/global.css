@@ -39,26 +39,20 @@ button { font-family: inherit; color: inherit; }
 :focus-visible { outline: 3px solid var(--el-foco, var(--c-azul)); outline-offset: 2px; }
 
 .skip-link {
-  position: absolute; left: -999px; top: 8px; z-index: 100;
+  position: absolute; left: 8px; top: 8px; z-index: 100; transform: translateY(-200%); transition: none;
   background: var(--c-amarillo); color: var(--t-amarillo, #121212); padding: 8px 14px;
   border-radius: var(--r-sm); font-weight: 800; box-shadow: var(--sombra);
 }
-.skip-link:focus { left: 8px; }
+.skip-link:focus-visible { transform: none; }
 
-.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 10px; }
-.seccion { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; }
+.contenedor { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+.seccion { max-width: 1100px; margin: 0 auto 80px; padding: 0 20px; }
 .seccion-sub { color: var(--muted); margin: -16px 0 24px; }
 .resaltado {
   /* marcador: una franja de color debajo del texto */
   background: linear-gradient(to top, color-mix(in srgb, var(--acento, var(--c-amarillo)) 85%, transparent) 0 .38em, transparent .38em);
   padding: 0 .12em; border-radius: var(--r-xs);
   box-decoration-break: clone; -webkit-box-decoration-break: clone;
-}
-
-@media (max-width: 450px){
-  .seccion{
-    padding: 0 10px;
-  }
 }
 
 /* (las cintas decorativas se eliminaron del estilo; la clase .cinta ya no hace nada) */

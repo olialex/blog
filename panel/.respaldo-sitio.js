@@ -12,28 +12,28 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://blogdeoliver.pages.dev',
+  url: 'https://olialex.github.io/nombre-del-repo',
 
-  base: '',
+  base: '/nombre-del-repo',
 
   idioma: 'es',
 
   nombre: 'Mi Cuaderno Digital',
 
-  eslogan: 'Bienvenido',
+  eslogan: 'mi cuaderno digital',
 
   descripcion: 'Un rincón tranquilo de internet donde escribo sobre ideas, aprendizaje, proyectos y vida diaria.',
 
-  imagenCompartir: '/img/img_392.webp',
+  imagenCompartir: '',
 
   // --------------------------------------------------------------------------
   // 2. AUTOR
   // --------------------------------------------------------------------------
   autor: {
-    nombre: 'Oliver',
-    rol: 'Me gustaría crear mis propias webtoons',
-    ubicacion: '',
-    avatar: '/img/avatar.webp',
+    nombre: 'Tu Nombre',
+    rol: 'Escritor y curioso de tiempo completo',
+    ubicacion: 'Tu ciudad',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
     bio: 'Escribo sobre lo que aprendo, lo que construyo y lo que me hace pensar. Este blog es mi cuaderno abierto.',
     redes: [
       { nombre: '', icono: 'instagram', url: 'https://instagram.com/' },
@@ -61,10 +61,10 @@ export const sitio = {
   // --------------------------------------------------------------------------
   hero: {
     insignias: [
-      { texto: 'LEE Y APRENDE', color: 'azul', posicion: 'tl' },
+      { texto: 'LEE Y APRENDE', color: 'verde', posicion: 'tl' },
       { texto: 'ENSAYOS SEMANALES', color: 'amarillo', posicion: 'tr' },
       { texto: 'IDEAS Y PROYECTOS', color: 'naranja', posicion: 'bl' },
-      { texto: 'VENEZUELA', color: 'rojo', posicion: 'br' },
+      { texto: 'TU CIUDAD', color: 'verde', posicion: 'br' },
     ],
     fraseInicio: 'Escribo sobre ideas, aprendizaje y proyectos que',
     resaltado: 'VALEN',
@@ -79,25 +79,25 @@ export const sitio = {
   // --------------------------------------------------------------------------
   home: {
     mostrarDestacado: false,
-    cantidadUltimos: 4,
+    cantidadDestacados: 3,
+    cantidadDestacadosMovil: 2,
+    cantidadUltimos: 6,
     mostrarWebcomics: true,
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
-    cantidadDestacados: 3,
-    cantidadDestacadosMovil: 2,
-    orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
+    orden: ['destacado', 'webcomics', 'ultimos', 'temas', 'autor', 'newsletter'],
   },
 
   // --------------------------------------------------------------------------
   // 5. LISTADO DE ARTÍCULOS (/articulos/)
   // --------------------------------------------------------------------------
   listado: {
-    porPagina: 15,
+    porPagina: 12,
+    estilo: 'cuadricula',
     etiqueta: 'todo lo que he escrito',
     titulo: 'Artículos',
     descripcion: 'Todas las entradas del cuaderno, de la más nueva a la más antigua.',
-    estilo: 'cuadricula',
   },
 
   // --------------------------------------------------------------------------
@@ -108,8 +108,10 @@ export const sitio = {
     titulo: 'Webcomics',
     descripcion: 'Series y one-shots para leer capítulo a capítulo.',
     vacio: 'Todavía no hay webcomics publicados.',
-    emoji: '',
+    emoji: '🎞️',
   },
+
+  emoji404: '🧭',
 
   // --------------------------------------------------------------------------
   // 6. ARTÍCULO INDIVIDUAL
@@ -129,7 +131,7 @@ export const sitio = {
   widgets: {
     barraLateral: ['sobreMi', 'categorias', 'recientes', 'etiquetas', 'newsletter'],
     recientesCantidad: 4,
-    etiquetasMaximo: 15,
+    etiquetasMaximo: 20,
   },
 
   // --------------------------------------------------------------------------
@@ -154,10 +156,16 @@ export const sitio = {
       color: 'rosa',
       descripcion: 'Cosas que construyo, paso a paso y con errores incluidos.',
     },
+    vida: {
+      nombre: 'Vida diaria',
+      emoji: '🌱',
+      color: 'azul',
+      descripcion: 'Hábitos, rutinas y pequeñas decisiones del día a día.',
+    },
     webcomics: {
       nombre: 'Webcomics',
-      color: 'rojo',
-      emoji: '💬',
+      emoji: '🎞️',
+      color: 'morado',
       descripcion: 'Historias en viñetas, capítulo a capítulo.',
     },
   },
@@ -218,11 +226,12 @@ export const sitio = {
   // 12. TEXTOS DE LA INTERFAZ
   // --------------------------------------------------------------------------
   textos: {
-    leer: 'Leer',
-    leerArticulo: 'LEER ARTÍCULO',
-    verTodos: 'Ver todos los artículos',
+    leer: 'Leer >',
+    leerArticulo: 'LEER ARTÍCULO >',
+    verTodos: 'Ver todos los artículos >',
     nuevo: 'NUEVO',
     destacado: 'DESTACADO',
+    destacadosTitulo: 'Destacados',
     ultimos: 'Últimos artículos',
     temas: 'Explora por tema',
     temasSub: 'Elige un tema y sigue el hilo.',
@@ -239,21 +248,21 @@ export const sitio = {
     widgetRecientes: 'Lo más nuevo',
     widgetEtiquetas: 'Etiquetas',
     widgetSobreMi: 'Quién escribe',
-    verMas: 'Conóceme',
+    verMas: 'Conóceme >',
     indice: 'En este artículo',
     compartir: 'Compartir',
     copiarEnlace: 'Copiar enlace',
     enlaceCopiado: '¡Copiado!',
-    anterior: 'Anterior',
-    siguiente: 'Siguiente',
+    anterior: '< Anterior',
+    siguiente: 'Siguiente >',
     relacionados: 'Sigue leyendo',
     comentarios: 'Comentarios',
     inicio: 'Inicio',
-    paginaAnterior: 'Más nuevos',
-    paginaSiguiente: 'Más antiguos',
+    paginaAnterior: '< Más nuevos',
+    paginaSiguiente: 'Más antiguos >',
     articulosEn: 'Artículos en',
     articulosCon: 'Artículos con la etiqueta',
-    volverInicio: 'Volver al inicio',
+    volverInicio: '← Volver al inicio',
     noEncontrada: 'Esta página no existe',
     noEncontradaTexto: 'Puede que el enlace esté roto o que la página se haya movido. Aquí tienes lo más reciente:',
     todosLosTemas: 'Todos los temas',
@@ -272,13 +281,17 @@ export const sitio = {
     verCapitulos: 'Capítulos',
     finPorAhora: 'Fin por ahora',
     webcomicsTitulo: 'Webcomics',
-    verTodosComics: 'Ver todos los webcomics',
+    verTodosComics: 'Ver todos los webcomics >',
     empezarLeer: 'EMPEZAR A LEER',
     ultimoCap: 'Último capítulo',
+    verSerie: 'VER SERIE',
+    leerCapitulo: 'LEER CAPÍTULO',
+    desliza: 'Desliza',
     lecturaRtl: 'Lectura de derecha a izquierda',
     novela: 'NOVELA',
     novelaEtiqueta: 'novela gráfica animada',
-    desliza: 'Desliza',
+    retomado: 'Seguimos donde lo dejaste.',
+    empezarDeNuevo: 'Empezar de nuevo',
     qteBien: '¡Bien!',
     qteMal: '¡Fallaste!',
     toca: 'TOCA',
@@ -295,12 +308,6 @@ export const sitio = {
     explorarVacio: 'No encontré nada con eso.',
     cerrar: 'Cerrar',
     mostrarMas: 'Mostrar más',
-    retomado: 'Seguimos donde lo dejaste.',
-    empezarDeNuevo: 'Empezar de nuevo',
-    verSerie: 'VER SERIE',
-    leerCapitulo: 'LEER CAPÍTULO',
-    destacadosTitulo: 'Lo Mas Visto',
-    emoji404: '🧭',
   },
 
   // --------------------------------------------------------------------------
@@ -316,10 +323,10 @@ export const sitio = {
       azul: '#60a5fa',
       naranja: '#fb923c',
       morado: '#a78bfa',
-      rojo: '#fd3044',
     },
-    textoAcento: { rojo: '#ffffff' },
-    elementos: { progreso: 'azul', indiceActivo: 'azul', cita: 'rojo', foco: 'amarillo' },
+    estilo: { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true },
+    textoAcento: {},
+    elementos: { progreso: 'azul' },
     claro: {
       fondo: '#fbfbf9',
       rejilla: '#e5e5df',
@@ -336,20 +343,32 @@ export const sitio = {
       rejilla: '#1d1d21',
       texto: '#f4f4f5',
       suave: '#a1a1aa',
-      borde: '#dedede',
+      borde: '#f4f4f5',
       tarjeta: '#1c1c21',
       panel: '#2a2a31',
       textoPanel: '#f4f4f5',
       cinta: 'rgba(120, 110, 80, 0.65)',
     },
-    estilo: { esquinas: 'duras', bordeOpacidad: 8, bordeHover: 20, sombras: false },
+  },
+
+  galeria: {
+    urlBase: '/galeria',
+    miniaturaAlto: 440,
+    calidadMiniatura: 72,
+    visorLado: 1800,
+    calidadVisor: 82,
+    titulo: 'Galería',
+    icono: 'imagen',
+    etiqueta: 'mis dibujos',
+    descripcion: 'Ilustraciones, bocetos y trabajos, organizados en álbumes.',
+    vacio: 'Todavía no hay álbumes publicados.',
   },
 
   // --------------------------------------------------------------------------
   // 14. FUENTES
   // --------------------------------------------------------------------------
   fuentes: {
-    url: '',
+    url: 'https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=VT323&family=Plus+Jakarta+Sans:wght@500;700;800&family=Press+Start+2P&display=swap',
     principal: "'Plus Jakarta Sans', system-ui, sans-serif",
     manuscrita: "'Caveat', cursive",
     pixel: "'Press Start 2P', monospace",
