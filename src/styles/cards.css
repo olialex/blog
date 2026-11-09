@@ -8,10 +8,10 @@
 }
 
 .read-article-link {
-  display: inline-flex; align-items: center; gap: 6px; font-weight: 800; text-decoration: none;
-  border-bottom: 2px solid var(--acento, var(--c-amarillo)); width: fit-content; padding-bottom: 2px; transition: gap .2s ease, border-color .2s ease;
+  display: inline-flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none;
+  border-bottom: 2px solid var(--acento, var(--c-amarillo)); width: fit-content; padding-bottom: 2px; transition: all .2s ease;
 }
-.read-article-link:hover { gap: 12px; }
+.read-article-link:hover { gap: 20px; }
 
 /* Etiqueta: fondo con un tinte del acento y un punto de color */
 .tag {
@@ -34,7 +34,7 @@ a.tag:hover { background: color-mix(in srgb, var(--acento, var(--c-amarillo)) 34
   border: 1px solid var(--borde); background: var(--panel); box-shadow: var(--sombra);
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
-.card-portada:hover { transform: translateY(-4px); box-shadow: var(--sombra-h); border-color: var(--borde-h); }
+.card-portada:hover { transform: translateY(-6px); transform: scale(1.03); box-shadow: var(--sombra-h); border-color: var(--borde-h); }
 /* línea de color en la base: crece al pasar el mouse */
 .card-portada-link::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; height: 3px;

@@ -12,9 +12,9 @@ export const sitio = {
   // --------------------------------------------------------------------------
   // 1. DATOS GENERALES
   // --------------------------------------------------------------------------
-  url: 'https://olialex.github.io/nombre-del-repo',
+  url: 'https://blogdeoliver.pages.dev',
 
-  base: '/nombre-del-repo',
+  base: '',
 
   idioma: 'es',
 
@@ -31,9 +31,9 @@ export const sitio = {
   // --------------------------------------------------------------------------
   autor: {
     nombre: 'Tu Nombre',
-    rol: 'Escritor y curioso de tiempo completo',
-    ubicacion: 'Tu ciudad',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
+    rol: 'Un Curioso de Tiempo Completo',
+    ubicacion: '',
+    avatar: '/img/avatar.webp',
     bio: 'Escribo sobre lo que aprendo, lo que construyo y lo que me hace pensar. Este blog es mi cuaderno abierto.',
     redes: [
       { nombre: '', icono: 'instagram', url: 'https://instagram.com/' },
@@ -47,12 +47,12 @@ export const sitio = {
   // 3. MENÚ
   // --------------------------------------------------------------------------
   navegacion: [
-    { texto: 'Inicio', icono: 'inicio', url: '/' },
     { texto: 'Artículos', icono: 'lapiz', url: '/articulos/' },
-    { texto: 'Temas', icono: 'libro', url: '/categorias/' },
     { texto: 'Webcomics', icono: 'pelicula', url: '/webcomics/' },
+    { texto: 'Mis Dibujos', icono: 'imagen', url: '/galeria/' },
+    { texto: 'Temas', icono: 'libro', url: '/categorias/' },
+    { texto: 'Mis garabatos', icono: 'lapiz', url: '/articulo/mis-garabatos-diarios' },
     { texto: 'Sobre mí', icono: 'usuario', url: '/sobre-mi/' },
-    { texto: 'Galeria', icono: 'imagen', url: '/galeria/' },
   ],
 
   botonMenu: { texto: 'Suscribirme', icono: 'correo', url: '/#newsletter' },
@@ -68,7 +68,7 @@ export const sitio = {
       { texto: 'TU CIUDAD', color: 'verde', posicion: 'br' },
     ],
     fraseInicio: 'Escribo sobre ideas, aprendizaje y proyectos que',
-    resaltado: 'VALEN',
+    resaltado: 'Valen',
     fraseFin: 'la pena.',
     boton: { texto: 'EXPLORAR ARTÍCULOS', url: '/articulos/', icono: 'flecha-abajo' },
     mostrarAutor: false,
@@ -87,7 +87,7 @@ export const sitio = {
     mostrarTemas: true,
     mostrarAutor: true,
     mostrarNewsletter: true,
-    orden: ['destacado', 'webcomics', 'ultimos', 'temas', 'autor', 'newsletter'],
+    orden: ['destacado', 'webcomics', 'autor', 'ultimos', 'temas', 'newsletter'],
   },
 
   // --------------------------------------------------------------------------
@@ -98,18 +98,18 @@ export const sitio = {
     estilo: 'cuadricula',
     etiqueta: 'todo lo que he escrito',
     titulo: 'Artículos',
-    descripcion: 'Todas las entradas del cuaderno, de la más nueva a la más antigua.',
+    descripcion: 'Aquí puedes encontrar un poco de lo que escribo.',
   },
 
   // --------------------------------------------------------------------------
   // 5b. WEBCOMICS (/webcomics/)
   // --------------------------------------------------------------------------
   webcomics: {
-    etiqueta: 'historias en viñetas',
+    etiqueta: 'Historias en Viñetas',
     titulo: 'Webcomics',
     descripcion: 'Series y one-shots para leer capítulo a capítulo.',
     vacio: 'Todavía no hay webcomics publicados.',
-    emoji: '🎞️',
+    emoji: '💬​',
   },
 
   emoji404: '🧭',
@@ -165,9 +165,15 @@ export const sitio = {
     },
     webcomics: {
       nombre: 'Webcomics',
-      emoji: '🎞️',
+      emoji: '💬​',
       color: 'morado',
       descripcion: 'Historias en viñetas, capítulo a capítulo.',
+    },
+    galeria: {
+      nombre: 'Galeria',
+      emoji: '🖌️',
+      color: 'morado',
+      descripcion: 'Un lugar para Expresar mis ocurrencias en el dibujo',
     },
   },
 
@@ -192,8 +198,8 @@ export const sitio = {
   // 10. PÁGINA "SOBRE MÍ"
   // --------------------------------------------------------------------------
   sobreMi: {
-    etiqueta: 'quién escribe esto',
-    titulo: 'Hola, soy Tu Nombre',
+    etiqueta: 'Hola, soy',
+    titulo: 'Tu Nombre',
     leyendaFoto: 'yo, escribiendo ✍️',
     parrafos: [
       'Empecé este blog porque mis ideas vivían dispersas en notas sueltas y conversaciones que se perdían. Aquí las ordeno, las pulo y las dejo abiertas para quien quiera leerlas.',
@@ -219,7 +225,6 @@ export const sitio = {
       { texto: 'Artículos', url: '/articulos/' },
       { texto: 'Temas', url: '/categorias/' },
       { texto: 'Sobre mí', url: '/sobre-mi/' },
-      { texto: 'RSS', url: '/rss.xml' },
     ],
   },
 
@@ -263,7 +268,7 @@ export const sitio = {
     paginaSiguiente: 'Más antiguos >',
     articulosEn: 'Artículos en',
     articulosCon: 'Artículos con la etiqueta',
-    volverInicio: '← Volver al inicio',
+    volverInicio: '< Volver al inicio',
     noEncontrada: 'Esta página no existe',
     noEncontradaTexto: 'Puede que el enlace esté roto o que la página se haya movido. Aquí tienes lo más reciente:',
     todosLosTemas: 'Todos los temas',
@@ -325,9 +330,15 @@ export const sitio = {
       naranja: '#fb923c',
       morado: '#a78bfa',
     },
-    estilo: { esquinas: 'redondeadas', bordeOpacidad: 8, bordeHover: 20, sombras: true },
+    estilo: { esquinas: 'duras', bordeOpacidad: 8, bordeHover: 20, sombras: true },
     textoAcento: {},
-    elementos: { progreso: 'azul' },
+    elementos: {
+      progreso: 'azul',
+      enlaces: 'amarillo',
+      cita: '#ff5555',
+      indiceActivo: '#ff5555',
+      sombraNewsletter: '#ff5555',
+    },
     claro: {
       fondo: '#fbfbf9',
       rejilla: '#e5e5df',
@@ -357,10 +368,10 @@ export const sitio = {
     miniaturaAlto: 440,
     calidadMiniatura: 72,
     visorLado: 1800,
-    calidadVisor: 82,
-    titulo: 'Galería',
+    calidadVisor: 90,
+    titulo: 'Galeria',
     icono: 'imagen',
-    etiqueta: 'mis dibujos',
+    etiqueta: 'Mis Dibujos',
     descripcion: 'Ilustraciones, bocetos y trabajos, organizados en álbumes.',
     vacio: 'Todavía no hay álbumes publicados.',
   },

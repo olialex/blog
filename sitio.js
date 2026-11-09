@@ -51,7 +51,7 @@ export const sitio = {
     { texto: 'Artículos', icono: 'lapiz', url: '/articulos/' },
     { texto: 'Webcomics', icono: 'pelicula', url: '/webcomics/' },
     { texto: 'Mis Dibujos', icono: 'imagen', url: '/galeria/' },
-    { texto: 'Temas', icono: 'libro', url: '/categorias/' },
+    { texto: 'Mis garabatos', icono: 'lapiz', url: '/articulo/mis-garabatos-diarios' },
     { texto: 'Sobre mí', icono: 'usuario', url: '/sobre-mi/' },
   ],
 
@@ -168,6 +168,12 @@ export const sitio = {
       emoji: '💬​',
       color: 'morado',
       descripcion: 'Historias en viñetas, capítulo a capítulo.',
+    },
+    galeria: {
+      nombre: 'Galeria',
+      emoji: '🖌️',
+      color: 'morado',
+      descripcion: 'Un lugar para Expresar mis ocurrencias en el dibujo',
     },
   },
 
