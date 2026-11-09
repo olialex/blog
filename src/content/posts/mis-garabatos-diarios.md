@@ -11,7 +11,7 @@ noListado: true
 <div class="list-gallery">
 	<div class="posts-grid posts-grid-lista gallery-box">
 		<a class="card-portada" href="https://google.com" target="_blank">
-			<img class="card-portada-img" src="/src/assets/img/avatar.webp" alt="">
+			<img class="card-portada-img" src="/img/avatar.webp" alt="">
 			<span>item 1</span>
 		</a>
 		<a class="card-portada" href="https://google.com" target="_blank">
