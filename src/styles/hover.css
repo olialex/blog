@@ -1,0 +1,34 @@
+/* ==========================================================================
+   HOVER DE OPACIDAD  →  clase  .hover-opacidad
+   --------------------------------------------------------------------------
+   Los elementos que tienen esta clase se ven un poco apagados y se aclaran
+   al pasar el mouse (o al enfocarlos con el teclado).
+
+   Dónde está aplicada (busca "hover-opacidad" en el código):
+     - src/components/Navbar.astro        → el header
+     - src/components/Sidebar.astro       → barra lateral de los listados
+     - src/pages/articulo/[slug].astro    → columna izquierda y derecha del artículo
+
+   Cómo quitarla:
+     - De un solo elemento: borra la palabra  hover-opacidad  de su  class="..."
+     - De todo el sitio:    borra la línea que importa este archivo en
+                            src/layouts/Base.astro  (y puedes borrar este archivo)
+
+   Cómo ajustarla: cambia el valor .55 (0 = invisible, 1 = sin efecto)
+   ========================================================================== */
+.hover-opacidad {
+  opacity: var(--opacidad-reposo, .55);
+  transition: opacity .25s ease;
+}
+.hover-opacidad:hover,
+.hover-opacidad:focus-within {
+  opacity: 1;
+}
+
+/* El header es más suave porque tiene el menú */
+.navbar.hover-opacidad { --opacidad-reposo: .8; }
+
+/* En pantallas táctiles no existe "hover", así que no se apaga nada */
+@media (hover: none) {
+  .hover-opacidad { opacity: 1; }
+}

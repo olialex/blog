@@ -1,0 +1,24 @@
+---
+import { sitio } from '../../../sitio.js';
+import { contarCategorias, ruta } from '../../lib/utils.js';
+
+const { posts } = Astro.props;
+const categorias = contarCategorias(posts);
+---
+
+<section class="widget">
+  <h3 class="widget-titulo">{sitio.textos.widgetCategorias}</h3>
+  <ul class="lista-simple">
+    {
+      categorias.map((c) => (
+        <li>
+          <a href={ruta(`/categorias/${c.clave}/`)}>
+            <span class="punto" style={`--acento:var(--c-${c.color})`}></span>
+            {c.emoji} {c.nombre}
+            <span class="contador">{c.total}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

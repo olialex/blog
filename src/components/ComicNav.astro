@@ -1,0 +1,33 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+import { urlPost, ruta } from '../lib/utils.js';
+
+// Navegación entre capítulos: anterior / lista de capítulos / siguiente
+const { serie, anterior, siguiente } = Astro.props;
+const t = sitio.textos;
+---
+
+<nav class="comic-nav" aria-label={t.capitulos}>
+  {
+    anterior ? (
+      <a class="comic-nav-item" href={urlPost(anterior)}>
+        <Icono nombre="flecha-izquierda" tamano={16} /> <span>{t.anteriorCap}</span>
+      </a>
+    ) : (
+      <span />
+    )
+  }
+  <a class="comic-nav-item centro" href={ruta(`/webcomics/${serie.slug}/`)}>
+    <Icono nombre="lista" tamano={16} /> <span>{t.verCapitulos}</span>
+  </a>
+  {
+    siguiente ? (
+      <a class="comic-nav-item der" href={urlPost(siguiente)}>
+        <span>{t.siguienteCap}</span> <Icono nombre="flecha-derecha" tamano={16} />
+      </a>
+    ) : (
+      <span class="comic-nav-fin">{t.finPorAhora}</span>
+    )
+  }
+</nav>

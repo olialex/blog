@@ -1,0 +1,11 @@
+---
+import { sitio } from '../../../sitio.js';
+import Compartir from '../Compartir.astro';
+
+const { titulo, url } = Astro.props;
+---
+
+<section class="widget">
+  <h3 class="widget-titulo">{sitio.textos.compartir}</h3>
+  <Compartir titulo={titulo} url={url} />
+</section>

@@ -1,0 +1,165 @@
+/* ==========================================================================
+   TARJETAS TIPO PORTADA  (PostCard, SerieCard y artículo destacado)
+   ========================================================================== */
+
+.post-meta {
+  font-size: .78rem; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+  opacity: .85; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+
+.read-article-link {
+  display: inline-flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none;
+  border-bottom: 2px solid var(--acento, var(--c-amarillo)); width: fit-content; padding-bottom: 2px; transition: all .2s ease;
+}
+.read-article-link:hover { gap: 20px; }
+
+/* Etiqueta: fondo con un tinte del acento y un punto de color */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: color-mix(in srgb, var(--acento, var(--c-amarillo)) var(--tinte), transparent); color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--acento, var(--c-amarillo)) 45%, transparent); border-radius: var(--r-pill);
+  padding: 2px 10px; line-height: 1.5; font-size: .68rem; font-weight: 800; text-transform: uppercase; text-decoration: none;
+  transition: background-color .15s ease;
+}
+.tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--acento, var(--c-amarillo)); flex: none; }
+a.tag:hover { background: color-mix(in srgb, var(--acento, var(--c-amarillo)) 34%, transparent); }
+
+/* ----- Cuadrícula ----- */
+.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.posts-grid-lista { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+
+/* ----- Tarjeta vertical tipo portada (proporción 2:3) ----- */
+.card-portada {
+  position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: var(--r-lg);
+  border: 1px solid var(--borde); background: var(--panel); box-shadow: var(--sombra);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card-portada:hover { transform: translateY(-6px); transform: scale(1.03); box-shadow: var(--sombra-h); border-color: var(--borde-h); }
+/* línea de color en la base: crece al pasar el mouse */
+.card-portada-link::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; height: 3px;
+  background: var(--acento, var(--c-amarillo)); transform: scaleX(.18); transform-origin: left; transition: transform .35s ease;
+}
+.card-portada:hover .card-portada-link::after, .card-portada:focus-within .card-portada-link::after,
+.destacado-portada:hover .card-portada-link::after { transform: scaleX(1); }
+
+.card-portada-link {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end;
+  color: #fff; text-decoration: none;
+}
+.card-portada-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.card-portada:hover .card-portada-img, .destacado-portada:hover .card-portada-img { transform: scale(1.05); }
+
+/* Si el artículo no tiene portada: fondo de color + emoji de la categoría */
+.card-portada-fondo {
+  position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 25%;
+  font-size: 3.4rem; background: var(--acento, var(--c-amarillo));
+}
+.card-portada-velo {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,0) 68%);
+}
+.card-portada-top { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 5px; }
+.card-portada-top .tag { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(0,0,0,.38); color: #fff; border-color: rgba(255,255,255,.2); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.card-portada-info { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 4px; padding: 14px; }
+.card-portada-titulo { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
+.card-portada-meta { font-size: .66rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; opacity: .8; }
+.card-portada-desc {
+  font-size: .8rem; line-height: 1.35; opacity: 0; max-height: 0; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  transition: opacity .3s ease, max-height .3s ease;
+}
+/* La descripción aparece al pasar el mouse (en pantallas táctiles no se muestra) */
+.card-portada:hover .card-portada-desc, .card-portada:focus-within .card-portada-desc { opacity: .95; max-height: 5em; }
+@media (hover: none) { .card-portada-desc { display: none; } }
+
+/* ----- Artículo destacado: portada ancha ----- */
+.destacado-portada {
+  position: relative; aspect-ratio: 21 / 9; min-height: 320px; overflow: hidden; border-radius: var(--r-lg);
+  border: 1px solid var(--borde); background: var(--panel); box-shadow: var(--sombra);
+}
+.destacado-portada .card-portada-fondo { font-size: 5rem; padding-bottom: 0; }
+.velo-ancho {
+  background:
+    linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,0) 100%),
+    linear-gradient(to right, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 70%);
+}
+.destacado-info { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; max-width: 680px; padding: 34px; }
+.destacado-info .post-meta { margin-bottom: 0; }
+.destacado-titulo { font-size: clamp(1.6rem, 3.4vw, 2.6rem); font-weight: 800; line-height: 1.12; }
+.destacado-desc { opacity: .92; }
+.destacado-cta { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font-weight: 800; border-bottom: 2px solid var(--acento, var(--c-amarillo)); padding-bottom: 2px; }
+
+.vacio { text-align: center; color: var(--muted); font-weight: 700; margin: 40px 0; }
+.acciones-serie { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin: -10px 0 40px; }
+
+/* ----- Destacados de la portada: 3 en escritorio, 2 en móvil ----- */
+.destacados-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 24px; }
+.destacados-grid .card-portada-titulo { font-size: clamp(1rem, 1.6vw, 1.35rem); }
+
+@media (max-width: 560px) {
+  .destacados-grid { grid-template-columns: repeat(var(--cols-movil, 2), minmax(0, 1fr)); gap: 8px; }
+  .destacado-item.solo-escritorio { display: none; }
+  .posts-grid, .posts-grid-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .destacado-portada { aspect-ratio: auto; min-height: 360px; }
+  .destacado-info { padding: 22px; }
+}
+
+/* ----- Estilo Pinterest (/articulos/): columnas con alturas fijas distintas -----
+   Cada tarjeta ocupa N filas de 10px (--filas). El ancho se adapta; el alto es fijo. */
+.posts-pin { grid-auto-rows: 10px; grid-auto-flow: dense; row-gap: 0; }
+.posts-pin > .pin { display: flex; grid-row-end: span var(--filas, 40); padding-bottom: 20px; }
+.posts-pin > .pin[hidden] { display: none; }
+.posts-pin > .pin > .card-portada { flex: 1; aspect-ratio: auto; min-width: 0; }
+.pin-0 { --filas: 40; }
+.pin-1 { --filas: 44; }
+.pin-2 { --filas: 42; }
+.pin-3 { --filas: 46; }
+.pin-4 { --filas: 43; }
+@media (max-width: 560px) {
+  .pin-0 { --filas: 29; }
+  .pin-1 { --filas: 32; }
+  .pin-2 { --filas: 30; }
+  .pin-3 { --filas: 34; }
+  .pin-4 { --filas: 31; }
+  .posts-pin > .pin { padding-bottom: 6px; }
+}
+
+/* ----- /articulos/ en móvil: la cuadrícula casi llega a los bordes de la pantalla (6px), como Pinterest ----- */
+@media (max-width: 560px) {
+  .posts-borde { margin-inline: -20px; padding-inline: 6px; column-gap: 6px; }
+  .posts-borde:not(.posts-pin) { row-gap: 6px; padding: 0 14px}
+  .posts-grid .card-portada { border-radius: var(--r-md); box-shadow: none; }
+  .posts-grid .card-portada-top { top: 7px; left: 7px; right: 7px; gap: 4px; }
+  .posts-grid .tag { font-size: .58rem; padding: 1px 7px; }
+  .posts-grid .card-portada-info { padding: 10px; }
+  .posts-grid .card-portada-titulo { font-size: .95rem; }
+}
+
+/* ----- /articulos/ en pantallas medianas (tablets, laptops pequeñas, ventanas partidas) -----
+   Columnas de mínimo 240px: así salen 3 columnas en vez de 2 enormes, y nunca queda 1 sola.
+   Si las quieres más pequeñas o grandes, cambia el 240px. */
+@media (min-width: 561px) {
+  .posts-grid.posts-borde { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+/* ----- Móvil: tarjetas compactas en todo el sitio y cabeceras de sección que no se aprietan ----- */
+@media (max-width: 560px) {
+  .posts-grid:not(.posts-borde) { gap: 4px; }
+  .posts-grid .card-portada-meta { font-size: .6rem; }
+  .section-title-wrap { flex-wrap: wrap; row-gap: 4px; margin-bottom: 20px; }
+  .section-title { font-size: 1.45rem; }
+  .section-title-wrap > div { align-items: center; gap: .7rem; }
+  .section-title-wrap .badge-icon { align-self: center; }
+  .ver-todos { text-align: left; }
+  .ver-todos .read-article-link { white-space: nowrap; font-size: .9rem; }
+}
+
+/* ----- Pantallas medianas (tablets, ventanas estrechas): nunca 1 sola tarjeta gigante ----- */
+@media (min-width: 561px) and (max-width: 900px) {
+  .posts-grid:not(:empty) { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+/* Entre 901 y 1200px (portada y secciones sin barra lateral) se mantienen 3 columnas */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .posts-grid:not(.posts-grid-lista):not(.posts-borde) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

@@ -1,0 +1,22 @@
+---
+import { sitio } from '../../../sitio.js';
+import { categoriaInfo, formatoFecha, tiempoLectura, esComic, ruta } from '../../lib/utils.js';
+
+// Datos del artículo actual (columna derecha)
+const { post } = Astro.props;
+const d = post.data;
+const cat = categoriaInfo(d.categoria);
+const t = sitio.textos;
+const comic = esComic(post);
+const lectura = comic ? `${d.comic.paginas.length} ${t.paginas}` : `${tiempoLectura(post.body)} ${t.minLectura}`;
+---
+
+<section class="widget widget-meta">
+  <h3 class="widget-titulo">{t.info}</h3>
+  <ul class="meta-lista">
+    <li><span>{t.tema}</span><a href={ruta(`/categorias/${cat.clave}/`)}>{cat.emoji} {cat.nombre}</a></li>
+    <li><span>{t.publicado}</span><b>{formatoFecha(d.fecha)}</b></li>
+    {d.actualizado && <li><span>{t.actualizadoEn}</span><b>{formatoFecha(d.actualizado)}</b></li>}
+    <li><span>{t.lectura}</span><b>{lectura}</b></li>
+  </ul>
+</section>

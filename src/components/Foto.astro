@@ -1,0 +1,17 @@
+---
+// Imagen del sitio. Si el archivo está en src/assets/ Astro la optimiza (WebP, varios tamaños,
+// ancho y alto automáticos); si no, se muestra tal cual. Acepta class, loading, fetchpriority…
+import { variantes } from '../lib/imagenes.js';
+import { ruta } from '../lib/utils.js';
+
+const { src, alt = '', widths = [320, 640, 960, 1400], sizes = '100vw', ...resto } = Astro.props;
+const v = src ? await variantes(src, widths) : null;
+---
+
+{
+  v ? (
+    <img src={v.src} srcset={v.srcset} sizes={sizes} width={v.width} height={v.height} alt={alt} {...resto} />
+  ) : (
+    <img src={ruta(src)} alt={alt} {...resto} />
+  )
+}

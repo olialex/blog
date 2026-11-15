@@ -1,0 +1,25 @@
+---
+import { portadaAlbum, albumUrl, totalFotos } from '../lib/galeria-datos.js';
+import { sinMd } from '../lib/md.js';
+import Icono from './Icono.astro';
+import { sitio } from '../../sitio.js';
+// Tarjeta de álbum (misma forma que las portadas de los artículos)
+const { album, color = 'azul' } = Astro.props;
+const img = portadaAlbum(album);
+const n = totalFotos(album);
+---
+
+<article class="card-portada album-card" style={`--acento:var(--c-${color})`}>
+  <a class="card-portada-link" href={albumUrl(album)}>
+    {img ? <img class="card-portada-img" src={img} alt="" loading="lazy" decoding="async" /> : <span class="card-portada-fondo" aria-hidden="true">{sitio.galeria.icono && <Icono nombre={sitio.galeria.icono} tamano={56} />}</span>}
+    <span class="card-portada-velo"></span>
+    <span class="card-portada-top">
+      <span class="tag">{n} {n === 1 ? 'foto' : 'fotos'}</span>
+      {album.hijos.length > 0 && <span class="tag tag-comic">{album.hijos.length} {album.hijos.length === 1 ? 'subálbum' : 'subálbumes'}</span>}
+    </span>
+    <span class="card-portada-info">
+      <strong class="card-portada-titulo">{album.titulo}</strong>
+      {album.descripcion && <span class="card-portada-desc">{sinMd(album.descripcion).slice(0, 110)}</span>}
+    </span>
+  </a>
+</article>

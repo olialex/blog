@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cabecera from '../../components/Cabecera.astro';
+import AlbumCard from '../../components/AlbumCard.astro';
+import GaleriaLateral from '../../components/GaleriaLateral.astro';
+import '../../styles/galeria.css';
+import { sitio } from '../../../sitio.js';
+import { albumesPublicos } from '../../lib/galeria-datos.js';
+
+const g = sitio.galeria;
+const albumes = albumesPublicos();
+const colores = ['rosa', 'azul', 'verde', 'naranja', 'morado', 'amarillo'];
+---
+
+<Base titulo={g.titulo} descripcion={g.descripcion}>
+  <div class="contenedor gal-cont">
+    <Cabecera etiqueta={g.etiqueta} titulo={g.titulo} descripcion={g.descripcion} color="azul" icono={g.icono} />
+    <div class="gal-layout">
+      <GaleriaLateral />
+      <div class="gal-main">
+        {
+          albumes.length ? (
+            <div class="album-grid">{albumes.map((a, i) => <AlbumCard album={a} color={colores[i % colores.length]} />)}</div>
+          ) : (
+            <p class="vacio">{g.vacio}</p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</Base>

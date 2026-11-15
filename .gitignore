@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+panel/.borrador.json
+panel/.respaldo-sitio.js
+panel/.sitio-prueba.mjs
+
+# Obsidian
+/.obsidian/
+.trash/
+
+# Secretos y basura
+.env
+.env.*
+*.log

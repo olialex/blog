@@ -1,0 +1,26 @@
+---
+import { ruta } from '../../lib/utils.js';
+import { sitio } from '../../../sitio.js';
+import Icono from '../Icono.astro';
+import Foto from '../Foto.astro';
+
+const a = sitio.autor;
+const t = sitio.textos;
+---
+
+<section class="widget widget-autor">
+  <h3 class="widget-titulo">{t.widgetSobreMi}</h3>
+  <Foto class="autor-foto" src={a.avatar} alt={a.nombre} widths={[120, 240, 360]} sizes="120px" loading="lazy" decoding="async" />
+  <p class="autor-nombre">{a.nombre}</p>
+  <p class="widget-texto">{a.bio}</p>
+  <div class="redes">
+    {
+      a.redes.map((r) => (
+        <a class="chip chip-icono" href={r.url} target="_blank" rel="noopener noreferrer" title={r.nombre || r.icono} aria-label={r.nombre || r.icono}>
+          {r.icono ? <Icono nombre={r.icono} tamano={15} /> : r.nombre}
+        </a>
+      ))
+    }
+  </div>
+  <a class="read-article-link" href={ruta('/sobre-mi/')}>{t.verMas}</a>
+</section>

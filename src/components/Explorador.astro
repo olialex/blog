@@ -1,0 +1,173 @@
+---
+import { sitio } from '../../sitio.js';
+import Icono from './Icono.astro';
+import { getPosts, contarCategorias } from '../lib/utils.js';
+
+// Explorador de artículos: buscador + filtro por tema + lista que va cargando más al hacer scroll.
+// variante: 'popup' (dentro del botón del header) o 'inline' (fijo dentro de la página)
+const { variante = 'inline' } = Astro.props;
+const t = sitio.textos;
+const categorias = contarCategorias(await getPosts());
+---
+
+<div
+  class:list={['explorador', `explorador-${variante}`]}
+  data-explorador
+  data-variante={variante}
+  data-texto-resultados={t.explorarResultados}
+  data-texto-vacio={t.explorarVacio}
+>
+  <label class="explorador-barra">
+    <Icono nombre="buscar" tamano={18} />
+    <input class="explorador-input" type="search" placeholder={t.explorarPlaceholder} aria-label={t.explorarPlaceholder} autocomplete="off" />
+  </label>
+
+  <div class="explorador-filtros">
+    <button class="chip activo" type="button" data-cat="">{t.explorarTodo}</button>
+    {
+      categorias.map((c) => (
+        <button class="chip" type="button" data-cat={c.clave} style={`--acento:var(--c-${c.color})`}>
+          {c.emoji} {c.nombre}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="explorador-scroll">
+    <ul class="explorador-lista" data-lista></ul>
+    <div class="explorador-mas" data-mas></div>
+  </div>
+  <p class="explorador-estado" data-estado role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  type Entrada = { t: string; d: string; u: string; c: string; cn: string; ce: string; e: string[]; i: string; f: string; x: boolean };
+
+  const POR_LOTE = 8; // cuántos artículos se agregan cada vez que haces scroll
+  let promesa: Promise<Entrada[]> | null = null;
+  const cargar = () => (promesa ??= fetch(`${import.meta.env.BASE_URL.replace(/\/$/, '')}/buscar.json`).then((r) => r.json() as Promise<Entrada[]>));
+  const normalizar = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+  function iniciar(raiz: HTMLElement) {
+    const input = raiz.querySelector<HTMLInputElement>('.explorador-input');
+    const lista = raiz.querySelector<HTMLElement>('[data-lista]');
+    const estado = raiz.querySelector<HTMLElement>('[data-estado]');
+    const centinela = raiz.querySelector<HTMLElement>('[data-mas]');
+    const filtros = raiz.querySelectorAll<HTMLButtonElement>('[data-cat]');
+    if (!input || !lista || !estado || !centinela) return;
+
+    let categoria = '';
+    let resultados: Entrada[] = [];
+    let mostrados = 0;
+    let espera: number | undefined;
+
+    // Una fila de la lista: miniatura + título + tema y fecha
+    const fila = (p: Entrada) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'explorador-item';
+      a.href = p.u;
+      if (p.i) {
+        const img = document.createElement('img');
+        img.src = p.i;
+        img.alt = '';
+        img.loading = 'lazy';
+        a.append(img);
+      } else {
+        const sin = document.createElement('span');
+        sin.className = 'explorador-sinfoto';
+        sin.textContent = p.ce;
+        a.append(sin);
+      }
+      const texto = document.createElement('span');
+      texto.className = 'explorador-texto';
+      const titulo = document.createElement('strong');
+      titulo.textContent = p.t;
+      const meta = document.createElement('small');
+      meta.textContent = `${p.ce} ${p.cn} · ${p.f}${p.x ? ' · COMIC' : ''}`;
+      texto.append(titulo, meta);
+      a.append(texto);
+      li.append(a);
+      return li;
+    };
+
+    // Agrega el siguiente grupo de artículos a la lista
+    const pintarLote = () => {
+      const fin = Math.min(resultados.length, mostrados + POR_LOTE);
+      for (let i = mostrados; i < fin; i++) lista.append(fila(resultados[i]));
+      mostrados = fin;
+    };
+
+    // Cuando el final de la lista se ve, carga más
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        if (entradas[0]?.isIntersecting && mostrados < resultados.length) {
+          pintarLote();
+          reobservar();
+        }
+      },
+      { rootMargin: '0px 0px 80px 0px' },
+    );
+    const reobservar = () => {
+      observador.unobserve(centinela);
+      observador.observe(centinela);
+    };
+
+    const filtrar = async () => {
+      const todos = await cargar();
+      const terminos = normalizar(input.value.trim()).split(/\s+/).filter(Boolean);
+      resultados = todos.filter(
+        (p) =>
+          (!categoria || p.c === categoria) &&
+          terminos.every((x) => normalizar([p.t, p.d, p.cn, p.e.join(' ')].join(' ')).includes(x)),
+      );
+      lista.replaceChildren();
+      mostrados = 0;
+      pintarLote();
+      estado.textContent = resultados.length
+        ? `${resultados.length} ${raiz.dataset.textoResultados ?? ''}`
+        : (raiz.dataset.textoVacio ?? '');
+      reobservar();
+    };
+
+    input.addEventListener('input', () => {
+      window.clearTimeout(espera);
+      espera = window.setTimeout(() => void filtrar(), 120);
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') lista.querySelector<HTMLAnchorElement>('a')?.click();
+    });
+    filtros.forEach((boton) => {
+      boton.addEventListener('click', () => {
+        categoria = boton.dataset.cat ?? '';
+        filtros.forEach((b) => b.classList.toggle('activo', b === boton));
+        void filtrar();
+      });
+    });
+
+    // Flechas ↑ ↓ para moverte por la lista
+    raiz.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const items = Array.from(lista.querySelectorAll<HTMLElement>('.explorador-item'));
+      if (!items.length) return;
+      e.preventDefault();
+      const actual = items.indexOf(document.activeElement as HTMLElement);
+      const siguiente = e.key === 'ArrowDown' ? actual + 1 : actual - 1;
+      if (siguiente < 0) input.focus();
+      else items[Math.min(siguiente, items.length - 1)].focus();
+    });
+
+    if (raiz.dataset.variante === 'popup') {
+      // El popup se carga cuando se abre (el header dispara el evento "abrir")
+      raiz.addEventListener('abrir', () => {
+        if (!lista.children.length) void filtrar();
+        input.focus();
+        input.select();
+      });
+    } else {
+      void filtrar();
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-explorador]').forEach(iniciar);
+</script>

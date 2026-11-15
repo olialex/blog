@@ -1,0 +1,43 @@
+---
+import { sitio } from '../../sitio.js';
+
+// Columna izquierda de un artículo: índice fijo (sticky) con el apartado activo resaltado
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length >= 2 && (
+    <details class="toc" data-toc open>
+      <summary class="rail-titulo">{sitio.textos.indice}</summary>
+      <ol>
+        {items.map((h) => <li class={h.depth === 3 ? 'sub' : undefined}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ol>
+    </details>
+  )
+}
+
+<script>
+  const toc = document.querySelector('[data-toc]');
+  if (toc) {
+    const enlaces = Array.from(toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
+    const porId = new Map(enlaces.map((a) => [decodeURIComponent(a.getAttribute('href')!.slice(1)), a]));
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (e.isIntersecting) {
+            enlaces.forEach((a) => a.classList.remove('activo'));
+            porId.get(e.target.id)?.classList.add('activo');
+          }
+        });
+      },
+      { rootMargin: '-10% 0px -80% 0px' },
+    );
+    porId.forEach((_, id) => {
+      const titulo = document.getElementById(id);
+      if (titulo) observador.observe(titulo);
+    });
+    // En pantallas pequeñas el índice empieza cerrado
+    if (window.matchMedia('(max-width: 1000px)').matches) toc.removeAttribute('open');
+  }
+</script>
